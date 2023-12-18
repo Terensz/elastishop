@@ -1,0 +1,162 @@
+Mi ez a szoftver, és mi az alapvető célja?
+==========================================
+A StartAppBilling egy számlázórendszer.
+
+Alapvető célja az, hogy a StartAppBilling felhasználóinak felületet biztosítson a számláik elkészítéséhez, és azoknak az elektronikus lejelentéséhez az adóhivatal felé.
+A szoftver alapverziója kizárólag a magyar adóhivatal: a NAV felé fog tudni lejelenteni.
+
+A szoftverről 
+=============
+A StartAppBilling számlázórendszer egy szoftver, vagyis nem kézzelfogható tárgy, hanem egy szigorúan körülhatárolt környezetben működni képes utasítás-sorozat.
+
+A szoftvert Papp Ferenc fejlesztő készíti el, valamint elősegíti a szoftver beüzemeléséhez szükséges feltételeket, valamit felügyeli a szoftver üzemben tartását.
+
+A szoftver nyelve: PHP.
+A szoftver típusa: webes alkalmazás. Webes böngészőben (pl. Google Chrome, Mozilla Firefox) a szoftver URL-címét meghívva a működő szoftvernek kell megjelennie.
+A szoftver felhasználó-oldali technikai igénye:
+- Internetkapcsolat megléte. A szoftver nem jelenik meg, ha a felhasználónál nincs internetkapcsolat, és nem fog jól működni, amennyiben a működése közben megy el az internetkapcsolat.
+- Támogatott és kifogástalanul működő webes böngésző asztali számítógépen, laptopon vagy mobilkészüléken
+A szoftver rendelkezik egy szerveroldali technikai környezeti igénnyel, aminek a maradéktalan megléte feltétele a jó működésnek.
+- Apache webszerver, 2.4-es, vagy afölötti verzió
+- PHP programnyelv 7.4-es vagy 8.1-es verzió 
+- Mysql 7-es vagy 8-as verzió 
+A szoftver rendelkezik egy alapszoftverrel, amit keretrendszernek, vagy framework-nek hívunk a szoftverfejlesztői terminológiában.
+A keretrendszer egy olyan alapszoftver, ami néhány alapfunkciót már tartalmaz, amit az adott környezetben működéshez szükséges. Pl. egy webes keretrendszer tudja a bejövő URL-címekben foglalt adatokat értelmezni,
+továbbá lényegesen egyszerűbb az adatok kezelése, a formok (kérdőívek) létrehozása, és az elküldött adatok ellenőrzése és adatbázisba elmentése.
+A StartAppBilling szoftver keretrendszere: ElastiSite. Ez Papp Ferenc saját fejlesztése. Tartalmaz számos olyan funkciót, ami a legkorszerűbb keretrendszerek sajátossága.
+Az ElastiSite évek ota folyamatosan használt, és folyamaosan fejlődő alapszoftver, működése tökéletesen megfelel a GDPR-elvárásoknak, és azon túl is tartalmaz adatbiztonsági funkciókat, mint pl:
+- Minden személyes adat titkosítva tárolódik az adatbázisban.
+- A szoftver minden egyes elérhető route-ja (olyan URL-címek a szoftveren belül, ami más-más oldalhoz, funkcióhoz vezetnek)
+
+Irányelvek
+==========
+I. Az adóhatóság biztosít egy adatlejelentési fogadószervert, és elvárja, hogy minden kiállított számla ezen a szerveren keresztül kerüljön lejelentésre.
+    1.: A StartAppBilling szoftvernek ennek az elvárásnak eleget kell tudnia tennie.
+    2.: Esetleges hiba esetén arról azonnal tájékoztatnia kell a felelősöket, a hiba helyére rá kell tudnia mutatni.
+
+II. StartAppBilling szoftvernek képesnek kell lennie a számviteli törvénynek megfelelő számlákat kiállítani.
+
+III. A Billingo szoftvert mintául véve meg kell valósítani annak minden funkcióját.
+
+Funkciólista
+============
+I. Felhasználói felület - Regisztráció 
+    1.: A felhasználónak tudnia kell regisztrálni a StartAppBilling szoftverbe.
+
+    A StartAppBilling szoftver keretrendszeréül szolgáló ElastiSite rendelkezik saját regisztrációs és belépési funkcióval, de ezek nem lesznek elegek.
+    - Pontosan meg kell tudni, hogy milyen további adatok kellenek, vagyis nulladik lépésként meg kell nézni az ide vonatkozó szabályokat, vagy le kell másolni a Billingo regisztrációját.
+    Maga a regisztráció néhány összetett működést tartalmaz, bizonyos kérdésekre adott válasz további mezőket rejt el vagy jelenít meg.
+    A vállalkozási forma "Cég", "Egyéni vállalkozó" és "Adószámos magánszemély" lehet. Az "Egyéni vállalkozó" megjelenít egy "Adózás típusa" mezőt, amire az adható válaszok "Kisadózó vagyok" és "SZJA szerint átalányadózó vagyok".
+    Még két "kozmetikai" változást látok, az "Cég" esetén "Cégnév" van, a másik két esetben pedig "Név", valamit "Cég" esetén "Cégjegyzékszám", míg a másik két esetben "Nyilvántartási szám" szerepel.
+    Van még egy "Fejlesztői teszt profil létrehozása" opció is.
+    Megjegyzem: a Billingónál bármilyen hiba azt eredményezni, hogy minden meződet újra kell töltened, a szoftver picit buta, és elfelejti az addigi kitöltéseket. Ez a saját szoftveremben nem így lesz.
+
+    Ha ez a verzió lesz, akkor ez kb 2 napos fejlesztés, ha semmi különös ellenőrzés nem kell bele.
+    -----------------------------------------------------------------------------------------------
+    - Adatszerkezet átgondolása
+    - Form elkészítése 
+    - Ellenőrzések elkészítése 
+    Ha kell bele pl. cégjegyzékszám- vagy adószám-validálás, akkor ehhez napok jöhetnek pluszban.
+
+    DE!!!
+    Szerintem ne így legyen, hanem:
+    - A regisztráció maradjon egyszerű: név, e-mail, (mobil kell?) lakcím.
+    - A céges adatok kerüljenek be a "Beállítások / Cégek, jogi személyek" menüpont alá.
+
+II. Bejelentkezés 
+    1.: A felhasználónak képesnek kell lennie a saját érvényes felhasználói fiókjának a felhasználónevel és jelszavával bejelentkezni a szoftverbe.
+    
+    Ez a funkció már benne van a szoftverben, nem igényel külön fejlesztést.
+
+III. Elérhető weboldalak bejelentkezés nélkül 
+    1.: Főoldal (homepage)
+
+    Mivel ez a marketing-szempontból legfontosabb oldal, így ennek megtervezése designer/marketinges munkáját igényli.
+    
+    2 napos fejlesztés, hogy a designer munkáját beépítsem.
+    -------------------------------------------------------
+
+IV. Elérhető weboldalak bejelentkezett felhasználók számára 
+    1.: Kimenő számlák 
+        Ez gyakorlatilag egy lista az eddig kiállított számlákkal. Szerintem a saját adattábla-készítő modulomat kell rátenni, szűrhető és sorbarendezhető lesz számlaszámra, névre, dátumra, látszani fog a végösszeg.
+        Fölötte egy gomb: Új számla kiállítása (lásd: 2.)
+        
+        1 napos fejlesztés.
+        -------------------
+        - Picit majd el kell játszanom a megjelenített bruttó összeggel
+        - Bele kell fejlesztenem, hogy bizonyos oszlopokra ne lehessen szűrni, de lehessen rá rendezni. Esetünkben a bruttó összegre.
+
+    2.: Új számla kiállítása 
+        Ez a felület lesz a legfontosabb, összetett formkitöltés, sok dinamikus inputtal. 
+
+        Csak ennek a lefejlesztése kb. 1 hét.
+        -------------------------------------
+
+    3.: Bejövő számla (?) 
+        Ezt Szabival meg kell beszélni, hogy kell-e, egyelőre nem tudom értelmezni a funkciót. Leírást és videót pedig nem találtam erről, az ingyenes csomagban pedig nincs benne.
+    
+    A többi funkció a Billingo felületén úgy látom, hogy nem kapcsolódik szervesen a számlázórendszerhez, inkább olyan funkciók vannak benne, amire sokkal jobb az admin skála.
+
+    4.: Beállítások
+
+    4/a.: Saját felhasználói adatok megtekintése/szerkesztése 
+
+        4/a/1: StartAppBilling előfizetés 
+
+        kb. 4 hetes fejlesztés 
+        ----------------------
+        - Le kell fejleszteni a rendszeres utalást (1 - 1,5 hét kb.) Találni kell egy szolgáltatót, aki ezt engedélyezi, és engedi azt is, hogy API-n keresztül utaljak, és ne kelljen átirányítani a felületükre. 
+            (Így pl. az OTP nem jöhet szóba.)
+        - Le kell fejleszteni az adatkapcsolatot a pénzügyi szolgáltatóval, és nagyon alaposan le kell tesztelni. (4 - 5 nap)
+        - Fel kell állítani a pénzügyi szolgáltató felületéhez a tesztkörnyezetet, regisztráció, be kell drótozni az ő szoftverüket az enyémbe (2-3 nap)
+        - Bele kell drótozni a pénzügyi szolgáltató sütikezelését is a felület sütikezelőjébe a GDPR miatt. (0,5 nap)
+        - Meg kell tervezni az előfizetés teljes folyamatát. (1-2 nap)
+        - Le kell fejleszteni az előfizetés folyamatát (1-2 nap)
+        - Kell egy olyan belső előfizetői jogosultságkezelési mechanizmust építeni a programba, amivel később könnyen lehet szabályozni, hogy melyik előfizetéssel mit lehessen látni (2 nap)
+
+        4/a/2: Felhasználói alapadatok szerkesztése 
+        - Minden egyes változást naplóznia kell. Erre külön kell írni egy vezérlést, ami ezt elvégzi. (1 nap)
+        - E-mail módosítása - ez egy külön történet, mert arra kap minden megerősítő linket. Ezt vagy mobiltelefonszámra küldött SMS-sel oldjuk meg (az önmagában 1-2 hét fejlesztés, hogy website tudjon SMS-t küldeni)
+
+        - NAV éles adatok beállítása
+        - NAV teszt adatok beállítása
+
+        Ezt meg kell beszélni, hogy itt milyen funkciók legyenek még.
+
+        X nap
+        -----
+        - StartAppBilling előfizetés szerkesztése: 
+
+
+    Ez a pont abban az esetben érvényes, ha elfogadod a javaslatomat, amit az "I. Felhasználói felület - Regisztráció"-nál írtam.
+    Vagyis: nem a regisztráció tartalmazza, hogy cég vagy-e
+    4/b.: Cégek, jogi személyek 
+        - Ez is egy adattábla, mint a kimenő számlák. Sorbarendezhető, kereshető. Jogi személy neve, jellege (cég, egyéni vállalkozás)
+
+        2-3 napos fejlesztés (Viszont akkor a regisztráció készen van, arra akkor nem vonatkozik a 2 napos fejlesztés)
+        --------------------
+        - Meg kell tervezni hozzá az adatbázis-táblákat 
+        - Be kell drótozni az adattáblát a felületre 
+        - El kell készíteni a szerkesztőablakot a formmal
+        - Meg kell írni a validátorokat
+
+V. Tesztkörnyezet (Teszt-felhasználóval érhető el. Teszt felhasználó = regisztrált felhasználó, aminek az admin-felületen adtál "Teszt-felhasználó" flag-et.)
+    - A teszt accounthoz csatlakozik. 
+    - Tetszőleges számú számla jelenthető le 
+    - Szabadon módosíthatja saját magának, hogy milyen előfizetői csomagba tartozik éppen, és pont annyit lát, mint mások abban az előfizetési csomagban.
+
+    
+
+V: Elérhető weboldalak a webhely üzemeltetői számára.
+(Webhely: adott webszerveren elérhető weboldalak összessége. A magyar köznyelvben helytelenül használják a "weboldal" kifejezést az egész webhelyre.)
+
+Elvárások
+=========
+1.: A szoftvernek naprakésznek kell lennie az adóhatóság elvárásaival szemben.
+- Kell hozzá egy rendszeres felügyelet 
+- Szükség van olyan regisztrációra az adóhivatal felé, amelyek biztosítják az adatlejelentési fogadószerver formátum-elvárásainak jövőbeni változásairól szóló összes tájékoztatást.
+
+Lehetséges jövőbeni feljesztési irányok
+=======================================
+- Az alapszoftver szándékosan többféle adóhatóság regisztrációjára lett kifejlesztve, vagyis lehetőség lesz több ország adóhivatala felé történő lejelentést is belefejleszteni.
+- iOS + Android 

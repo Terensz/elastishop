@@ -1,0 +1,44 @@
+#mode=This is the PROD
+taxOffice.APIUrlBase=https://api-prod.onlineszamla.nav.gov.hu/invoiceService/v3
+taxOffice.statusesToResend=[WARN,WARNING,ABORT,ABORTED]
+taxOffice.allowedVATPercentages=[27,18,5]
+
+finance.invoiceCreation=true
+
+user.username=exampleuser
+user.password=examplepassword12345678
+user.signKey=user-signkey-1234567890
+user.exchangeKey=exampleexcahngekey12345678
+user.shortTaxNumber=58397235
+
+issuer.name=Jon Doe
+issuer.displayedTaxId=58397235-1-41 | EU: ASD1234546
+issuer.taxId=12345678-1-41
+issuer.bankAccountNumber=11773411-11223344-55667788
+issuer.bankName=OTP Bank
+issuer.iban=
+issuer.swift=
+issuer.country=HU
+issuer.zipCode=1123
+issuer.city=Budapest
+issuer.street=Váci
+issuer.streetSuffix=körút
+issuer.houseNumber=23.
+issuer.staircase=2.
+issuer.floor=4.
+issuer.door=417.
+
+invoice.startingSequence=4556
+invoice.numberFormat=ESWM{year}1650000{sequence}
+
+request.headerVersion=1.0
+request.version=3.0
+
+software.id=ELASTISHOP-202304
+software.name=ElastiSite-ElastiShop
+software.operation=ONLINE_SERVICE
+software.mainVersion=v1.1
+software.devName=Papp Ferenc
+software.devContact=+36705150551
+software.devCountryCode=HU
+software.devTaxNumber=58397235

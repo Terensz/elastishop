@@ -1,0 +1,125 @@
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-12">
+                        <b><?php echo trans('organization.name'); ?> *</b>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" style="padding-bottom: 0px; margin-bottom: 0px;">
+                            <input name="WebshopPackage_checkout_organizationName" id="WebshopPackage_checkout_organizationName" type="text"
+                                class="inputField form-control" value="<?php echo $form->getValueCollector()->getValue('organizationName', 'displayed'); ?>" aria-describedby="" placeholder="">
+                        </div>
+                        <div class="validationMessage error" id="WebshopPackage_checkout_organizationName-validationMessage">
+                            <?php if ($validateForm): echo $form->getMessage('WebshopPackage_checkout_organizationName'); endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-12">
+                        <b><?php echo trans('organization.tax.id'); ?> *</b>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" style="padding-bottom: 0px; margin-bottom: 0px;">
+                            <input name="WebshopPackage_checkout_taxId" id="WebshopPackage_checkout_taxId" type="text" maxlength="13"
+                                class="inputField form-control" value="<?php echo $form->getValueCollector()->getValue('taxId', 'displayed'); ?>" aria-describedby="" placeholder="<?php echo trans('e.g') ?>: 12345678-1-41">
+                        </div>
+                        <div class="validationMessage error" id="WebshopPackage_checkout_taxId-validationMessage">
+                            <?php if ($validateForm): echo $form->getMessage('WebshopPackage_checkout_taxId'); endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-12">
+                        <b><?php echo trans('organization.country'); ?> *</b>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" style="padding-bottom: 0px; margin-bottom: 0px;">
+                            <div class="input-group">
+                                <select name="WebshopPackage_checkout_orgCountry" id="WebshopPackage_checkout_orgCountry" class="inputField form-control">
+
+                                    <option value="348" selected="">Magyarország</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="validationMessage error" id="WebshopPackage_checkout_orgCountry-validationMessage">
+                            <?php if ($validateForm): echo $form->getMessage('WebshopPackage_checkout_orgCountry'); endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-12">
+                        <b><?php echo trans('organization.zip.code'); ?> *</b>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" style="padding-bottom: 0px; margin-bottom: 0px;">
+                            <input name="WebshopPackage_checkout_orgZipCode" id="WebshopPackage_checkout_orgZipCode" type="text"
+                                class="inputField form-control" value="<?php echo $form->getValueCollector()->getValue('orgZipCode', 'displayed'); ?>" aria-describedby="" placeholder="">
+                        </div>
+                        <div class="validationMessage error" id="WebshopPackage_checkout_orgZipCode-validationMessage">
+                            <?php if ($validateForm): echo $form->getMessage('WebshopPackage_checkout_orgZipCode'); endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-12">
+                        <b><?php echo trans('organization.city'); ?> *</b>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" style="padding-bottom: 0px; margin-bottom: 0px;">
+                            <input name="WebshopPackage_checkout_orgCity" id="WebshopPackage_checkout_orgCity" type="text" maxlength="100"
+                                class="inputField form-control" value="<?php echo $form->getValueCollector()->getValue('orgCity', 'displayed'); ?>" aria-describedby="" placeholder="">
+                        </div>
+                        <div class="validationMessage error" id="WebshopPackage_checkout_orgCity-validationMessage">
+                            <?php if ($validateForm): echo $form->getMessage('WebshopPackage_checkout_orgCity'); endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-12">
+                        <b><?php echo trans('organization.street'); ?> *</b>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" style="padding-bottom: 0px; margin-bottom: 0px;">
+                            <input name="WebshopPackage_checkout_orgStreet" id="WebshopPackage_checkout_orgStreet" type="text" maxlength="100"
+                                class="inputField form-control" value="<?php echo $form->getValueCollector()->getValue('orgStreet', 'displayed'); ?>" aria-describedby="" placeholder="">
+                        </div>
+                        <div class="validationMessage error" id="WebshopPackage_checkout_orgStreet-validationMessage">
+                            <?php if ($validateForm): echo $form->getMessage('WebshopPackage_checkout_orgStreet'); endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-12">
+                        <b><?php echo trans('organization.street.suffix'); ?> *</b>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" style="padding-bottom: 0px; margin-bottom: 0px;">
+                            <input name="WebshopPackage_checkout_orgStreetSuffix" id="WebshopPackage_checkout_orgStreetSuffix" type="text" maxlength="30"
+                                class="inputField form-control" value="<?php echo $form->getValueCollector()->getValue('orgStreetSuffix', 'displayed'); ?>" aria-describedby="" placeholder="">
+                        </div>
+                        <div class="validationMessage error" id="WebshopPackage_checkout_orgStreetSuffix-validationMessage">
+                            <?php if ($validateForm): echo $form->getMessage('WebshopPackage_checkout_orgStreetSuffix'); endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-12">
+                        <b><?php echo trans('organization.house.number'); ?> *</b>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group" style="padding-bottom: 0px; margin-bottom: 0px;">
+                            <input name="WebshopPackage_checkout_orgHouseNumber" id="WebshopPackage_checkout_orgHouseNumber" type="text" maxlength="20"
+                                class="inputField form-control" value="<?php echo $form->getValueCollector()->getValue('orgHouseNumber', 'displayed'); ?>" aria-describedby="" placeholder="">
+                        </div>
+                        <div class="validationMessage error" id="WebshopPackage_checkout_orgHouseNumber-validationMessage">
+                            <?php if ($validateForm): echo $form->getMessage('WebshopPackage_checkout_orgHouseNumber'); endif; ?>
+                        </div>
+                    </div>
+                </div>

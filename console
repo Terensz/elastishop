@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+// set_include_path(dirname(__FILE__).'/elastisite/elastisite_source/');
+set_include_path('');
+$sourcePath = dirname(__FILE__).'/elastisite/elastisite_source/';
+$sourceRelPath = 'elastisite/elastisite_source/';
+include($sourceRelPath.'App.php');
+\App::setSourceRelativePath($sourceRelPath);
+
+// $vendorPath = dirname(__FILE__).'/elastisite/vendor/';
+// $vendorRelPath = 'elastisite/elastisite_source/';
+
+include('elastisite/elastisite_source/framework/kernel/base/ConfigReader.php');
+\App::$configReader = new framework\kernel\base\ConfigReader();
+
+// var_dump($sourcePath.'config/pathBaseConfig.txt');exit;
+
+$pathBaseConfig = \App::$configReader->read($sourcePath.'config/pathBaseConfigCLI.txt');
+
+include($sourceRelPath.'framework/kernel/engineLoader.php');
+
+?>

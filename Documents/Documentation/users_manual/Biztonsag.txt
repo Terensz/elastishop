@@ -1,0 +1,26 @@
+Az ElastiSite-nak vannak saját biztonsági mechanizmusai, amik egy teljes oldal, és egy widget betöltésekor is működésbe lépnek.
+
+Az internet egy darázsfészek, tele szárnypróbálgató és profi zsiványokkal és kópékkal. Vagy az ügyfeleink adatait akarják megszerezni hasznot remélve ebből, vagy a "feltörtem egy webes alkalmazást"-érzés kéjes örömét keresik.
+
+Ez az öt mechanizmus védi az ElastiSite-alapú webhelyeket a feltöréstől:
+
+I.: Felhasználói kérések teljes átvizsgálása
+Az elsők között levő folyamat az összes felhasználó által elküldött adat és a feltöltött file-ok teljes átvizsgálása.
+Ne legyenek illúzióink: a hacker akkor is tud adatot küldeni, ha azon az oldalon nincs is olyan mező, és akkor is tud file-t feltölteni, ha egyébként mi nem is csináltunk az egész webhelyen erre lehetőséget.
+
+Az ElastiSite ezen a ponton csak megvizsgálja a beérkező kéréseket, hogy tartalmaznak-e feltörési kisérletet.
+Minden feltörési kisérletet büntetőponttal jutalmaz, vagyis az első feltörési kisérlet nem jár azonnali tiltással. Természetesen ez csak akkor igaz, amennyiben azt feltételezhetjük, hogy a kezdő hacker, vagy informatikus-palánta böngészőn keresztül nézi az oldalunkat, vagyis szembesíteni tudjuk tettével. Létezhet olyan eset, amikor egyértelmű, hogy nem erről van szó, erre a IV-es pontban még visszatérek.
+
+II.: Eddigi büntetőpontok összeszámolása: figyelmeztetés vagy tiltás
+Még mielőtt az ELastiSite megállapítaná, hogy a felhasználó milyen oldalt szeretne meglátogatni, megvizsgálja, hogy rendeltetésszerűen használja, vagy épp fel szeretné törni a webes alkalmazást. És ha az utóbbi történik, kapott-e már figyelmeztetést. Ha még nem, akkor a támadót szembesíti az éppen az imént elkövetett tettével, és tájékoztatja annak súlyáról, az ismételt elkövetés következményéről és a felhasználók felelősségéről és a felhasználás feltételeiről.
+
+III.: Az aktuális oldalon található kérdőív átvizsgálása, hogy érkezett-e olyan kérés, ami nem volt a kérdőíven.
+(Pl. a bejelentkezési formon valószínűleg nincs cég neve mező, vagyis ha ilyen kérés érkezik, azt az ELastiSite érzékeli, adminisztrálja, és büntetőpontokkal "jutalmazza")
+Nem szabad engedni, hogy olyan adatot is elküldhessen a felhasználó, amit amúgy nem is várunk, vagyis nincs vele dolgunk. Ezek a tevékenységek a webhelyünk, szerverünk, beállításaink sérülékenységeit keresik.
+
+IV.: Ha nem volt kérdőív az oldalon, de mégis érkezett bármilyen kérés, azért azonnali tiltás jár. Ugyanis itt már nem kezdő hackerrel van dolgunk, és nem is böngészőn keresztül próbálja törni az oldalunkat.
+Az ElastiSite ilyenkor azonnal e-mailt küld az Üzemeltetésnek, hogy a tűzfalon is tiltsa ki a hackert, ha a tűzfal esetleg nem lenne a helyzet magaslatán.
+
+V.: Védelem a "DoS"-támadás ellen (Denial of Service)
+Ez a támadás úgy működik, hogy a támadó rengeteg kérést küld a webszervernek. Annyira sokat, hogy ha erre nincs felkészülve, akkor annyira lefoglalja a szerver erőforrásait a percenként akár több tízezer kérés kiszolgálása, hogy már nem tudja a védelmet is maximálisan ellátni, így a támadó be fog jutni. Az ElastiSite figyeli az érkező látogatói kéréseket, és ha 20 másodperc alatt 10 érkezik, akkor megtagadja a további kiszolgálást attól az állomástól.
+

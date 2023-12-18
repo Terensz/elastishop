@@ -1,0 +1,8 @@
+skinName=ASC
+sheetMaxWidth=3600
+sheetHorizontalMargin=10
+sheetWidthPercent=100
+adminSheetWidthPercent=100
+sheetTopPadding=10
+backgroundColor=f9f6f0
+defaultFont=Calibri2

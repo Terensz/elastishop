@@ -1,0 +1,7 @@
+skinName=ElastiShop
+sheetMaxWidth=2000
+sheetWidthPercent=80
+adminSheetWidthPercent=90
+sheetTopPadding=100
+backgroundColor=f9f6f0
+defaultFont=DMSans

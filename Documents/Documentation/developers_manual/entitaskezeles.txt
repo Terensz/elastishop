@@ -1,0 +1,20 @@
+Entitás:
+--------
+Olyan osztály (vagy abból példányosított objektum), ami egy adatbázis-táblának a programozási modellje. (Röviden: adatmodell.) Adatokkal tölthető fel, és logikák és mechanikák adhatók hozzá. Az entitások kapcsolatban állhatnak egymással, ezeket a kapcsolatokat az ElastiSite-ban az ERM (entity relation mapper, máshol ORM, vagyis object relation mapper) térképezi fel, és az EntityManager kezeli le.
+
+multiple:
+---------
+Az entitáshoz tartozó property-k egyik attribútuma. Csakis entitásban levő entitás esetén értelmezhető, hiszen egy tábla egy recordjában csak egy érték fér el, nyilván ha több értéket akarunk hozzárendelni, azt már egy másik táblából tudjuk megtenni, vagyis az már egy másik entitás.
+A multiple attribútum akkor lesz true, ha a cél-entitásnak van add- kezdetű settere.
+Tehát ha azt akarod, hogy a Person-hoz több address is tartozhasson, akkor a Person entitásban addAddress(Address $address) formában kell deklarálnod a settert. De amint átírod setAddress(Address $address)-re, máris false lesz a multiple attribútum értéke.
+
+Fontos, bár úgyis kapnál róla exception-t: ha egy gyerek-entitáshoz csináltál addert, vagyis multiple lett, akkor ha a szülő táblájában van a multiple gyerekhez id mező, akkor ezt az ellentmondást fel kell oldanod. Vagy vedd ki a szülőből a gyerek id-ját, vagy csinálj set metódust az add-ból. Attól függ, hogy több sornyi gyereket vársz-e az egy sor szülőhöz.
+
+propertyCode:
+-------------
+A property egyesszámú alakja. Pl. ha a property-d így néz ki: "public $addresses;", akkor a propertyCode ez lesz: "address". Nyilván minden olyan esetben, amikor a property egyesszámú: megegyeznek.
+
+active:
+-------
+Ezzel "ki tudsz kapcsolni" egy entitást. Inaktív entitást nem tusz egy másikba beágyazni.
+Ez a tulajdonság alapértelmezettként igaz, vagyis nem kell definiálni, ha azt akarod, hogy működjön.

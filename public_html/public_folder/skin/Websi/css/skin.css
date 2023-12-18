@@ -1,0 +1,224 @@
+.menuButton-normal {
+    background-image: none;
+    background-color: #fff;
+    border-top: 1px solid #e4e4e4;
+    border-right: 1px solid #e4e4e4;
+    color: #000;
+}
+
+.menuButton-active {
+    background-image: none;
+    background-color: #208390;
+    border-top: 1px solid #33848e;
+    border-right: 1px solid #e4e4e4;
+    color: #fff;
+}
+
+.menuButton-normal:hover {
+    background-image: none;
+    background-color: #329baa;
+    border-top: 1px solid #33848e;
+    border-right: 1px solid #e4e4e4;
+    color: #fff;
+}
+
+.menuButton-active:hover {
+    background-image: none;
+    background-color: #1b7480;
+    border-top: 1px solid #3076c4;
+    border-right: 1px solid #e4e4e4;
+    color: #fff;
+}
+
+.menuButton-last {
+    background-color: #fff;
+    /* padding: 10px; */
+    /* float:left; */
+    /* text-align: center; */
+}
+
+/*
+SIDEMENU
+*/
+.sideMenuButton {
+    color: #208390;
+    padding-top: 12px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.sideMenu-active:link, .sideMenu-active:visited {
+    color: #347780;
+    /* text-decoration: underline; */
+    font-family: DefaultFontBold;
+    font-weight: normal;
+}
+.sideMenu-active:hover {
+    color: #2a5d64;
+    /* text-decoration: underline; */
+    font-family: DefaultFontBold;
+    font-weight: normal;
+}
+
+.sideMenuButton-border {
+    border-top: 1px solid #b8b8b8;
+}
+
+/* .sideMenuButton-normal {
+    background-image: none;
+    background-color: #0070e8;
+    color: #fff;
+} */
+
+.sideMenuButton-normal:hover {
+    /* background-image: none; */
+    /* background-color: #0070e8; */
+    color: #329baa;
+    /* background-color: #38a2b1; */
+    box-shadow: 0 4px 6px #6a6a6a;
+}
+
+.sideMenuButton-normal-active {
+    background-image: none;
+    background-color: #3aa6b5;
+    color: #fff;
+    box-shadow: 0 4px 6px #6a6a6a;
+}
+
+.sideMenuButton-normal-active:hover {
+    background-image: none;
+    background-color: #367e87;
+    color: #fff;
+    box-shadow: 0 4px 6px #6a6a6a;
+}
+
+a > .sideMenuButton-special {
+    color: #d03b5e;
+}
+
+.sideMenuButton-special:hover {
+    color: #d03b5e;
+}
+
+a > .sideMenuButton-special:hover {
+    background-image: none;
+    color: #93112f;
+    text-decoration: none !important;
+    box-shadow: 0 4px 6px #6a6a6a;
+}
+
+.sideMenuButton-special-active {
+    background-color: #e06380;
+    background-image: none;
+    color: #fff;
+    box-shadow: 0 4px 6px #6a6a6a;
+}
+
+a > .sideMenuButton-special-active:hover {
+    background-color: #d03b5e;
+    color: #fff;
+    text-decoration: none !important;
+    box-shadow: 0 4px 6px #6a6a6a;
+}
+
+.webshop-new-price {
+    color: #c62f52;
+    text-decoration: none;
+}
+
+.sideMenuButton-submenu-outerContainer {
+    padding-left: 20px;
+    /* background-color: #f8f9fa; */
+    /* background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/xQAAukB5vvocQUAAAAASUVORK5CYII=') !important; */
+}
+
+.sideMenuButton-submenu-innerContainer {
+    /* padding-left: 10px; */
+    background-color: #dde9f2;
+}
+
+.sideMenuButton-submenu-innerContainer {
+    /* padding-left: 10px; */
+    background-color: #d1ebee;
+}
+
+.webshop-product-title {
+    font: 22px DefaultFontBold;
+    font-weight: normal;
+    padding-top: 15px;
+    color: #208390;
+}
+
+/* .webshop-product-title:hover {
+    text-decoration: underline;
+    color: #208390;
+} */
+
+a {
+    color: #208390;
+}
+
+a:hover {
+    color: #329baa;
+}
+
+.ElastiShop {
+    font-family: FredokaOne-Regular;
+}
+
+.toggled-special-2 {
+    /* height: 42px; */
+    color: #fcfcfc;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding: 12px;
+    font: 24px DefaultFontBold;
+    font-weight: normal;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM8qe2yCQAE6QHs9rNGPQAAAABJRU5ErkJggg==');
+    border-bottom: 1px solid #74114a;
+}
+
+.widgetHeader-color {
+    background-color: #464646 !important;
+    color: #f2f2f2;
+}
+
+.widgetHeader-color2 {
+    background-color: #f6716c;
+    color: #ffffff;
+}
+
+.page-link {
+    color: #208390;
+}
+
+.page-link:hover {
+    color: #208390;
+}
+
+.page-link:active {
+    color: #208390;
+}
+
+.page-link:visited {
+    color: #208390;
+}
+
+.page-item.active .page-link {
+    background-color: #367e87 !important;
+    border: 1px solid #367e87;
+}
+
+.grid-title-cell-background {
+    background-color: #439fb3 !important;
+}
+
+.btn-primary {
+    background-color: #439fb3 !important;
+    border: 1px solid #228398 !important;
+}
+
+.btn-primary:hover {
+    background-color: #2b7586 !important;
+    border: 1px solid #228398 !important;
+}

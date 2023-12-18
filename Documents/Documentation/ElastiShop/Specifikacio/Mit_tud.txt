@@ -1,0 +1,95 @@
+- A kattintások során nem töltődik újra a böngésző teljes tartalma, csak a widgetek (tartalmi egységek) tartalma frissül. 
+    - Kattintás-védelem töltés közben
+    - A látogató információt kap, hogy épp töltődik a tartalom 
+
+- Üzemeltetői bejelentkezés
+    - Kiemelt biztonság
+        - Külön login-link minden webhelyhez, ezzel minimálisra csökken az esélye a rosszindulatú bejelentkezési kísérleteknek
+        - Titkosított file-ban tárolódnak az üzemeltetők, vagyis adatbázis-trükkökkel nem törhetők fel 
+        - A felhasználók nem tudnak más jogosultságot szerezni, mert a jogosultságaik nem tárolódnak sehol
+        - Az "Üzemeltetői bejelentkezés" felületén nem tudnak felhasználók bejelentkezni
+
+- A jogi szövegeket és a kiküldött levelek szövegeit egy üzemeltető bármikor átfogalmazhatja, de az eredeti szöveg is visszaállítható bármikor.
+
+- "Testreszabott oldalak", vagyis a weblapok keresőrobotok és a Facebook által érzékelt működése külön-külön állítható 
+    - Alapértelmezett lap lehetősége, vagyis minden olyan lapon ez a beállítás szolgáltatja az adatokat, amenyhez nem készült külön testreszabás
+    - Szerkeszthető megjelenés (opengraph) minden egyes weblapra a Faceboon-on való linkeléshez. A Facebook a linkelt weblapot mindig ellátja egy képpel, egy címmel és egy rövid leírással, és ez az ElastiShop üzemeltetői felületén testreszabható.
+    - Külön hátterek állíthatók be az egyes weblapokon
+    - Külön keresési kulcsszavak állíthatók be az egyes weblapokon a keresőmotorok számára
+    - Külön leírás állíthatók be az egyes weblapokon a keresőmotorok számára
+
+- Keresőkben elért találatot segítő automatizmus
+    - A leggyakoribb keresőszavakat kigyűjti, 10 különféle keresőt ismer fel
+    - A kigyűjtött keresőszavakat automatikusan kulcsszóként állítja be minden weblapon
+
+- Felhasználókra vonatkozó maximális GDPR-betartás
+    - Minden személyes adat titkosítva tárolódik
+    - Ameddig nincs folyamatban megrendelés, addig szabadon, véglegesen és maradéktalanul törölheti magát a felhasználó a rendszerből
+
+- Felhasználókezelés
+    - Regisztráció
+    - Bejelentkeztetés
+    - Hírlevélre feliratkozás
+    - Elfelejtett jelszó funkció, e-mailben megy ki. Bejelentkezve és belejentkezés nélkül is működik.
+    - Felhasználói törlés lehetősége, amennyiben nincs folyamatban megrendelés
+    - Lehetőség van tesztelő beállítására (a kész felhasználó átállítható az üzemeltetői felületen), ezek a felhasználók automatikusan a teszt-adatokat használják a fizetéshez és az adóhihatalhoz lejelentéshez
+
+- Üzemeltetői gyorsmenü a jobb oldal tetején
+    - Gyors link a kezdőoldalra
+    - Gyors link az üzemeltetői felületre 
+    - Szerkesztőnézet (Lásd lentebb)
+
+- Szerkesztőnézet (szem ikon)
+    - Hatására látszanak a webhely szerkesztéséhez használható eszközök: linkek, gombok
+    - Ki-be kapcsolható, vagyis szerkesztés közben kilépés nélkül meg tudja nézni az üzemeltető, hogy mit lát az alacsonyabb jogosultsággsal rendelkező felhasználó
+    - Néhány menüben plusz segítséget nyújt, pl. csak az üzemelhető számára látható linkek
+
+- Kérdőív-összeállító 
+    - Kérdésenként állítható, hogy kötelező-e megválaszolni
+    - 3-féle választípus választható: szabadszöveges, checkbox és legördülő lista
+    - A checkboxhoz és a legördülő listához külön beállíthatók a válaszlehetőségek
+    - Egyszerű kiértékelő: megmutatja, hogy melyik kérdésre százalékosan milyen válaszok érkeztek
+    - A kérdőívből link készül, amit a webhely üzemeltetője szabadon elküldhet kitöltésre
+    - A kérdőív státusza állítható, a lezárt státuszúakra már nem érkezhet kitöltés, a link onnantól 404-es hibát mutat (a lap nem jeleníthető meg)
+
+- Új lapok készíthetők a "WebhelyÉpítő"-ben (Saját weblapok)
+    - A lapokhoz hozzá lehet adni widgeteket
+    - A widgetek pozíciója állítható
+    - A panelek száma állítható, 1 és 2 lehet (baloldali menüpanel, tartalom-panel)
+
+- Összeállítható menü (szintén a "WebhelyÉpítő"-ben)
+    - Hozzáadhatók az előre definiált lapok (pl. kezdőoldal, webshop)
+    - Hozzáadhatók a "Saját weblapok"-ban készített lapok 
+
+- Splash-szerkesztő (Nagy kép + szlogen + minimális szöveg)
+    - A kép mérete állítható
+    - A szövegek stílusa (betűméret, -típus, árnyék) állítható
+    - A szövegek köré szövegdoboz rakható, két sötét és két világos közül lehet választani, ezek lekerekítése, árnyéka szabályozható 
+    - A szövegek egy függőleges és egy vízszintes oldalhoz tartoznak, ezért kisebb képen arányosan és hasonlóan fognak elhelyezkedni
+    - A szövegek áthelyezhetők az egérrel
+
+- Intelligens 404-es hibalap
+    - Az elgépelt webcím alapján a belépett felhasználó jogosultságának megfelelő ajánlásokat listáz a weblapokról
+
+- Webáruház 
+    - Egy darab intelligens kereső (elgépelés és kihagyott karakterek esetén is jó eséllyel hozza a találatot)
+    - A kategóriákon belöl szabályozható, hogy az intelligens kereső csak az adott kategóriára működjön, vagy az összes termékre
+    - Félreérthetetlenül működő kosár, a termékinfóból és a terméklistából is bele lehet rakni a terméket 
+    - Fizetés fizetési szolgáltatón (payment service provider) keresztül 
+        - A Barion be van építve, más szolgáltatók külön egyedi fejlesztéssel adhatók hozzá
+    - Automatikus lejelentés az adóhivatalnak
+        - Egyedi fejlesztéssel több ország adóhivatala is belefejleszthető 
+        - Teszt üzemmód, amivel ki lehet próbálni, hogy jók-e az adatok, és működik-e a lejelentés 
+    - Termékkategóriák felvitele 
+        - Alkategóriák is megadhatók, de termék rendelhető főkategóriához is 
+    - Termékek felvitele 
+        - Képek feltöltése, 1 alapértelmezett kép beállítható 
+        - Intelligens árazás 
+            - Logikusan felépített árazási szabályok működnek, amelyek megvédik az üzemeltetőt attól, hogy rossz árat állítson be, vagy később olyan törlődjön, amihez volt megrendelés
+            - Lehetőség 1 db listaár, és bármennyi akciós ár rögzítésére, ezekből mindig egy lesz aktív 
+            - Ha menet közben átárazott termék került egy vásárló kosarába, akkor figyelmeztetést kap, és nem tudja már a régi áron fizetni 
+            - Ha már létrejött a megrendelés, akkor már a régi áron kapja akkor is, ha közben változott az ár. A megrendeléskezelőben az üzemeltető tájékoztatást kap erről, vagyis látja, hogy az adott megrendelés át lett árazva, de még régi áras 
+            - Az árazó össze van kapcsolva az adóhivatal beállításaival. Vagyis ha más ország adóhivatala kerül az adott termékhez, az ÁFA-kulcsok már az alapján állíthatók be 
+        - Beállíthatók egyedi cikkszámok a termékhez. Ha ezeket nem használja az üzemeltető, akkor a cikkszám nem fog szerepelni a listázóban 
+    - Statisztikák nézhetők az aktuális hónap forgalmáról összevetve bármelyik korábbi hónappal 
+    - A véletlenül nem beárazott, vagy túl alacsony árú termékek nem jelennek meg a listázóban a felhasználóknak. Az üzemeltető látja ezeket, megjelölve. Külön listája is van a hibásan beárízott termékekre, ahol be is tuja ezeket árazni

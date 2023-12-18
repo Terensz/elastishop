@@ -1,0 +1,7 @@
+name=Békefi József e.v.
+brand=Békefi József méhészete
+keywords=[Honey4u,Méz,Eladó méz]
+email=josafar@gmail.com
+fromEmail=terence@23.hu
+letterFooter_hu=Üdvözlettel:<br />az ElastiShop csapata
+relativeContactUrl=kapcsolat

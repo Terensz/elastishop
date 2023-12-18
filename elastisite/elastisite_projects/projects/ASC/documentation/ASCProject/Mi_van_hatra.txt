@@ -1,0 +1,43 @@
+I. Letesztelni és megjavítani a teljes "Teamwork" folyamatát.
+
+(Kész) 1. Másik e-mail cím elkészítése, beállítása
+2. Le kell dokumentálni a teljes folyamatot ()
+3. Meg kell hívni a teszt e-mail cím felhasználóját (teszt 2 felhasználó) egy admin skálába
+4. Regisztrálni kell a teszt 2 felhasználóval az ASC oldalán
+
+
+II. Főoldal elkészítése
+
+1. Joe-val be kell rakatni egy vesszót a szlogenbe
+KÉSZ - 2. Berakni a képet
+
+III. Lábléc elkészítése 
+
+IV. Színezési problémák megjavítása
+
+1. Lila szín lecserélése
+
+IV. Apróságok:
+
+1. A datepicker végdátuma aktuális nap + 140 év legyen.
+
+V. Átdolgozott ProjectTeamwork 
+Külön file-ban részletezve: ProjectTeamwork_2.txt
+
+VI. Észrevételekből eredő feladatok
+
+1. A meghívott tudja csoport többi tagjára is átszignálni.
+
+2. A létrehozott érintetlen unitot törölje ki.
+
+3. File-töltés megjavítása 
+
+4. pdf, txt, .xls, .xlsx, .key, .page, .numbers
+
+5. befejezni a galériát
+
+6. Bármely listában jelenjen meg inaktívként a unit, amennyiben bármelyik felmenője inaktív.
+
+7. Ne az egész card-header legyen draggable, csak a szöveg utáni rész az x ikonig.
+
+8. ki kell vizsgálni, hogy miért 3 sec az admin skála dashboard elkészítése

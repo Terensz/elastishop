@@ -1,0 +1,18 @@
+Alapfunkciók, ezek nélkül nem beszélhetünk webes alkalmazásról
+
+1.: (Routing-kezelés) Bejövő URL-t tudja értelmezni a program.
+2.: (Jogosultság-kezelés) Az oldal kezelje a routinghoz tartozó jogosultságot. Pl. Adminisztrátori joghoz kötött oldalt ne lehessen vendégként megtekinteni.
+3.: Felhasználók beléptetése. Ha bármilyen személyes adatot akarsz kapcsolni hozzá, akkor ugorj bátran a GDPR-részhez
+4.: (GDPR-hez tartozik, viszont ez kötelező, ha kirakod a programodat a netre) kapjon a felhasználó felvilágosítást arról, hogy az oldal a 3 süti-típus közül melyiket fogja használni
+5.: Adatbázis-kapcsolat létrehozása
+6.: Adatbázisba mentés során a lekérdezés paraméterezése (SQL-injection megakadályozása)
+7.: Az oldalra feltöltött fájlok vizsgálata. Tudjuk, hogy akkor is tud a felhasználó file-feltöltést kezdeményezni, ha az oldalon nincs ehhez beviteli mező, így ezt ellenőrizni kell, hogy ne tudjon webshell-t feltölteni.
+8.: Session-kezelés: munkamenet létrehozása, fenntartása, kiléptetés esetén eldobása
+
+
+
+
+GDPR miatt kötelező:
+8.: Kapjon a felhasználó egyértelmű tájékoztatást arról, hogy a személyes adatait milyen módon tárolja a webhely üzemeltetője, és kinek adhatja tovább
+9.: A felhasználónak bármikor legyen lehetősége a személyes adatait végleg és nyomtalanul eltüntetni a webhely üzemeltetőjének adatbázisából egyetlen gombnyomással, és ez a gomb legyen könnyen megtalálható
+10.: A felhasználó kapjon tájékoztatást arról, hogy ha törli a személyes adatait, akkor mikor tűnnek el végleg a nyomai is

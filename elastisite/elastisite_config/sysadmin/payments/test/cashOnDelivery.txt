@@ -1,0 +1,5 @@
+active=false
+translationReference=cash.on.delivery
+listSequence=1
+
+currency=HUF

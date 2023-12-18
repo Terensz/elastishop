@@ -1,0 +1,9 @@
+skinName=elastishop
+sheetMaxWidth=1600
+sheetHorizontalMargin=10
+sheetWidthPercent=98
+adminSheetWidthPercent=99
+adminSheetMaxWidth=3600
+sheetTopPadding=10
+backgroundColor=f9f6f0
+defaultFont=Calibri2

@@ -1,0 +1,25 @@
+
+Árazás
+======
+- WebshopMonkey webshop beüzemelése: 100.000 HUF (egyszeri)
+  - Ügyintézés a szolgáltatókkal
+    - Domainregisztráció elindítása
+    - Webtárhely + adatbázis igénylése + beüzemelése
+    - A szoftver telepítése és beállítása
+- A szolgáltatóknak (domain-név és webtárhely) számlázott díjak az adott szolgáltató(k)nak fizetendők, a mi díjaink ezeket nem tartalmazzák
+- Alkalmi support: 10.000 Ft/óra
+  - Ez a díj a fejlesztéssel ellentétben nem előzetes becslés, hanem utólag összeszámolt ténylegesen eltöltött órák alapján kerül kiszámlázásra.
+  - Pl.: az Ügyfél rendelkezik egy régi webáruházzal, és váltani szeretne WebshopMonkey-ra, és szeretné, ha a többezer termékét a WebshopMonkey csapata átmigrálná az új webáruházra, hogy ne kelljen az Ügyfélnek ezzel napokat eltöltenie.
+- WebshopMonkey VIP Support: 20.000 Ft/hó
+  - A WebshopMonkey csapatának folyamatos felelősségvállalása a szoftver üzemszerű működéséért, a nem várt, de bárki miatt bekövetkezett hibák kivizsgálásáért, valamint a webáruházat érintő jogi szabályozások folyamatos nyomonkövetéséért (pl. GDPR).
+  - Ez kötelező fizetnivaló, ennek megrendelése nélkül nem vállaljuk a WebshopMonkey webshop beüzemelését.
+  - Tartalmazza a webshop távoli felügyeletét és a szoftver folyamatos ellenőrzését, tesztelését és frissítését.
+  - Korlátlan számú hibabejelentés és kivizsgálás, amennyiben a hiba valós, és tényleg hiba.
+    - Havi 5 db téves hibabejelentés benne van. (Példa téves hibabejelentésre: az Ügyfél úgy látja, hogy az árazás nem megfelelően működik, és bejelenti a hibát, majd kiderül, hogy az ügyfél nem vett figyelembe egy árazási szabályt, ami szerepel a szoftver specifikációjában.) 
+    - Amennyiben az Ügyfél a havi téves hibabejelentési limitet túllépi, úgy a hónap hátralevő részében a téves hibabejelentések kivizsgálásának óradíja megegyezik a fentebb írt "Alkalmi support" óradíjával. 
+- WebshopMonkey webáruház üzemeltetése: 50.000 Ft/hó (a "WebshopMonkey szoftver támogatása" díjon felül)
+  - Ez választható opció. Mindenképpen ajánljuk, ha az Ügyfél nem szeretne a webshopjának feltöltögetésével bajlódni. Magába foglal heti 1 adatfeltöltést a termékek és az árazás módosításával, excelből, előre megbeszélt formátumban, és a termékfotók feltöltését a termékekhez.
+- Egyedi fejlesztés: előzetes becslés és árajánlat alapján. A fejlesztés díja: bruttó 12.000 Ft/óra.
+  - Egyedi fejlesztés az, amikor a dobozos szoftver specifikációjában leírtakon túl valami többre, kevesebbre, vagy valami másra van szüksége az Ügyfélnek. Ilyen lehet pl. az Ügyfél cégének egyedi működéséből kifolyólag az egyedi működések lefejlesztése (IT szaknyelven ezeket "üzleti logikák"-nak hívjuk.)
+A fejlesztési díj előzetes kalkuláció alapján számlázódik, amire a WebshopMonkey csapata árajánlatot tesz. Ha a WebshopMonkey-Ügyfél ezt elfogadja, akkor szerződést kötünk rá. A díj akkor sem lesz több, ha az előzetes becslésben megsaccolt óraszámot túllépjük. Ennek az ellenkezője is igaz, akkor sem lesz kevesebb a díj, ha a becsült óraszámot a tényleges fejlesztési órák nem érik el.
+    - Az Egyedi fejlesztés egy meghatározott cél eléréséig tart, amelyet funkciók (működési sajátosságok) felsorolásával határozunk meg.

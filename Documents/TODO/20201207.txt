@@ -1,0 +1,2 @@
+KÉSZ - routeConflictWinner -> át lesz írva erre: onRouteConflictFallbackTo
+- RouteMapper class teljes átdolgozása

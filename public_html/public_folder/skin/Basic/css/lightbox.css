@@ -1,0 +1,14 @@
+.defaultLightbox{
+    position:fixed;
+    right:-610px;
+    bottom:0;
+    background-color:#f0eeee;
+    padding:0;
+    max-width:590px;
+    z-index:1000;
+    box-shadow:-5px 0 11px 0 rgba(0,0,0,.3)
+}
+.defaultLightbox .defaultLightbox-title{
+    /* background:linear-gradient(90deg,#ff822e,#ee544c); */
+    background:linear-gradient(90deg,#63a6d0,#186ba0);
+}

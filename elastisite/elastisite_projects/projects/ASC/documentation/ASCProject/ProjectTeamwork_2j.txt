@@ -1,0 +1,59 @@
+Az új "ProjectTeamwork"
+=======================
+
+A ProjectTeam entitás eddig egy admin skála kapcsolata volt a résztvevőkkel, ez meg fog változni.
+Innentől: egy admin skálához bármennyi ProjectTeam rendelhető. Összefoglaltam, hogy ez a fő entitás mi is legyen, mit is képviseljen.
+Továbbá, abban is szerepe lesz ennek az adatszerkezetnek, hogy a mobilos és webes alkalmazások között legyen egy bizonyos harmónia, és lehessen könnyedén szinkronizálni azokat, és ne kelljen mobil apponként újraírni.
+
+Fontos! 
+Az első munka, amiben a ProjectTeamwork szerepet kap, az az ASC, vagyis Admin Scale Creator. Az ASC alkalmazás teljesen L. Ron Hubbard admin technológiájának a leprogramozott modellje, ami teljesen hűen követi magát a technológiát. 
+Vedd észre, hogy az admin technológia terminológiájában (szóhasználatában) "project"-ként szerepelnek a programok alkotóelemei, és mi, IT-sok szintén project-ként hivatkozunk az egy megrendelés alatt elkészített munkára.
+Ezért úgy fogom összeállítani a dokumentációkat, hogy derüljön ki egyértelműen, hogy melyik terminológia szerinti "project"-re gondolok.
+A lentebbiekben az IT terminologiára hivatkozok, amikor ProjectTeam-ről, ProjectUser-ről, stb. írok.
+
+Entitások 
+---------
+
+ProjectTeam
+...........
+Virtuális csoport, aminek a célja, hogy egy admin skála egy, vagy összes unitját (unit: pl egy főcél, egy terv, egy feladat) összefogja azokkal a személyekkel, akik bármilyen jogosultsággal rendelkeznek az érintett unitok fölött.
+- Több személlyel is lehet ugyanarra a unitra külön-külön project team.
+- Egy ProjectTeam egy unitjában egy személy csak egyszer lehet tag. Vagyis ugyanahhoz a főcélhoz készíthetsz másik ProjectTeam-et, de ahhoz csak olyan tagokat hívhatsz meg, akik az adott unithoz még nem tagok másik ProjectTeam-ben.
+- A ProjectTeam résztvevője a vele megosztott unitokat át tudja szignálni (felelős módosítása) egy másik személyre, aki része az adott ProjectTeam-nek.
+
+ProjectUser
+...........
+Az a felhasználói entitás, ami az adott (IT szakzsargon szerinti) projectnek a saját üzleti logikájához kapcsolódó adatokat tartalmazza.
+Pl. ha sportolókat regisztráltatsz, akkor a keretrendszer saját felhasználói adatokat tároló entitásain kívül szükség lehet egy ProjectUser entitásra, ami tárolja pl. a felhasználó testtömegét, magasságát, stb.
+
+ProjectTeamUser
+...............
+Röviden: csoporttagság.
+- Összekapcsolja ProjectUser és a ProjectTeam entitásokat egy adott admin skála valamely, vagy összes unit-jára.
+- Tartalmazza az admin skálát 
+- Tartalmazhat egy unitot (nullozható, és akkor az egész admin skálára vonatkozik)
+- Információval szolgál arról, hogy a unithoz rekurzív csoporttagságot biztosít, vagy egydit. 
+Ha egyedit, akkor a csoporttagság szigorúan a unitra vonatkozik, ha pedig rekurzívat, akkor minden unithoz jár a csoporttagság, ami a hierarchiában lejjebb van.
+(recursive, true/false)
+
+1. Feladat:
+ALTER-elni kell a táblát, és ki kell egészíteni az entitást.
+2. feladat: 
+meg kell nézni, hogy a jelenlegi működést a meghívás és regisztráció folyamatában hogyan kell átdolgozni.
+
+ProjectTeamInvite
+.................
+Csak a meghívást tartalmazza, és a regisztrációnál segít összerakni a csoporttagságot. A későbbiekben a csapatmunka során semmilyen jelentőséggel nem bír.
+
+Action-ök és felületek, amikre hatása van a ProjectTeamwork logikájának
+-----------------------------------------------------------------------
+
+Minden ki lesz szervezve az lábbi classokba:
+
+- ProjectTeamRouteMap
+- ProjectTeamWidgetController 
+- ProjectTeamService 
+
+===============================================
+
+Minden, ami Teamwork, ki lesz szervezve 

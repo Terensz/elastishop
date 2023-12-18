@@ -1,0 +1,3 @@
+config={DOCUMENT_ROOT}/../elastisite/elastisite_config
+dynamic={DOCUMENT_ROOT}/../elastisite/elastisite_dynamic
+projects={DOCUMENT_ROOT}/../elastisite/elastisite_projects

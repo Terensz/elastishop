@@ -1,0 +1,29 @@
+Kétféle login van:
+
+A: Felhasználók login felülete
+==============================
+Az újabb változatban modalban történik a bejelentkezés.
+Submit esetén a scripts_afterBody.js-ben található LoginHandler.loginSubmit() hívódik meg.
+Ez a login/ModalLoginWidget route-ot hívja meg, ami mindig az aktuális project ModalLoginWidgetController-ének a modalLoginWidgetAction() metódusába fut bele.
+Ezt kiválóan lehet configurálni, mert a ModalLoginService::loginView()-nek át lehet adni config-paraméterként, hogy milyen route-ot hívjon meg sikeres bejelentkezés esetén, és ezt úgy konfigurálod, ahogy akarod.
+Pl. meg tudod könnyedén csinálni, hogy sikeres auth után tegyen át ugyanerre az oldalra:
+
+    $url = App::getContainer()->getUrl();
+    return ModalLoginService::loginView('LoginWidget', [
+        'displayRegLink' => true,
+        'onSuccessRedirectToLink' => '/'.$url->getParamChain()
+    ]);
+
+De azt is megteheted, hogy az adott route szerint hívsz meg különféle oldalakat sikeres auth után.
+
+A 'displayRegLink' opció azt jelentette régebben, hogy a regisztráció linkje megjelenik a login form alatt. Most épp ez nincs használatban, de egyelőre bennehagytam a kódban.
+
+B: Üzemeltetők login felülete
+=============================
+Itt hagyományőrző voltam, és ez a bejelentkeztető panel a bal oldali menübar tetején van, vagyis nem raktam ki modalba.
+
+Erről sokat nem írnék. Nem adatbázisból authentikál, hanem file-ból. A file titkosított.
+
+
+Logout:
+=======

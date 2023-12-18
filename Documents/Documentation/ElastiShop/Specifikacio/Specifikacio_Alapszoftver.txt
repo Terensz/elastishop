@@ -1,0 +1,38 @@
+
+
+A WebshopMonkey alapszoftver specifikációja
+===========================================
+===========================================
+
+"Mi a specifikáció?" - egy dokumentum, ami részletesen és pontosan leírja, hogy, a szoftvernek hogyan kell működnie. Azok a funkciók, amik nem szerepelnek a specifikációban, azokat nem kell tudnia a szoftvernek, vagyis ezek nem kérhetők számon a WebshopMonkey csapatán.
+
+A WebshopMonkey szoftverrel készített webshop egy dobozos termék. A tudása mindig megegyezik a WebshopMonkey szoftver aktuális verziójának a specifikációjában leírtakkal.
+
+"Szeretnék több funkciót a saját WebshopMonkey webshopomba." - Amennyiben a WebshopMonkey-Ügyfél új (a WebshopMonkey alapszoftver specifikációjában nem szereplő) funkciókat szeretne a webhelyére vagy a webáruházába, erre lehetőséget adunk az "Egyedi fejlesztés" termékünket megrendelve, amelyben készítünk egy egyedi specifikációt az új funkciókkal az Ügyféllel közösen, ezt követően árajánlatot adunk a fejlesztésre, és annak elfogadása esetén a fejlesztést elkészítjük, majd a meglevő szoftverhez hozzáillesztjük.
+
+Üzemeltetői felület
+-------------------
+A webhely tartalmaz egy ezköztárat, ami a WebshopMonkey-Ügyfél számára beállítási lehetőségeket biztosít arra, hogy bizonyos helyzetekben hogyan működjön és milyen adatokat jelenítsen meg a webhely vagy a webáruház. Ezt tágabb értelemben kell elképzelni, vagyis a kiküldött levelek szövegeitől kezdve a webáruház termékein keresztül a keresőoptimalizálásig mindenféle beállításra és adatfeltöltésre van lehetsőség az Üzemeltetői felületen.
+
+Az üzemeltetői felület csakis Üzemeltetőként (adminisztátorként) bejelentkezve érhető el.
+
+Üzemeltető (adminisztrátor): egy felhasználói névhez és jelszóhoz rendelt jogosultsági kör, aminek segítségével ennek a birtokosa képes a webes felületnek speciális funkcióit is elérni.
+
+Valaki nem attól fog Üzemeltetői jogosultsággal rendelkezni, hogy WebshopMonkey-Ügyfél, hanem attól, hogy a tőlünk kapott hozzáféréssel be is jelentkezik. Ennek a bejelentkezésnek a módját lentebb, a "Bejelentkezés az Üzemeltetői felületre" bekezdésben taglaljuk részletesen.
+
+Az Üzemeltetői felületnek csak azok az oldalak képezik hivatalos és támogatott részét, amelyeknek a linkje megtalálható az "Üzemeltetői menü" menüpontjai között.
+
+Üzemeltetőkhoz rendelt egyéb jogosultságok
+------------------------------------------
+A webhely különböző oldalain a különböző jogosultságokkal rendelkező felhasználók (ebben a kontextusban felhasználónak számít az adminisztrátor is) egymástól eltérő tartalmat láthatnak. Pl. egy üzemeltető "Üzemeltetői látvány-mód"-ban lát beállítási lehetőségeket, képes cikkeket szerkeszteni, míg a webhely látogatói nem.
+
+Bejelentkezés az Üzemeltetői felületre
+--------------------------------------
+Ez a bejelentkezés egy teljesen egyedi webcímen történik, pl. https://my-monkey-webshop.hu/loginEbbc3c26a34b609dc46f5c3378f96e08 (Ez a cím egyébként nem létezik, csak egy példa.)
+A címet, és az itt beírható felhasználónevet és jelszót a WebshopMonkey csapata bocsátja a WebshopMonkey-Ügyfél rendelkezésére.
+A felhasználónév vagy a jelszó elgépelése esetén a bejelentkezési adjakban hibaüzenet jelenik meg. Ez a hibaüzenet szándékosan nem precíz, hogy az esetleges próbálkozókat ne segítse hozzá a hozzáférés jogtalan megszerzéséhez.
+
+Bejelentkezést követően a bal oldalon, majdnem a lap tetején egy ikonokat tartalmazó doboz jelenik meg.
+A "ház" ikonra kattintva a főoldal, a fogaskerék ikonra kattintva pedig az Üzemeltetői felület töltődik be.
+A "szem" ikon az "Üzemeltetői látvány-mód"-ot kapcsolja ki/be. Ha a szem aktív, akkor ez a mód be van kapcsolva. Ilyenkor a dinamikusan módosítható cikkeknek megjelenik a vezérlőpanelje, valamint több olyan funkció is megjelenik az Üzemeltető számára, amit más jogosultsággal nem lehet látni.
+

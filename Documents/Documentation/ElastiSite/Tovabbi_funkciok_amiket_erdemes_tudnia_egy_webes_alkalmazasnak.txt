@@ -1,0 +1,13 @@
+További funkciók, amikkel nagyon ajánlott rendelkeznie a webes alkalmazásnak
+
+2.: Az URL-cím legyen szép, keresőbarát. Ránézésre lehessen látni, hogy milyen témájú cikk, vagy milyen termék lesz a betöltött oldalon
+3.: Érjen el jó helyezést a találati listán
+4.: Hibás cím esetén fejléces, a webhely környezetéhez illeszkedő oldalon adjon tájékoztatást, ne egy odavetett fehér lapon 404 feliratot
+5.: A "Lap nem jeleníthető meg" oldal adjon keresési javaslatokat olyan aloldalakkal, amiknek a címe hasonlít az elgépeltre
+6.: Ha olyan oldalra téved a felhasználó, amihez nincs jogosultsága, akkor kapjon fejléces, a webhely környezetéhez illeszkedő oldalon tájékoztatást arról, hogy épp a "tilosban jár"
+7.: Legyen könnyen megtalálható a regisztráció és a bejelentkezés
+11.: A webes alkalmazás legyen gyors
+12.: Az oldalváltáskor ne épüljön fel újra az oldal, csak a megváltozott tartalmakat cserélje ki
+14.: Bármikor tudjon kérdőívet készíteni az üzemeltető, és annak a linkjét kiküldeni az ügyfeleinek tetszőleges szűrés alapján
+15.: Admin-oldalon legyen listázható a webhelyen található összes aloldal, mindet külön lehessen letiltani, engedélyezni
+16.: Tetszőleges számú aloldalt lehessen létrehozni, lehessen szabályozni, hogy ezek közül mi, és milyen sorrendben kerüljön a menübe

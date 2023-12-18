@@ -1,0 +1,7 @@
+*.*
+!NAV_normal_example.txt
+!NAV_VATExemption_example.txt
+!noVATDeclarationHU_none_prod.txt
+!noVATDeclarationHU_none_test.txt
+!noVATDeclarationHU_VATExemption_example.txt
+!.gitignore

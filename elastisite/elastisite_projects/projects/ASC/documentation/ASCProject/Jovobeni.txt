@@ -1,0 +1,4 @@
+1. Admin skála 
+
+2. Ne csak admin skálára lehessen meghívni, hanem unitra is, és lehessen választani, hogy rekurzívan osztom-e meg a unitot.
+

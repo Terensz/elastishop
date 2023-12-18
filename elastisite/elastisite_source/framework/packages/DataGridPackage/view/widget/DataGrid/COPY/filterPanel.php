@@ -1,0 +1,2 @@
+
+<button type="button" class="btn btn-primary btn-block btn-mid" style="width: 200px; max-height: 44px; margin-bottom: 10px;" onclick="<?php echo $dataGridId; ?>.list(true);"><?php echo trans('search'); ?></button>

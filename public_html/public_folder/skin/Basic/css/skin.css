@@ -1,0 +1,280 @@
+/* @import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Open+Sans:400,300,600,700|Dosis:300,400|Roboto+Slab:400);
+@import url(//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css); */
+
+/*
+Note: ellipsis (...) only works on .ellipsis-text, which is inside .ellipsis-container .
+No other way for making ellipsis in dynamic width elements.
+*/
+.ellipsis-container {
+    position: relative;
+}
+
+.ellipsis-container:before {
+    content: '&nbsp;';
+    visibility: hidden;
+}
+
+.ellipsis-container .ellipsis-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* .ellipsis-container {
+    position: relative;
+}
+
+.ellipsis-container:before {
+    content: '\00a0';
+    visibility: hidden;
+}
+
+.ellipsis-container .ellipsis-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+} */
+
+.sidebar-text-container {
+    min-width: 180px !important;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.radios > span
+{
+    white-space: nowrap;
+}
+
+b {
+    font-family: DefaultFontBold;
+    font-weight: normal;
+}
+
+b, strong {
+    font-family: DefaultFontBold;
+    font-weight: normal;
+}
+
+body {
+    /* font: 18px DefaultFont; */
+    color: #2a2a2a;
+    overflow-x: hidden;
+}
+
+.text-nobreak {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.nav-link-icon {
+    padding-right: 10px;
+}
+
+.card {
+    position: static;
+    min-width: 80px !important;
+}
+/* .card-highlighted {
+    box-shadow: 0 0 10px -1px rgba(114, 103, 238, 0.5) !important;
+    border: 1px solid #AFA7EE;
+}
+.card-inactive {
+    box-shadow: 0 0 10px -1px #262626 !important;
+    border: 1px solid #AFA7EE;
+}
+.card-closed-successful {
+    box-shadow: 0 0 10px -1px #42B72A !important;
+    border: 1px solid #42B72A;
+}
+.card-error {
+    box-shadow: 0 0 10px -1px rgba(255, 0, 0, 0.5) !important;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+} */
+.card-header {
+    display: flex;
+    align-items: center;
+}
+.card-header-textContainer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+.card-tableCell-iconContainer {
+    align-items: center;
+}
+.card-header-iconContainer-right {
+    display: flex;
+    align-items: center;
+}
+.card-header-iconContainer-left {
+    display: flex;
+    align-items: center;
+    padding-right: 10px; /* Vagy tetszőleges méretű padding */
+}
+.card-footer-img {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    overflow: hidden;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.link-underlined:hover {
+    text-decoration: underline;
+}
+.card-statCircle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.card-statCircle {
+    margin-top: 0.5rem;
+}
+
+.card-pack-header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.card-pack-sub-heading {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.card-pack-sub-heading > h5 {
+    color: #616161 !important;
+}
+
+.onMouseOver-hand {
+    cursor: pointer;
+}
+
+.sideNavbar-container {
+    display: block;
+}
+@media (min-width: 992px) {
+    .sideNavbar-hamburger-container {
+        /* display: none; */
+    }
+}
+@media (max-width: 991.98px) {
+    .sideNavbar-hamburger-container {
+        /* display: block; */
+    }
+    .sideNavbar-container.collapsed {
+        display: none;
+    }
+}
+.pc-sidebar {
+    flex: 0 0 280px; /* Rögzített 280px szélesség */
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    z-index: 1026;
+    overflow-y: auto;
+}
+.pc-container {
+    flex: 1;
+    /* padding: 10px; */
+}
+
+.cell-selected {
+    /* box-shadow: inset 0px 8px 6px -6px rgba(114, 103, 238, 0.5), inset 0px -8px 6px -6px rgba(114, 103, 238, 0.5), inset -8px 0px 6px -6px rgba(114, 103, 238, 0.5), inset 8px 0px 6px -6px rgba(114, 103, 238, 0.5); */
+    /* box-shadow: 0px 4px 6px rgba(114, 103, 238, 0.25), 0px -2px 10px rgba(114, 103, 238, 0.12), 0px 1px 18px rgba(114, 103, 238, 0.12); */
+    box-shadow: rgba(114, 103, 238, 0.4) 0px 0px 0px 2px, rgba(114, 103, 238, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+
+}
+
+/*
+Note: ellipsis (...) only works on .ellipsis-text, which is inside .ellipsis-container .
+No other way for making ellipsis in dynamic width elements.
+*/
+.ellipsis-container {
+    position: relative;
+}
+
+.ellipsis-container:before {
+    content: '&nbsp;';
+    visibility: hidden;
+}
+
+.ellipsis-container .ellipsis-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.toast-success {
+    background-color: #83e197;
+    color: #464646;
+}
+
+.toast-error {
+    background-color: #e1658b;
+    color: #e3e3e3;
+}
+
+.columnView-cell {
+    padding: 6px;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+}
+
+.error {
+    color: #ac2828;
+}
+
+label {
+    font-weight: bold;
+}
+
+/* table { 
+    border-collapse: separate;
+    border-spacing: 10px;
+} */
+
+/* .table-m-1 {
+    margin: 4px !important;
+    border-collapse: separate;
+    border-spacing: 10px;
+} */
+
+#cookieNoticeVeil {
+    /* background-image: url('../image/000000-0.5.png'); */
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII=');
+    position: fixed;
+    z-index: 1999;
+    top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 100%;
+}
+
+#cookieNoticeFrame {
+    background-color: #ffffff;
+    position: absolute;
+    z-index: 2000;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 21000;
+    padding: 20px;
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px #424242;
+}

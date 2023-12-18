@@ -1,0 +1,564 @@
+<?php
+namespace projects\ASC\service;
+
+use App;
+use framework\component\parent\Service;
+use framework\packages\EventPackage\service\CalendarEventFactory;
+use framework\packages\UserPackage\repository\UserAccountRepository;
+use projects\ASC\entity\AscEntryHead;
+use projects\ASC\entity\AscScale;
+use projects\ASC\entity\AscUnit;
+use projects\ASC\repository\AscUnitFileRepository;
+use projects\ASC\repository\AscUnitRepository;
+
+class AscUnitBuilderService extends Service
+{
+    const NULL_KEY = '-null-';
+
+    // public static function arrangeToListViewStructure_OLD(array $unitDataArray)
+    // {
+    //     App::getContainer()->wireService('projects/ASC/repository/AscUnitRepository');
+    //     $ascUnitRepo = new AscUnitRepository();
+
+    //     $nullKeyElements = [];
+    //     $otherElements = [];
+
+    //     $result = [
+    //         'list' => [],
+    //         'parents' => []
+    //     ];
+
+    //     $parentKeys = [];
+    //     foreach ($unitDataArray as $unitDataArrayRow) {
+    //         $parentKey = $unitDataArrayRow['data']['parentId'] ? : self::NULL_KEY;
+    //         /**
+    //          * We want to know the index, so we have to create it in advance
+    //         */
+    //         if (!isset($result['list'][$parentKey])) {
+    //             $result['list'][$parentKey] = [];
+    //         }
+    //         $listIndex = count($result['list'][$parentKey]);
+    //         $result['list'][$parentKey][$listIndex] = $unitDataArrayRow;
+    //         if ($unitDataArrayRow['data']['parentId'] && !in_array($unitDataArrayRow['data']['parentId'], $parentKeys)) {
+    //             $parentObject = $ascUnitRepo->find($unitDataArrayRow['data']['parentId']);
+    //             if ($parentObject) {
+    //                 $parentKeys[] = $unitDataArrayRow['data']['parentId'];
+    //                 $parentUnitData = self::assembleUnitData($parentObject);
+    //                 $result['parents'][$unitDataArrayRow['data']['parentId']] = $parentUnitData;
+    //             } else {
+    //                 /**
+    //                  * If we have accidently a database error, we handle this.
+    //                 */
+    //                 $result['list'][$parentKey][$listIndex]['data']['parentId'] = null;
+    //             }
+    //         }
+    //     }
+    //     // dump($result);exit;
+    //     return $result;
+    // }
+
+    public static function arrangeToListViewStructure(array $unitDataArray)
+    {
+        App::getContainer()->wireService('projects/ASC/repository/AscUnitRepository');
+        $ascUnitRepo = new AscUnitRepository();
+
+        $result = [
+            'list' => [],
+            'parents' => []
+        ];
+        $parentKeys = [];
+        $nullKeyElements = [];
+        $otherElements = [];
+
+        foreach ($unitDataArray as $unitDataArrayRow) {
+            $parentKey = $unitDataArrayRow['data']['parentId'] ? : self::NULL_KEY;
+
+            /**
+             * We want the result array to begin with key: self::NULL_KEY for those units which does not belong to a parent.
+             * And to continue with keys which are actially the ID of the parent.
+            */
+            if ($parentKey === self::NULL_KEY) {
+                if (!isset($nullKeyElements[$parentKey])) {
+                    $nullKeyElements[$parentKey] = [];
+                }
+                $listIndex = count($nullKeyElements[$parentKey]);
+                $nullKeyElements[$parentKey][$listIndex] = $unitDataArrayRow;
+            } else {
+                if (!isset($otherElements[$parentKey])) {
+                    $otherElements[$parentKey] = [];
+                }
+                $listIndex = count($otherElements[$parentKey]);
+                $otherElements[$parentKey][$listIndex] = $unitDataArrayRow;
+            }
+
+            if ($unitDataArrayRow['data']['parentId'] && !in_array($unitDataArrayRow['data']['parentId'], $parentKeys)) {
+
+                $parentRawUnitsData = $ascUnitRepo->getRawUnitsData(['au.id' => $unitDataArrayRow['data']['parentId']]);
+                $parentRawUnitData = count($parentRawUnitsData) == 1 ? $parentRawUnitsData[0] : null;
+                // $parentObject = $ascUnitRepo->find($unitDataArrayRow['data']['parentId']);
+
+                if ($parentRawUnitData) {
+                    $parentKeys[] = $unitDataArrayRow['data']['parentId'];
+
+                    $parentUnitDataArray = self::createUnitDataArray($parentRawUnitsData);
+                    $parentUnitData = isset($parentUnitDataArray[0]) ? $parentUnitDataArray[0] : null;
+
+                    $result['parents'][$unitDataArrayRow['data']['parentId']] = $parentUnitData;
+                } else {
+                    /**
+                     * If we have accidentally a database error, we handle this.
+                    */
+                    if ($parentKey === self::NULL_KEY) {
+                        $nullKeyElements[$parentKey][$listIndex]['data']['parentId'] = null;
+                    } else {
+                        $otherElements[$parentKey][$listIndex]['data']['parentId'] = null;
+                    }
+                }
+            }
+        }
+
+        if (isset($nullKeyElements[self::NULL_KEY])) {
+            $result['list'][self::NULL_KEY] = $nullKeyElements[self::NULL_KEY];
+        }
+        foreach ($otherElements as $parentKey => $elements) {
+            $result['list'][$parentKey] = $elements;
+        }
+
+        // dump(array_keys($result['list']));//exit;
+        // dump($nullKeyElements); dump($otherElements);exit;
+
+        return $result;
+    }
+
+    /**
+     * for List view
+    */
+    public static function getUnitDataArrayOfSubject(AscScale $ascScale, string $subject)
+    {
+        App::getContainer()->wireService('projects/ASC/repository/AscUnitRepository');
+        $ascUnitRepo = new AscUnitRepository();
+        // $ascUnitObjects = $ascUnitRepo->findBy([
+        //     'conditions' => [
+        //         ['key' => 'asc_scale_id', 'value' => $ascScale->getId()],
+        //         ['key' => 'subject', 'value' => $subject]
+        //     ],
+        //     'orderBy' => [['field' => 'sequence_number', 'direction' => 'ASC']]
+        // ]);
+        $rawUnitsData = $ascUnitRepo::getRawUnitsData(['au.asc_scale_id' => $ascScale->getId(), 'au.subject' => $subject], []);
+        // dump($rawUnitsData);exit;
+
+        $unitDataArray = self::createUnitDataArray($rawUnitsData);
+        // dump($unitDataArray);
+
+        // return $unitDataArray;
+        return self::arrangeToListViewStructure($unitDataArray);
+    }
+
+    /**
+     * for Column view
+    */
+    public static function getColumnUnitDataArrayOfSubject(AscScale $ascScale, string $subject, $selected = null)
+    {
+        App::getContainer()->wireService('projects/ASC/entity/AscScale');
+        App::getContainer()->wireService('projects/ASC/repository/AscUnitRepository');
+        $ascUnitRepo = new AscUnitRepository();
+        // $ascUnitObjects = $ascUnitRepo->findBy(['conditions' => [['key' => 'subject', 'value' => $subject]]]);
+        // $unitDataArray = self::createUnitDataArray($ascUnitObjects);
+        // $res = $unitDataArray;
+        $columnViewParentData = [];
+
+        // $ascUnitObjects = $ascUnitRepo->findBy([
+        //     'conditions' => [
+        //         ['key' => 'asc_scale_id', 'value' => $ascScale->getId()],
+        //         ['key' => 'subject', 'value' => $subject]
+        //     ],
+        //     'orderBy' => [['field' => 'sequence_number', 'direction' => 'ASC']]
+        // ]);
+        $rawUnitsData = $ascUnitRepo::getRawUnitsData(['au.asc_scale_id' => $ascScale->getId(), 'au.subject' => $subject]);
+
+        if (!empty($rawUnitsData)) {
+            $columnData = self::createUnitDataArray($rawUnitsData, $selected);
+            // $columnData = self::createUnitDataArray($ascUnitObjects, $selected);
+            $columnViewParentData[] = [
+                'parentUnitData' => null,
+                'columnUnitsData' => $columnData,
+                'headerData' => [
+                    'link' => null,
+                    // 'link' => '/asc/scaleBuilder/columnView/scale/'.$ascScale->getId().'/subject/'.$subject,
+                    'title' => trans(AscTechService::findSubjectConfigValue($subject, 'translationReferencePlural'))
+                ]
+            ];
+        }
+
+        $return = [
+            'columnViewParentData' => $columnViewParentData,
+            'columnViewActualUnitData' => null
+        ];
+
+        // dump($return);exit;
+
+        return $return;
+    }
+
+    public static function createUnitDataFromObject(AscUnit $ascUnit)
+    {
+        App::getContainer()->setService('projects/ASC/repository/AscUnitRepository');
+        $ascUnitRepo = App::getContainer()->getService('AscUnitRepository');
+        /**
+         * Egy kis magyarazat:
+         * Itt most kimondottan az argumentumban szereplo @var AscUnit $parentAscUnit-hoz keressuk a unitData-t.
+         * Es a jovoben ezt csak a createUnitDataArray()-on keresztul tesszuk, mert ott van pl. accessibility-ellenorzes.
+        */
+        $unitRawData = $ascUnitRepo::getRawUnitsData([], [$ascUnit->getId()]);
+        $unitDataArray = self::createUnitDataArray($unitRawData);
+        $unitData = null;
+        /**
+         * Es ha van egy sor eredmeny, akkor az pont az, amit keresunk.
+        */
+        if (count($unitDataArray) == 1) {
+            $unitData = $unitDataArray[0];
+        }
+
+        return $unitData;
+    }
+
+    /**
+     * for List view
+    */
+    public static function getUnitDataArrayOfParent(AscUnit $parentAscUnit) : array
+    {
+        App::getContainer()->setService('projects/ASC/repository/AscUnitRepository');
+        $ascUnitRepo = App::getContainer()->getService('AscUnitRepository');
+
+
+        // /**
+        //  * Egy kis magyarazat:
+        //  * Itt most kimondottan az argumentumban szereplo @var AscUnit $parentAscUnit-hoz keressuk a unitData-t.
+        //  * Es a jovoben ezt csak a createUnitDataArray()-on keresztul tesszuk, mert ott van pl. accessibility-ellenorzes.
+        // */
+        // $originalParentUnitRawData = $ascUnitRepo::getRawUnitsData([],[$parentAscUnit->getId()]);
+        // $originalParentUnitDataArray = self::createUnitDataArray($originalParentUnitRawData);
+        // $originalParentUnitData = null;
+        // /**
+        //  * Es ha van egy sor eredmeny, akkor az pont az, amit keresunk.
+        // */
+        // if (count($originalParentUnitDataArray) == 1) {
+        //     $originalParentUnitData = $originalParentUnitDataArray[0];
+        // }
+        $originalParentUnitData = self::createUnitDataFromObject($parentAscUnit);
+
+        // $ascUnitObjects = $ascUnitRepo->findBy([
+        //     'conditions' => [['key' => 'parent_id', 'value' => $parentAscUnit->getId()]],
+        //     'orderBy' => [['field' => 'sequence_number', 'direction' => 'ASC']]
+        // ]);
+        $rawUnitsData = $ascUnitRepo::getRawUnitsData(['au.parent_id' => $parentAscUnit->getId()]);
+
+        // $rawUnitsData = AscUnitRepository::getRawUnitsData(['parent_id' => $parentAscUnit->getId()]);
+
+        $unitDataArray = self::createUnitDataArray($rawUnitsData);
+
+        if (empty($unitDataArray)) {
+            // $parentRawUnitData = AscUnitRepository::getRawUnitsData();
+            return [
+                'list' => [
+                    $parentAscUnit->getId() => []
+                ],
+                'parents' => [
+                    $parentAscUnit->getId() => $originalParentUnitData
+                ]
+            ];
+        }
+
+        return self::arrangeToListViewStructure($unitDataArray);
+    }
+
+    /**
+     * for Column view
+    */
+    public static function getColumnViewData(AscUnit $ascUnit)
+    {
+        $columnViewParentData = [];
+        $ascUnitRepo = new AscUnitRepository();
+        $originalAscUnit = clone $ascUnit;
+
+        // /**
+        //  * Egy kis magyarazat:
+        //  * Itt most kimondottan az argumentumban szereplo @var AscUnit $ascUnit-hoz keressuk a unitData-t.
+        //  * Es a jovoben ezt csak a createUnitDataArray()-on keresztul tesszuk, mert ott van pl. accessibility-ellenorzes.
+        // */
+        // $originalUnitRawData = $ascUnitRepo::getRawUnitsData([],[$ascUnit->getId()]);
+        // $originalAscUnitDataArray = self::createUnitDataArray($originalUnitRawData);
+        // $originalAscUnitData = null;
+        // /**
+        //  * Es ha van egy sor eredmeny, akkor az pont az, amit keresunk.
+        // */
+        // if (count($originalAscUnitDataArray) == 1) {
+        //     $originalAscUnitData = $originalAscUnitDataArray[0];
+        // }
+        $originalAscUnitData = self::createUnitDataFromObject($ascUnit);
+        // $originalAscUnitData = self::assembleUnitData($originalAscUnit);
+
+        $ascScale = $ascUnit->getAscScale();
+
+        $lastSubject = null;
+        $lastAscUnit = null;
+        while ($ascUnit) {
+            $selectedId = $ascUnit->getId();
+            $parent = $ascUnit->getParent();
+            $lastAscUnit = clone $ascUnit;
+
+            $lastSubject = $ascUnit->getSubject();
+
+            if ($parent) {
+                // $ascUnitObjects = $ascUnitRepo->findBy([
+                //     'conditions' => [['key' => 'parent_id', 'value' => $parent->getId()]],
+                //     'orderBy' => [['field' => 'sequence_number', 'direction' => 'ASC']]
+                // ]);
+
+                $rawUnitsData = $ascUnitRepo::getRawUnitsData(['au.parent_id' => $parent->getId()]);
+                $columnData = self::createUnitDataArray($rawUnitsData, $selectedId);
+            } else {
+                $columnData = null;
+            }
+
+            if (!empty($columnData)) {
+                $columnViewParentData[] = [
+                    'parentUnitData' => self::createUnitDataFromObject($parent),
+                    'columnUnitsData' => $columnData
+                ];
+            }
+
+            $ascUnit = $parent;
+        }
+
+        if ($lastSubject) {
+            $rootData = self::getColumnUnitDataArrayOfSubject($ascScale, $lastSubject, $lastAscUnit->getId())['columnViewParentData'][0];
+            $columnViewParentData[] = $rootData;
+        }
+
+        $columnViewParentData = array_reverse($columnViewParentData);
+
+        // $childAscUnitObjects = $ascUnitRepo->findBy([
+        //     'conditions' => [['key' => 'parent_id', 'value' => $originalAscUnit->getId()]],
+        //     'orderBy' => [['field' => 'sequence_number', 'direction' => 'ASC']]
+        // ]);
+
+        $childRawUnitsData = $ascUnitRepo::getRawUnitsData(['au.parent_id' => $originalAscUnit->getId()]);
+
+        if (!empty($childAscUnitObjects)) {
+            $columnData = self::createUnitDataArray($childRawUnitsData, null);
+            $columnViewParentData[] = [
+                'parentUnitData' => $originalAscUnitData,
+                'columnUnitsData' => $columnData
+            ];
+        }
+
+        return [
+            'columnViewParentData' => $columnViewParentData,
+            'columnViewActualUnitData' => $originalAscUnitData
+        ];
+    }
+
+    // public static function createUnitDataArray_OLD(array $ascUnitObjects, int $selectedId = null) : array
+    // {
+    //     App::getContainer()->wireService('projects/ASC/service/AscPermissionService');
+    //     $accessibility = AscPermissionService::getCurrentScaleAccessibility();
+
+    //     // dump($accessibility);exit;
+
+    //     $result = [];
+    //     foreach ($ascUnitObjects as $ascUnit) {
+    //         if ($accessibility['permissions']['ScaleOwner'] || (is_array($accessibility['accessibleUnitIds']) && in_array($ascUnit->getId(), $accessibility['accessibleUnitIds']))) {
+    //             $result[] = self::assembleUnitData($ascUnit, ($ascUnit->getId() == $selectedId ? true : false));
+    //         }
+    //     }
+
+    //     return $result;
+    // }
+
+    public static function createUnitDataArray(array $rawUnitsData, int $selectedId = null) : array
+    {
+        App::getContainer()->wireService('projects/ASC/service/AscRequestService');
+        $processedRequestData = AscRequestService::getProcessedRequestData();
+
+        $skipAccessibilityCheck = false;
+        $accessibility = null;
+        if (!$processedRequestData['mainDashboard']) {
+            App::getContainer()->wireService('projects/ASC/service/AscPermissionService');
+            $accessibility = AscPermissionService::getCurrentScaleAccessibility();
+        } else {
+            $skipAccessibilityCheck = true;
+        }
+
+
+        // App::getContainer()->wireService('projects/ASC/repository/AscUnitRepository');
+        // $rawUnitsData = AscUnitRepository::getRawUnitsData([], $ascUnitIds);
+
+        $result = [];
+        foreach ($rawUnitsData as $rawUnitData) {
+            $ascUnitId = $rawUnitData['asc_unit_id'];
+            if ($skipAccessibilityCheck || ($accessibility['permissions']['ScaleOwner'] || (is_array($accessibility['accessibleUnitIds']) && in_array($ascUnitId, $accessibility['accessibleUnitIds'])))) {
+                $result[] = self::assembleUnitData($rawUnitData, ($ascUnitId == $selectedId ? true : false));
+            }
+        }
+
+        return $result;
+    }
+
+    public static function assembleUnitData(array $rawUnitData, bool $selected = false, UserAccountRepository $userAccountRepository = null) : array
+    {
+        App::getContainer()->wireService('projects/ASC/service/AscTechService');
+
+        if (!$userAccountRepository) {
+            App::getContainer()->wireService('UserPackage/repository/UserAccountRepository');
+            $userAccountRepository = new UserAccountRepository();
+        }
+
+        // if (!$ascUnit->getAscEntryHead()) {
+        //     // App::getContainer()->wireService('projects/ASC/repository/AscEntryHeadRepository');
+        //     App::getContainer()->wireService('projects/ASC/entity/AscEntryHead');
+        //     $ascUnit->setAscEntryHead(self::createUnitEntryHead($ascUnit));
+        // }
+
+        App::getContainer()->wireService('projects/ASC/repository/AscUnitFileRepository');
+        $fileRepo = new AscUnitFileRepository();
+        $fileObjects = $fileRepo->findBy(['conditions' => [
+            ['key' => 'asc_unit_id', 'value' => $rawUnitData['asc_unit_id']]
+        ]]);
+        $thumbnailSources = [];
+        foreach ($fileObjects as $fileObject) {
+            $thumbnailSources[] = '/asc/unitImage/thumbnail/'.$fileObject->getCode();
+        }
+
+        // $mainEntry = $ascUnit->getAscEntryHead()->findEntry();
+        App::getContainer()->wireService('EventPackage/service/CalendarEventFactory');
+        
+        $calendarEventId = $rawUnitData['asc_unit_calendar_event_id'];
+        $dueHandler = null;
+        if (!empty($calendarEventId)) {
+            App::getContainer()->setService('EventPackage/repository/CalendarEventRepository');
+            $calendarEventRepository = App::getContainer()->getService('CalendarEventRepository');
+            $calendarEvent = $calendarEventRepository->find($calendarEventId);
+            $dueHandler = new CalendarEventFactory($calendarEvent);
+        }
+        // $dueHandler = $ascUnit->getDueEventFactory();
+        $subject = empty($rawUnitData['subject']) ? null : $rawUnitData['subject'];
+        $subjectData = $subject ? AscTechService::getSubjectData($subject) : null;
+        $translatedSubjectSingular = $subjectData ? trans($subjectData['translationReferenceSingular']) : null;
+        $responsibleUserAccount = $rawUnitData['responsible_user_account_id'] ? $userAccountRepository->find($rawUnitData['responsible_user_account_id']) : null;
+        $responsiblePerson = $responsibleUserAccount ? $responsibleUserAccount->getPerson() : null;
+        $responsiblePersonFullName = $responsiblePerson ? $responsiblePerson->getFullName() : '';
+        $unitData = [
+            // 'object' => $ascUnit,
+            // 'object' => null,
+            'data' => [
+                'ascUnitId' => $rawUnitData['asc_unit_id'],
+                'parentId' => empty($rawUnitData['parent_id']) ? null : $rawUnitData['parent_id'],
+                'subject' => $subject,
+                'translatedSubjectSingular' => $translatedSubjectSingular,
+                'subjectData' => $subjectData,
+                'selected' => $selected,
+                'subjectIsParentOf' => AscTechService::getChildSubjectData($subject),
+                'subjectIsChildOf' => AscTechService::getParentSubjectData($subject),
+                'isDeletable' => $rawUnitData['child_count'] > 0 ? false : true,
+                // 'cratedBy' => $ascUnit->getCreatedBy()->getId(),
+                // 'cratedByName' => $ascUnit->getCreatedBy()->getPerson()->getFullName(),
+                // 'cratedByEmail' => $ascUnit->getCreatedBy()->getPerson()->getEmail(),
+                'createdAt' => $rawUnitData['au_created_at'],
+                // 'entryHead' => $ascUnit->getAscEntryHead(),
+                'mainEntryTitle' => $rawUnitData['main_entry_title'],
+                'mainEntryDescription' => $rawUnitData['main_entry_description'],
+                'mainEntryLanguage' => $rawUnitData['main_entry_language_code'],
+                'ascEntryHeadId' => $rawUnitData['entry_head_id'],
+                // 'isDeletable' => $ascUnit->getRepository()->isDeletable($ascUnit->getId()),
+                'frequencyType' => $dueHandler ? $dueHandler->getFrequencyType() : null,
+                // 'recurrencePattern' => $ascUnit->getRecurrencePattern(),
+                'dueDate' => $dueHandler ? $dueHandler->getStartDate() : null,
+                'dueTime' => $dueHandler ? $dueHandler->getStartTime() : null,
+                'responsible' => $responsiblePersonFullName,
+                'status' => $rawUnitData['asc_unit_status'],
+                'thumbnailSources' => $thumbnailSources
+                // 'mainEntry' => ,
+                // 'entries' => $ascUnit->getAscEntryHead()->getAscEntry(),
+            ]
+        ];
+
+        return $unitData;
+    }
+
+    public static function createUnitEntryHead(AscUnit $ascUnit) : AscEntryHead
+    {
+        $ascEntryHead = new AscEntryHead();
+        $found = $ascEntryHead->getRepository()->findOneBy(['conditions' => [['key' => 'asc_unit_id', 'value' => $ascUnit->getId()]]]);
+        if ($found) {
+            return $found;
+        }
+        $ascEntryHead->setAscUnit($ascUnit);
+        $ascEntryHead = $ascEntryHead->getRepository()->store($ascEntryHead);
+
+        return $ascEntryHead;
+    }
+
+    // public static function assembleUnitData_OLD(AscUnit $ascUnit, bool $selected = false) : array
+    // {
+    //     App::getContainer()->wireService('projects/ASC/service/AscTechService');
+    //     // dump($ascUnit->getAscEntryHead());
+    //     if (!$ascUnit->getAscEntryHead()) {
+    //         // App::getContainer()->wireService('projects/ASC/repository/AscEntryHeadRepository');
+    //         App::getContainer()->wireService('projects/ASC/entity/AscEntryHead');
+    //         $ascUnit->setAscEntryHead(self::createUnitEntryHead($ascUnit));
+    //     }
+
+    //     App::getContainer()->wireService('projects/ASC/repository/AscUnitFileRepository');
+    //     $fileRepo = new AscUnitFileRepository();
+    //     $fileObjects = $fileRepo->findBy(['conditions' => [
+    //         ['key' => 'asc_unit_id', 'value' => $ascUnit->getId()]
+    //     ]]);
+    //     $thumbnailSources = [];
+    //     foreach ($fileObjects as $fileObject) {
+    //         $thumbnailSources[] = '/asc/unitImage/thumbnail/'.$fileObject->getCode();
+    //     }
+
+    //     $mainEntry = $ascUnit->getAscEntryHead()->findEntry();
+    //     App::getContainer()->wireService('EventPackage/service/CalendarEventFactory');
+    //     $dueHandler = $ascUnit->getDueEventFactory();
+    //     $subjectData = $ascUnit->getSubject() ? AscTechService::getSubjectData($ascUnit->getSubject()) : null;
+    //     $translatedSubjectSingular = $subjectData ? trans($subjectData['translationReferenceSingular']) : null;
+    //     $unitData = [
+    //         'object' => $ascUnit,
+    //         // 'object' => null,
+    //         'data' => [
+    //             'ascUnitId' => $ascUnit->getId(),
+    //             'parentId' => $ascUnit->getParent() ? $ascUnit->getParent()->getId() : null,
+    //             'subject' => $ascUnit->getSubject(),
+    //             'translatedSubjectSingular' => $translatedSubjectSingular,
+    //             'subjectData' => $subjectData,
+    //             'selected' => $selected,
+    //             'subjectIsParentOf' => AscTechService::getChildSubjectData($ascUnit->getSubject()),
+    //             'subjectIsChildOf' => AscTechService::getParentSubjectData($ascUnit->getSubject()),
+    //             'ascUnitIsDeletable' => $ascUnit->getRepository()->isDeletable($ascUnit->getId()),
+    //             // 'cratedBy' => $ascUnit->getCreatedBy()->getId(),
+    //             // 'cratedByName' => $ascUnit->getCreatedBy()->getPerson()->getFullName(),
+    //             // 'cratedByEmail' => $ascUnit->getCreatedBy()->getPerson()->getEmail(),
+    //             'createdAt' => $ascUnit->getCreatedAt(),
+    //             // 'entryHead' => $ascUnit->getAscEntryHead(),
+    //             'mainEntryTitle' => $mainEntry ? $mainEntry->getTitle() : null,
+    //             'mainEntryDescription' => $mainEntry ? $mainEntry->getDescription() : '',
+    //             'mainEntryLanguage' => $mainEntry ? $mainEntry->getLanguageCode() : null,
+    //             'ascEntryHeadId' => $ascUnit->getAscEntryHead()->getId(),
+    //             'isDeletable' => $ascUnit->getRepository()->isDeletable($ascUnit->getId()),
+    //             'frequencyType' => $dueHandler->getFrequencyType(),
+    //             // 'recurrencePattern' => $ascUnit->getRecurrencePattern(),
+    //             'dueDate' => $dueHandler->getStartDate(),
+    //             'dueTime' => $dueHandler->getStartTime(),
+    //             'responsible' => $ascUnit->getResponsible() ? $ascUnit->getResponsible()->getPerson()->getFullName() : '',
+    //             'status' => $ascUnit->getStatus(),
+    //             'thumbnailSources' => $thumbnailSources
+    //             // 'mainEntry' => ,
+    //             // 'entries' => $ascUnit->getAscEntryHead()->getAscEntry(),
+    //         ]
+    //     ];
+
+    //     return $unitData;
+    // }
+}

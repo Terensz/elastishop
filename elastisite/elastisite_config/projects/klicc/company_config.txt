@@ -1,0 +1,9 @@
+name=kli.cc
+brand=kli.cc
+keywords=[kli.cc]
+#email=info@elastishop.com
+#email=terencecleric@gmail.com
+email=terencecleric@gmail.com
+fromEmail=terence@23.hu
+letterFooter_hu=Üdvözlettel:<br />a kli.cc csapata
+relativeContactUrl=kapcsolat

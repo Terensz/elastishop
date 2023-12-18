@@ -1,0 +1,21 @@
+Widgetek
+========
+
+A widget a dokumentum egy olyan egybetartozó megjelenítési egysége, ami egy controller-metódusban került renderelésre.
+Általában már látványban is élesen elhatárolódik a többi widgettől, de előfordul olyan widget is, ami látszólag több elkülönülő elemből áll, mint pl. az egyébként szinte minden oldalon meghívott TeaserWidget, vagyis a cikk-ízelítők widgetje.
+
+Vannak az ElastiSite saját, beépített widgetjei, mint pl. a UserPackage-ben található LoginWidget. Ezek a beépített widgetek adnak egy alapot, de a használatuk nem kötelező, 
+bármikor használhatsz a projectedben máshogyan működő változatot, ennek a lépéseit lentebb megtalálod.
+
+Saját widgetet akarok használni
+-------------------------------
+Ezt nem csak szimplán megteheted, hanem ebben elég nagy mozgástered van.
+Megteheted, hogy a már létező routingot megírod a projectben is, és akkor automatikusan a project routingja fog élni, vagyis abba a controllerbe fut ki a routing, amelyiket a project routeMap-jébe beállítottad.
+
+Azt is megteheted, hogy saját controllert használsz (lásd fentebb) amiben az ElastiSite saját widgetjére hivatkozol.
+
+És arra is van lehetőséged, hogy az ElastiSite saját routingját meghagyod (vagyis a projectben nem csinálsz ugyanazzal a névvel vagy paraméterezéssel saját routingot), viszont saját widgetet írsz. Ezesetben annyi a teendőd, hogy a project view/widget mappájába készítesz egy mappát a widget nevével (pl. BannerWidget). Onnantól kezdve a tiéd fog betöltődni.
+
+Bónusz: még azt is megteheted, hogy a scripts.php helyett írsz sajátot, amibe saját javascripteket írhatsz, hogy mi történjen a widget ajaxos betöltésekor, vagy átírhatod a widget URL-címét, pl. használhatsz egy másik, már máshol is használt URL-t a widget hívásához.
+
+

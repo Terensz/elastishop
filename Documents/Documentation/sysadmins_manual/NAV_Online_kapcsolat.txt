@@ -1,0 +1,50 @@
+NAV Online kapcsolat
+====================
+
+1.: Nyissa meg ezt a linket: https://onlineszamla.nav.gov.hu/login 
+Amennyiben teszt-felhasználót szeretne létrehozni, úgy ide kell bejelentkezni: https://onlineszamla-test.nav.gov.hu/login
+
+2.: Nyomja meg a "Bejelentkezés KAÜ-vel" gombot. (Központi Azonosítási Ügynök)
+
+3.: Jelentkezzen be. Ha nem sikerül, akkor az ügyfélkapu üzemeltetőivel kell felvennie a kapcsolatot.
+
+4.: Ha először van ezen a webhelyen, akkor ki kell tölteni az e-mail címet, illetve bármilyen hiányzó adatot.
+Ezt követően kattintson a "Beállítások mentése" gombra.
+
+5.: A "Relációk" felületen vagyunk. Itt fel van sorolva minden adószám, ami a fiókjához tartozik, ezek közül mindig a legkésőbbi az érvényes, így kattintson az emellett levő "MEGNYITÁS" linkre.
+
+Adószám / felhasználó összerendelések listája
+https://onlineszamla.nav.gov.hu/login/relaciok?source=OSA
+Teszt: https://onlineszamla-test.nav.gov.hu/login/relaciok
+
+6.: Ha még hiányos az elsődleges felhasználója, akkor addig nem tud mást tenni, míg a hiányzó adatokat nem pótolja. A pótolt adatokat az "ADÓZÓ ADATAINAK MENTÉSE" gombbal tudja elmenteni.
+Ha kellett elsődleges felhasználót pótolni, akkor a mentést követően valamiért kirakja Önt a főmenübe. Ezesetben menjen vissza a "Felhasználók" menübe a felső panelen (vagy a linket beírva: https://onlineszamla.nav.gov.hu/felhasznalok, teszt esetén https://onlineszamla-test.nav.gov.hu/felhasznalok).
+
+7.: A "Felhasználók" felületen vagyunk.
+Hozzunk létre egy újat. Egy NAV-os fiókhoz tartozhat 1 db elsődleges felhasználó, és rengeteg másodlagos vagy technikai. A másodlagosokkal felületekre tud bejelentkeztetni egy ismerősét, és le tudja a jogosultságait korlátozni.
+Nekünk viszont egy "technikai felhasználó" kell. Ez abban más, hogy ezt szoftverek tudják használni a NAV rendszerével való kommunikációra, és most nekünk pont erre van szükségünk.
+Tehát: kattintson az "ÚJ FELHASZNÁLÓ" gombra.
+
+8.: Válassza a "TECHNIKAI FELHASZNÁLÓ" lehetőséget.
+
+9.: Meg kell adnia egy jelszót. Ezt a jelszót soha többé nem tudja megszerezni, vagyis ha elveszíti, az egész felhasználót le lehet törölni, és másikat kell készíteni helyette.
+Mentse el a felhasználót.
+
+10.: A "Részletek" oldalon vagyunk, pár adat látszik az új technikai felhasználónkról.
+Kattintson a "KULCSGENERÁLÁS" gombra.
+
+11.: Most már több adat látszik, és szintén a "Részletek" oldalon vagyunk.
+
+Mentse el az adatokat a NAV.txt nevű konfigurációs file-ba.
+
+user.username= <= ide kerül a "Felhasználónév"
+user.password= <= ide kerül az a jelszó, amit az előbb adott 
+user.signKey= <= Ide kerül az "XML aláírókulcs"
+user.exchangeKey= <= Ide kerül az "XML cserekulcs"
+user.shortTaxNumber= <= ide kerül az adószámának az első tagja, vagyis: az első kötőjel előtti része.
+
+12.: Készen vagyunk, már működni fog az ÁFA lejelentése.
+- Ez akkor is működik, ha szünetelő vállalkozása van. 
+- Az éles felületen (https://onlineszamla.nav.gov.hu/) létrehozott technikai felhasználó csak az éles adatkapcsolattal működik, míg a NAV teszt-felületén létrehozott felhasználó pedig csak a teszt adatkapcsolattal fog működni.
+
+

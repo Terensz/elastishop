@@ -1,0 +1,9 @@
+name=Websi
+brand=Websi
+keywords=[Websi]
+#email=info@elastishop.com
+#email=terencecleric@gmail.com
+email=terencecleric@gmail.com
+fromEmail=terence@23.hu
+letterFooter_hu=Üdvözlettel:<br />az ElastiShop csapata
+relativeContactUrl=kapcsolat

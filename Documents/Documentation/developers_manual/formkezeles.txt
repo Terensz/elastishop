@@ -1,0 +1,72 @@
+Ezt a fejezetet mindenképpen olvasd el alaposan. Nagyon fontos, hogy a formkezelőd jól legyen beállítva, ellenkező esetben jóhiszemű, vásárlási szándékú felhasználókat is kitilthat az ElastiSite hackelés gyanúja miatt. Megijedni nem kell tőle. Egy formot pár sorból el lehet készíttetni a controllerünkben, plusz készíteni kell egy konfigurációs fájlt hozzá, lásd később: "Form schema". Mindkettőre találsz példákat, pl. az elastisite_source/framework/packages/UserPackage/form-ban az egyszerűtől az összetett objektumokig. 
+
+Pár alapfogalom:
+
+propertyCode:
+-------------
+Ez nem a formkezelésnek alapfogalma, hanem az entitás-kezelésnek, de itt is fogsz vele találkozni.
+A property egyesszámú alakja. Pl. ha a property-d így néz ki: "public $addresses;", akkor a propertyCode ez lesz: "address". Nyilván minden olyan esetben, amikor a property egyesszámú: megegyeznek.
+
+Form schema:
+------------
+Vagyis: séma. Egy konfigurációs osztály, ami leírja, hogy milyen objektum-lánc milyen elemei fognak a formunkon szerepelni, és ezek hogyan validálódnak. A séma a form lelke, ezt mindenképpen el kell készítenünk minden formhoz.
+
+PropertyAlias:
+--------------
+A propertynek (pl.: title) a form inputjához tartozó elnevezése. Azért nem a propertyvel dolgozunk, hogy egy ennyire általános propertynek, mint a title is lehessen jobban az adatra vonatkozó elnevezést adni. Ha aliasolod a property-t, akkor a sémában meg kell adnod, hogy mi a property neve.
+
+requestKey:
+-----------
+Ez az inputnak a "name" és "id" html attribútuma.
+Az ElastiSite alapból ugyanazt használja mindkettőre. Nem képez tömböt a name-ből akkor sem, ha az adatnak objektumtömb formájában kell bekerülnie egy entitás egyik attribútumába. Ezt a tömbbé alakítást úgyis lekezeli a form-feldolgozó, nem kell ezt a biztonsági rést nyitva hagyni.
+
+Egy összetettebb request key így néz ki: UserPackage_edit_person_address_1_country
+Vagyis a person második addressének az országa
+
+packageName és a subject
+------------------------
+Ez a két adat mintegy konstans kíséri végig a formunkat, és ott fog figyelni minden inputnév előtt. Leginkább abban segít, hogy ránézésre tudd, hogy az az inputod melyik formhoz tartozik. Mivel az ElastiSite minden formot ajaxosan kezel, így ennek túl nagy jelentősége nincs, el is hagyhatod. Alapból mindkettő null, a FormBuilder-ben be tudod mindkettőt set-elni.
+
+ancestoryKey:
+-------------
+A request key azon része, amiből megállapítható a teljes objektumlánc, a szülőtől a gyerek felé haladva, property-formátumban (kisbetű az első), amelyik objektum multiple, akkor az azon belüli index is bekerül az origin chain-be. Vagyis ha a UserAccount entitáshoz készítesz formot, amihez 1 person csatlakozik, amihez több address is csatlakozik, akkor a második address irányítószámához tartozó origin chain így fog kinézni: "person_address_1_zip". Vedd észre, hogy nem szerepel az origin chain-ben a gyökérentitás, vagyis a userAccount, mivel az egész form erre épül. A UserAccount status property-jének pedig így fog kinézni az origin chain-je: "status".
+
+fullPropertyPrefix:
+-------------------
+A requestKey teljes propertyAlias előtti része, vagyis a packageName, a subject és az ancestoryKey.
+
+propertyReference:
+------------------
+Az ancestoryKey és a propertyAlias együtt. Vagyis a lényege a requestKey-nek.
+
+FormBuilder:
+------------
+Ez a class a kezelőfelületünk a controllerben a form feldolgoztatására. A következő attribútumait lehet/kell beállítani (set): 
+- encodeRequestKeys: ez dönti el, hogy a request key-k le lesznek-e kódolva a formban, vagy sem. Mindenképpen ajánlott akkor, ha azt szeretnéd, hogy a böngésződ ne jegyezze meg a beírt adatot, és a hackerek se tudják kiokoskodni, hogy milyen adat kerül a mezőbe.
+- packageName: ez hagyományőrzésből került bele, mint opció, a Symfony-s formok mintájára. Ha beállítod, ezzel fog kezdődni a request key.
+- subject: ez is hagyományőrzésből került bele. Ez hivatkozik arra, hogy milyen műveletet hajt végre a form az adott entitással. Ha beállítod az értéket, akkor ez lesz a request key második szakasza. (A folytatása a fentebb taglalt origin chain lesz)
+- primaryKeyValue: a gyökérentitás elsődleges kulcsához tartozó érték. Pl UserAccount-hoz tartozó form esetén az id értéke, pl. 1298.
+- saveRequested: vagyis el akarjuk-e tárolni a levalidált formunkban szereplő értékeket az adatbázisba. Mivel adja magát, hogy: persze, miért is ne tárolnánk el, ez a property alapból true, de ha pl. debugolni szeretnénk, van lehetőségünk átállítani false-ra.
+- schemaPath: a formunkat üzemeltető séma linkját tudjuk átadni a formkezelőnek. Kötelező adat, séma nélkül nincs form. A sémában tisztázzuk, hogy az entitás-láncolatnak milyen értékeit kérjük be, és hogy melyik property-nek hol található a validátora. Bővebb infoért lásd: "Validálás".
+- externalPosts: ha olyan adatot is postolni akarunk, ami nem szerepel a sémában, akkor azt mindenképpen adjuk át a FormBuilder-nek, máskülönben a security meg fogja büntetni (esetleg ki is tiltja) a webhely felhasználóját, hogy illegális postot küldött. addExternalPost metódussal tudjuk hozzáadni egyesével, vagy setExternalPosts metódussal az egészet, sorszámozott tömbként.
+
+Request key prefix:
+-------------------
+Minden, ami az origin chain előtt van. Tehát a package neve és a subject kerülhetnek ide, egyik, másik, mindkettő vagy egyik sem. _ jel nélkül végén.
+
+ViewTools:
+----------
+Az ElastiSite olyan több osztályból álló eszköz-készlete, amit kimondottan a view-ben példányosíthatunk, és egész szövegrészeket, vagy formot elkészít nekünk pár paraméterből. Külön fejezetet kapott a ViewTools, ami itt fontos róla, hogy segít nekünk a formunkat elkészíteni. Szükségünk is lesz rá, nélküle befonnánk a hajunkat a kódolt request key-k miatt.
+
+Honeypot:
+---------
+Ha a ViewTools segítségével rakjuk össze a formunkat, akkor automatikusan elkészít egy hamis inputot, amit a renderelést követően el is rejt. Ez egy csapda azoknak a hackereknek, akik nem böngészőn keresztül akarják kitölteni a formunkat, hanem curl-lel küldve akarnak minket feltölrni. Ők ezt be is fogják kajálni, az ElastiSite pedig ki is fogja őket tiltani az első honeypot benyelésekor.
+
+CSRF-token:
+-----------
+Egy hagyományos technológia arra, hogy a webhely megakadályozza a hackert abban, hogy egyik webhelyről hívjon meg ajax-szal egy másik webhelyen szereplő routingot. A ViewTools ezt is automatikusan elkészíti és beleépíti a formba.
+
+Form objektum:
+--------------
+A form feldolgozása közben a FormBuilder hívja meg, dolgoztatja fel, és adja vissza a kontrollernek. Minden információt belerak, ami csak felmerülhet a formmal kapcsolatban: az elpostolt (posted), az adatbázisban szereplő (stored) és a megjelenítendő (displayed) értékeket, a validációs eredményeket, a feldolgozás során feltöltött objektumokat összerakva, az objektumok egymással való viszonyát.
+Ha bármi nem úgy postolódik, mentődik a tesztelés során, ahogy szeretnéd, bátran dump()-old ki ezt az objektumot.

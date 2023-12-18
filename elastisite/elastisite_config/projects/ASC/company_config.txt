@@ -1,0 +1,9 @@
+name=ASC
+brand=ASC
+keywords=[ASC]
+#email=info@elastishop.com
+#email=terencecleric@gmail.com
+email=terencecleric@gmail.com
+fromEmail=terence@23.hu
+letterFooter_hu=Üdvözlettel:<br />az ASC csapata
+relativeContactUrl=kapcsolat

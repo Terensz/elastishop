@@ -1,0 +1,33 @@
+- (projekt) Minden publikus dokumentum legyen a helyén. A legfontosabbak legyenek jajta minden lapon. (Pl. lábléc.)
+	- Érintett dokumentumok
+		- Sütikezelési tájékoztató
+		- Adatkezelési nyilatkozat
+
+- (projekt) Promóvideók
+	- Céges animált logó készítése a videó elejére
+	- Youtube csatorna létrehozása
+		- pl. Webshop Monkey
+		- A videókról minden szempontból a valóságnak kell átsütnie.
+			- IT-szakmailag korrekt
+			- A cég életkora szempontjából kezdő. Az az elképzelésem, 
+			hogy sokkal jobban kapcsolódik a nézőhoöz egy ilyen cég, ami nem lódít magáról, 
+			hanem kezdődként megmutatja, hogy kezdő, viszont szakmailag profi.
+			
+- ÉN (projekt) WebhelyÉpítő befejezése
+	- Menüszerkesztő
+		- Azok a menüpontok jelennek itt meg, amik a built_page táblában is_menu_item = 1-ek.
+	- Saját weblapok
+		- Edit: Weblap tulajdonságai tab: A "Név" alatt lesz egy gomb, ami előhoz egy karuszelt, 
+		amiből a dedikált lapok közül lehet választani. 
+		A gomb show/hide-olja a "SiteBuilderPackage_editBuiltPage_name" inputot.
+		A karuszel-elem kiválasztása eltünteti a karuszelt, és a name lesz látható.
+		
+- (projekt) Monkey webszerver beüzemelése
+	- Domain reg.
+	- Szerver
+	- Monkey teszt-termékek feltöltése
+- (projekt) Tesztelés
+- (projekt) Értékesítés
+
+
+- (projekt) El kell különíteni az IT-projectet a website-tól

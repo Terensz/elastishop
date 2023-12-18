@@ -1,0 +1,2 @@
+https://ckeditor.com/docs/ckeditor4/latest/guide/dev_file_browser_api.html
+

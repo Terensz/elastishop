@@ -1,0 +1,78 @@
+
+A DataGridBuilder felújítása
+============================
+
+= Meg kell csinálni a tábla-fejlécet
+
+file: UXPackage/view ... tableCard.php 
+sor: 81-től 
+
+- A mezőnevek passzoljanak 
+
+- Be kell kötni a fel-le nyilakat (chevronokat), ezeknek tudniuk kell sorbarendezni az adott oszlop szerint.
+
+A chevronok benne vannak a kódban, csak ki vannak commentezve.
+Pontosan úgy kell működnie, mint a réginek a dataGridHead.php-ban.
+
+
+
+= Szét kell szeparálni a datagrid widget.php a widgetFlexibleContent.php-tól 
+
+KÉSZ - widgetFlexibleContent.php létrehozása 
+
+- widgetFlexibleContent.php elkészítése a régi dataGridParts.php mintájára 
+
+= Be kell kötni a lapozót 
+
+DataGrid scripts file: DataGridPackage/view/widget/DataGrid/scripts.php
+A scripts.php üzemelteti az egész DataGrid-et.
+A lapozó a {dataGridId}.setPage(event, page) metódussal érhető el.
+
+= Be kell kötni az "Új X létrehozása" gombot 
+
+- a dataGridControlPanel.php kiváló minta
+
+= Be kell kötni az inputokat 
+
+ElastiSIte webshop felújítása, használhatóvá tétele 
+===================================================
+
+= Implementálni kell a szamlazz.hu kapcsolatot.
+
+- Meg kell nézni, hogy hogyan lehet teszt-módban dolgozni, és ezt le kell dokumentálni
+
+- Szamlazz.hu helper service létrehozása 
+
+
+
+
+ASC teljesen használhatóvá tétele
+=================================
+
+= Ki kell debugolni, hogy miért nem lehet képet feltölteni, és meg kell javítani.
+
+= Képgaléria befejezése (kattintásra ugorjon fel az a kép, de jelenjen meg a galériában a többi is, ami ugyanahhoz a unithoz tartozik)
+
+= A sorbarendezés utáni visszatöltés rossz a skála-dashboardon.
+
+
+PremiumVitamins.eu project
+==========================
+
+= Előkészületek
+
+- Kell írni egy titoktartási nyilatkozatot.
+
+- Meg kell beszélni egy találkozót 
+
+= Fel kell mérni, hogy mi okozza a lassú működést 
+
+- Tipp: adatbázis: a tábla-szerkezet túl összetett.
+
+
+AmbiLight data capture project 
+==============================
+
+ASC mobile project 
+==================
+

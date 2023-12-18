@@ -1,0 +1,19 @@
+legalDocumentVersion:dh/2019-10-26/1.0
+legalDocumentTitle:Adatkezelési nyilatkozat
+legalDocumentActive:true
+legalDocumentCategory:dataHandling
+legalDocumentBody:
+Jelen internetes webhely (továbbiakban: Webhely) üzelemtetője: [companyName], a továbbiakban: Üzemeltető.
+
+A Webhelyen levő regisztrációs kérdőív kitöltése nem kötelező, azonban bizonyos funkciók és jogosultságok
+kizárólag a regisztrációt elvégző, és bejelentkezett felhasználók számára elérhetőek.
+
+A regisztrációs kérdőív kitöltésével a Webhely felhasználója (továbbiakban: Felhasználó) vállalja,
+hogy a megadott személyes adatai az Üzemeltető birtokába kerülnek.
+
+Az Üzemeltető kijelenti, hogy a Felhasználó által a rendelkezésére bocsátott adatokat kizárólag a Felhasználó
+tájékoztatása, jogosultságának kezelése és megrendeléseinek teljesítése céljából használja fel. Az adatkezelésről a Felhasználó bármikor tájékozodhat a webhelyen a "Fontos dokumentumok" bekezdésben, ami a "Felhasználóknak" oldalról mindig elérhető.
+
+A Felhasználónak joga van a saját személyes adatait véglegesen törölni a Webhely adatbázisából bármely olyan időpillanatban, amikor nincs lezáratlan megrendelése a webhely üzemeltetője felé. Ezt a bejelentkezést követően a "Felhasználóknak" menüpont alatt tudja megtenni a "Törlöm a személyes adataimat" menüpont alatt, ahol ennek a következményeit is el kell fogadnia. A személyes adatok törlése egy visszafordíthatatlan művelet, ennek a következményei miatt az Üzemeltető semmilyen reklamációt nem fogad el a Felhasználótól.
+
+Folyamatban levő megrendelés esetén a személyes adatok nem törölhetők, ameddig a megrendelés le nem zárul. Hogy milyen módon vagy módokon zárható le, arról a webhely üzemeltetőjének szerződési feltételei rendelkeznek.

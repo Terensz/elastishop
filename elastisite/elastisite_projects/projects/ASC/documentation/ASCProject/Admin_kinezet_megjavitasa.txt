@@ -1,0 +1,15 @@
+1. Entitás info 
+
+Egyelőre ezt még ne, mert ez még a régi Grid-del készült. 
+Hanem majd teljesen újra kell írni a Grid-et, és majd az kell implementálni ide: DatabaseWidgetController->adminDatabaseInfoWidgetAction()
+
+2. Webshop reset 
+
+AdminWebshopResetWidget/widget.php csinálja.
+
+3. Feltörési kísérletek 
+
+Ezt is majd az új Grid-del 
+
+4. A kedvencek-ikon adminisztrációja
+

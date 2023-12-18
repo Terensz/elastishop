@@ -1,0 +1,21 @@
+Ez a fejezet azt a címet is kaphatta volna, hogy "amik kimaradtak a Biztonság fejezetből", de ezek inkább a biztonság indirekt aspektusai. Adattárolási elvek, amik kiegészítik az ElastiSite biztonsági mechanizmusait.
+
+Amikor 2016-ban az EU törvényben rendelkezett az adattárolásra vonatkozó új szabályokról, akkor a webfejlesztéssel foglalkozók (a programozó és a webes felületeket összekattingató emberek) többsége gyosan oldatoldotta a saját (kétségesen működő) 
+biztonsági megoldásaikat az amúgy elég gyászos védelemmel ellátott webes alkalmazásaikra, hogy az EU mégse büntesse meg őket, mert ott aztán a felelősségi köröket igen nehéz lenne kibogozni, főleg, hogy azok a fejlesztési munka elején 
+nem tisztázódtak.
+
+Az ElastiSite megalkotásakor a legfontosabb tényező volt a felhasználói adatok védelme, ezért már az adatstruktúra és az adatkezelés is máshogyan került kialakításra, mint az ismertebb keretrendszereknél szokás, vagy a legtöbb fejlesztő 
+fejében bevett szokásként rögzült megoldások.
+
+Mik az ElastiSite indirekt biztonsági megoldásai?
+
+I.: A felhasználók adatbázisban kerülnek tárolásra. A felhasználók, és csakis ők. Nincsenek jogosultságok tárolva, hiszen aki adatbázisban van, az mindenki felhasználó. Az "adminok" (vagyis a webhely üzemeltetői) egy nem átjárható adattárban tárolódnak, vagyis semmilyen furfangos módon nem lehet az adataikat megszerezni. Tehát ha pl. egy üzemeltetési hiba miatt (pl. hibás jogosultságok beállítása az ElastiSite mappáira) mégis feltörnék az adatbázist, 
+a webhelyre nem tudnak maguknak olyan felhasználót gyártani, ami további károkat okozhatna.
+
+II.: A személyes adatok függetlenítése a regisztrációs adatoktól
+A személyes adatok külön tárolódnak a felhasználói fiók adataitól. Ha egy felhasználó kéri a személyes adatainak törlését, azok minden káros következmény nélkül szó szerint egy mozdulattal törölhetők az adatbázisból. Hiszen a regisztrációs alapadatok (azonosító, aktív-e, mikor regisztrálták) így sértetlenül megmaradhatnak és szerepelhetnek tovább a statisztikákban úgy, hogy a továbbiakban személyes adatok nem fognak hozzájuk kapcsolódni (név sem).
+
+III. A felhasználók minden személyes adata titkosítva tárolódik. A kulcs "el van ásva" a webszerveren, egy olyan elérési úton, ahová a hackerek nem látnak be.
+
+IV. A felhasználó bármikor törölheti a saját személyes adatait a webszerverhez kapcsolódó adatbázisból. Ezzel a művelettel ez a regisztráció örökre és visszavonhatatlanul törlődik, és az ElastiSite ki is lépteti az ex-felhasználót. Innentől csak újabb regisztrációra van lehetőség, visszaállításra semmilyen módon sem, mert ezek az adatok szó szerint elvesznek.
+

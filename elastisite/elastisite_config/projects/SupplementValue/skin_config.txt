@@ -1,0 +1,7 @@
+skinName=SupplementValue
+sheetMaxWidth=3600
+sheetWidthPercent=98
+adminSheetWidthPercent=90
+sheetTopPadding=10
+backgroundColor=f9f6f0
+defaultFont=DMSans

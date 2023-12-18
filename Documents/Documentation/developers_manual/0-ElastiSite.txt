@@ -1,0 +1,30 @@
+Mi az ElastiSite? 
+-----------------
+Egyszerre egy CRM, és egy objektumorientált, MVC alapú keretrendszer. Én írtam az alapjait a szabadidőmben, nagyjából két év alatt. Volt egy határozott elképzelésem, hogy egy jó keretrendszernek hogyan kellene működnie. És amíg ezt a működést építettem, a már meglévő részeit folyamatosan csiszoltam össze az új fejlesztésekkel, és minden olyan részt, ami a későbbi tapasztalatok alaján fölöslegessé vált, egyszerűen kivettem belőle. Ez idő alatt legalább 5 olyan alkalom volt, amikor a szoftver egy jelentős részéről az a felismerésem támadt, hogy teljesen rosszul találtam ki az elején. Ezekben a helyzetekben mindig úgy döntöttem, hogy ez bizony az ElastiSite, nem egy szedett-vedett, összecsapott keretrendszer, bizony, hogy újra kell írni, ha egy hónap lesz, akkor annyi. Volt olyan része, amit három hónap volt újraírni.
+
+Miben másabb, mint egy CRM?
+---------------------------
+Abban, hogy egy teljesértékű MVC keretrendszer. Ha valaha használtál Symfony-t, Laravelt, Code ignitert, akkor pár óra alatt már tudni fogod az ElastiSite alapjait, és lesznek saját routingjaid, view-jaid, controllereid, entitásaid.
+
+Miben másabb, mint egy másik MVC?
+---------------------------------
+Az alapvető különbség az, hogy az ElastiSite-nak két típusú controllere van: page controller, és widget controller.
+A page controller az oldalhoz tartozó routingot tölti be az első betöltéskor és oldalváltáskor. A page contollert meghívó route-ban konfigurálható, hogy milyen oldalszerkezet, háttér-motor, skin töltődjön be.
+A widget controllerek töltik be a tartalmat az oldalra, ahány tartalmi egység van egy aloldalon, annyi widget controller hívódik meg.
+
+Még néhány különbség:
+- Az ElastiSite mindig ajaxosan vált oldalt, és ehhez minden támogatást megad, fejlesztői oldalon ezzel kapcsolatban minimális teendőid vannak.
+- Az ElastiSite nem csak adatbázisba tud menteni, hanem file-ba is. Erre egy saját függvénytára van, ami kompatibilis az adatbázison végzett műveletekével. Erről bővebben a "Repository" fejezetben olvashatsz.
+- Az ElastiSite egyáltalán nem használ template-kezelő rendszert. Ennek az alapvető okai: a template-elő rendszerek mindig az adott widgetet bővítik ki a teljes dokumentumra, ehhez rendelkeznek egy nagyon bonyolult fordított renderelési technikával. Ez a technika az ElastiSite-nál teljesen fölösleges lenne, mert itt minden widgetnek saját controller-metódusa van.
+- Az ElastiSite nem cache-el file-ba. Bár használ gyors-cache-et bizonyos műveleteknél (nagyobb tömböket eltárol a memóriába, hogy ne kelljen újra előállítania), de a kis footprint és optimalizált működés miatt annyira sokszor gyorsabb bármelyik nagy rendszernél, hogy teljesen fölöslegesnek tartom egyelőre ennek a lefejlesztését.
+
+Miben hasonlít a többi MVC-re?
+------------------------------
+- A route-ok felépítése nagyon hasonló. Az ElastiSite ugyanúgy használ dinamikus paramétereket, amiket a controller megkap változóként.
+- Az ElastiSite-nak is van "ORM-je". Nincs neve, teljesen beépített, és össze van nőve az entitásokat üzemeltető repository-kkal. Mivel az ORM kifejezést nem tartom szerencsésnek, tekintve hogy nem a példányosított osztályok (objektumok) állnak egymással relációban, hanem az entitások, vagyis az adatmodellek, így ERM (entity relation mapper) néven fogsz róla tudni a későbbiekben olvasni.
+- Az ElastiSite-nak is van exception-hangling-je. Bár semmi más rendszer a rendszeren belül nem kapott külön nevet, ez a "Gyevi Bíró Kivételkezelő Rendszer" nevet kapta, mintegy meghajlásként a bolygó valaha élt legkirályabb (és legemberségesebb) királya, Mátyás király előtt. (Az osztály neve az egyszerűség kedvéért ElastiException)
+
+
+
+
+

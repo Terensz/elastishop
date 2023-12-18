@@ -1,0 +1,36 @@
+Backend:
+https://ckeditor.com/docs/ckeditor4/latest/guide/dev_file_upload.html
+
+Response example 1:
+(Everything is okay)
+
+{
+    "uploaded": 1,
+    "fileName": "foo.jpg",
+    "url": "/files/foo.jpg"
+}
+
+Response example 2:
+(Occupied filename, but we have renamed that)
+
+{
+    "uploaded": 1,
+    "fileName": "foo(2).jpg",
+    "url": "/files/foo(2).jpg",
+    "error": {
+        "message": "A file with the same name already exists. The uploaded file was renamed to \"foo(2).jpg\"."
+    }
+}
+
+Response example 3:
+(Fail)
+
+{
+    "uploaded": 0,
+    "error": {
+        "message": "The file is too big."
+    }
+}
+
+FileManager configuration:
+https://ckeditor.com/docs/ckeditor4/latest/guide/dev_file_manager_configuration.html

@@ -1,0 +1,9 @@
+$address->getCountry();
+$address->getZipCode();
+$address->getCity();
+$address->getStreet();
+$address->getStreetSuffix();
+$address->getHouseNumber();
+$address->getStaircase();
+$address->getFloor();
+$address->getDoor();

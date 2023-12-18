@@ -1,0 +1,1 @@
+<b>[quantity]</b> db <b>[productName]</b> (Mennyiség x egységár: [itemGross] [currency])

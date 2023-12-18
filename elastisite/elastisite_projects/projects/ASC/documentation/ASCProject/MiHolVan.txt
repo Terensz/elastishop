@@ -1,0 +1,17 @@
+Általános működése az ElastiSite keretrendszerben 
+=================================================
+- Az adatbázis-műveleteket mindig repository class végzi 
+- A repository-k munkáját mindig service class fogja össze 
+- Az adatbázis-recordokat mindig az entity egy példánya képviseli 
+- Minden egyes route a routeMap-ekben van definiálva 
+- Alapvetően kétféle működésű controller van: 
+ - a pageController gondoskodik a route összes widgetjének betöltéséről, a skin betöltéséről, a böngészőtabon szereplő title-ről
+ - a widgetController renderelteti le a widget tartalmát
+- A keretrendszerben definiált route-okat, nyelvesítéseket és widgeteket mindig felülírja a projektben definiált ugyanolyan nevű.
+
+ASC navbar + breadcrumb 
+======================= 
+Az asc projectben két project-navbar is van:
+- AscScaleListerWidget/Navbar.php : ez a dashboard navbarja 
+- AscScaleBuilderWidget/Navbar.php : ez a skála-építő navbarja 
+

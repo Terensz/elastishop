@@ -1,0 +1,9 @@
+1.: A szerveren el kell helyezni az elastisite_config és elastisite_dynamic mappákat úgy, hogy ne legyenek a /var/www/html útvonalon, de a webszerver majd tudja olvasni.
+(Pl.: /etc/elastisite/).
+2.: Az 1. pontban említett mindkét mappára rekurzív írási, olvasási és futtatási jogot kell adni a webszervernek, mint usernek (pl.: www-data)
+3.: Az elastisite_source és elastisite_projects mappákat át kell mozgatni egy olyan mappába, ami nem érhető el a webszerver document root-jából, de a webszerver tudja futtatni.
+4.: A 3. pontban említett két mappát olvashatóvá és futtathatóvá kell tenni a webszerver, mint user számára (pl.: www-data)
+5.: El kell készíteni és ki kell tölteni az elastisite_config/sysadmin mappában levő sysadmin_config.txt file-t a sysadmin_config_EXAMPLE.txt mintájára.
+6.: @TODO configok útvonala
+7.: @TODO adatbázis létrehozása + beállítása
+8.: @TODO 

@@ -1,0 +1,38 @@
+Statisztika-készítő és -olvasó
+------------------------------
+
+Az admin-menübe kerülő új lapok:
+................................
+
+- admin/staff/config
+    Csak üzemeltetői jogosultsággal érhető el a lap
+    - WeekStartTime (Melyik napon hány órakor legyen a hétzárás/-nyitás)
+    - WeekSerialBasedOn / Year ('year'), StaffMemberTrainedAt ('staff.member.trained.at'), CustomFirstStatWeekStartTime ('custom.first.stat.week.start.time')
+    - CustomFirstStatWeekStartTime (csak akkor, ha az elozore a CustomFirstStatWeekStartTime-t valasztotta az admin)
+    - AllowPageCodeUsageForOneWeekOnly (Csak 1 hetet tud megnezni 1 koddal."Hamis" esetén egy listát lát minden hetével, es bármelyiket tudja szerkeszteni)
+    - AllowEditingExpiredWeek (Itt azt lehet beállítani, hogy lejárt, vagyis nem a mostani hetet is szerkeszthet a munkatárs)
+
+- admin/staff/members/list
+    Lista a dolgozókkal
+    Csak üzemeltetői jogosultsággal érhető el a lap
+    - uses DataGridBuilder class (Ugyanolyan adattáblázat lesz látható, mint pl. a felhasználók listájában)
+
+    A dolgozók új táblában tárolódnak (staff_members)
+    Az ElastiSite person tábláját használjuk a személyes adatok (név, e-mnail, telefonszám, felhasználónév, jelszó) tárolásához, hogy maximálisan GDPR-kompatibilis legyen. Titkosítva tárolódnak.
+
+    A dolgozók listája szűrhető a dolgozó nevére, e-mail címére
+    2 modal tab lesz:
+    - admin/staff/members/edit (dolgozó szerkesztése)
+    - admin/staff/stats/pages (oldalak)
+    - admin/staff/stats/view (statok megtekintése)
+      - Itt tudja Joe megnézni a grafikonokat. Az alapötletem az, hogy két grafikon lesz egymás alatt, és mindkettőn lapozni tudja a hetet. Így bármely hetet bármelyikkel össze tudja nézni.
+
+
+Staff memberek oldala
+.....................
+
+- staff/stats/manage/{code}
+    Ez az a lap, amit a fentebb említett admin/staff/stats/pages-ben hoz létre az üzemeltető (admin)
+    A lap bármilyen jogosultsággal megtekinthető
+    A bejelentkező (login) modal (ugyanaz, mint a felhasználói bejelentkezés felületén), ahogy a lap betöltődik, a modál azonnal felugrik. Ezzel kizárjuk, hogy a keresőbot beszkennelje a login-formot.
+    Ez a login csak staff membereket enged belépni

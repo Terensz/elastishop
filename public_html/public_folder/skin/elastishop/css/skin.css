@@ -1,0 +1,113 @@
+.card-image-container {
+    height: 120px !important;
+}
+.card-image {
+    object-fit: cover;
+    overflow: hidden;
+    height: 120px;
+    width: 100%;
+}
+.card-noBorderRadius {
+    border-radius: 0;
+}
+.card-innerCard {
+    box-shadow: none !important;
+    /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px !important; */
+}
+
+/* .card-header-paleBackgroundColor {
+
+} */
+.fontColor-pale {
+    color: #797979 !important;
+}
+.fontColor-extraPale {
+    color: #b8b8b8 !important;
+}
+/* .card-header-autoHeight {
+    height: auto !important;
+} */
+
+@media (max-width: 767px) {
+    .flex-container {
+        flex-direction: column;
+        width: 100% !important;
+    }
+
+    .flex-content-sidebar, .flex-content-main {
+        width: 100%;
+    }
+}
+
+/*
+linkText
+*/
+.linkText {
+    color: #5eb0e3;
+    font-weight: bold;
+}
+.linkText:hover {
+    color: #3e85b2;
+    text-decoration: underline;
+}
+.linkText a {
+    text-decoration: none;
+}
+
+/* .webshop-sidebar-widget {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    margin-bottom: 20px;
+} */
+.webshop-sidebar-caption {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/*
+Card colors
+*/
+.card-highlighted {
+    box-shadow: 0 0 10px -1px rgba(52, 104, 141, 0.5) !important;
+    border: 1px solid #709ab9;
+}
+.card-inactive {
+    box-shadow: 0 0 10px -1px #502e2e !important;
+    border: 1px solid #AFA7EE;
+}
+.card-closed-successful {
+    box-shadow: 0 0 10px -1px #42B72A !important;
+    border: 1px solid #42B72A;
+}
+.card-error {
+    box-shadow: 0 0 10px -1px rgba(255, 0, 0, 0.5) !important;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+.card-success {
+    box-shadow: 0 0 10px -1px #42B72A !important;
+    border: 1px solid #42B72A;
+}
+
+.table-dark {
+    --bs-table-bg: #007bff;
+    --bs-table-striped-bg: #007bff;
+    --bs-table-striped-color: #ffffff;
+    --bs-table-active-bg: #007bff;
+    --bs-table-active-color: #ffffff;
+    --bs-table-hover-bg: #0056b3;
+    --bs-table-hover-color: #ffffff;
+    color: #ffffff;
+    border-color: #333944;
+}
+
+.webshop-checkout-deliveryInformationInput {
+    color: #007bff !important;
+}
+
+.sideMenu-row-container {
+    border-top: 1px solid #efefef;
+    width: 100%;
+    height: 100%;
+}
+
+/* .sideMenu-active {
+    background-color: #57829a !important;
+} */

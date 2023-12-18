@@ -1,0 +1,60 @@
+Lehet felhasználókat meghívni admin skálához.
+A meghívott felhasználóról készülni fog egy ProjectUser entitás.
+
+Itt jegyezném meg, hogy az informatikában projectnek hívjuk az egy website-hoz tartozó alkalmazás egyedi részét. 
+Ez az IT-s értelmében vett project (ASC) pedig L. Ron Hubbard admin-technológiájának a szoftveres formája, viszont LRH terminológiájában a project egy nagyobb program egy kisebb lépése. 
+A Project... kezdetű entitások mindegyike az IT-s jelentésében értendő.
+
+Mindenek előtt tekintsd át az adatbázis-szerkezetet
+
+Entitások 
+=========
+
+1. ProjectTeam 
+--------------
+Magáért beszél. Az adott IT projectben működő csapat. 
+
+Egy kis kitérő:
+Alapvetően Project... előtagot kapnak a project-specifikus entitások, és a mobilos szoftverben már most Framework... előtagot a keretrendszer részeként működőek. 
+Ez a konvenció még nincs áthozva a webes működésbe, itt jellemzően nincs előtag, csak akkor, ha az adott entitásnév megtévesztő lehet. És bár User entitás nincs az adatbázisban, 
+de az ElastiSite keretrendszerben működik, mint technikai entitás.
+(Kitérő vége)
+
+2. ProjectUser 
+--------------
+Elképzelésem szerint így kell a project-specifikus felhasználói adatokat tárolni. Miért? 
+- Mert ezt az entitást kedved szerint testre tudod szabni bármilyen keretrendszerbe ágyazott repository-ból. Ha az egyik projectben fontos a felhasználó cipőmérete, akkor tedd bele.
+Vedd észre, hogy a ProjectUser szülője a ProjectUserBase abstract class, és kötelező metódus a get és setUserAccount.
+- Ettől még lehet külön kezelni az UserAccount entitást.
+
+Ajánlás: ha GDPR szerint személyes adatot adsz meg a projectben, akkor be tudod állítani a titkosítást az adatmodellben: tegyél bele egy const ENTITY_ATTRIBUTES-t, 
+és adj neki egy 'encryptedProperties' kulcsot, értékként pedig sorold fel a titkosítandó property-neveket, camelCase formában! Onnantól ezek a property-k titkosítva fognak tárolódni. (Természetesen ID mező ne legyen titkos)
+
+Hogyan jön létre az entitás?
+............................
+
+*Szerk: ez telejsen meg fog változni, lásd: ProjectTeamwork_2.txt
+
+A ProjectUser entitást a ProjectUserService::createBlankProjectUser(); hívás készíti. Ha nem adsz meg neki UserAccount-ot, akkor a bejelentkezett user UserAccount-ját rakja bele a ProjectUser entitásba.
+A ProjectUser entitás a regisztrációkor jön létre. (Amikor ezt leírtam, akkor ez nem volt igaz)
+
+Meghívó link összeállítása:
+===========================
+
+1. AscScaleBuilderWidgetController->ascInviteUserSendAction()
+Ahogy a neve is előrevetíti, ez az action hívódik meg, amikor a modálba beírja az admin skála tulajdonosa a meghívott személy nevét és e-mail címét.
+Ez a metódus csak a submitot végzi, ekkor a modál mindenképpen bezáródik.
+
+A form subitot követően
+- A modál bezáródik, függetlenül bármitől
+- Az AscScaleBuilderWidgetController->ascInviteUserSendAction() metódus elindul
+- Végignézi, hogy az aktuális AscScale példányhoz kapcsolódóan van-e már olyan regisztrált ProjectTeamUser 
+
+
+
+Link ellenőrzése:
+=================
+Az AscRequestService::processInviteConfirmation() metódus végzi.
+
+Amikor az admin skála tulajdonosa meghív valakit az e-mail címe alapján az admin skála csapatába, akkor kétféle folyamat indulhat el:
+1.: van már regisztrált ProjectUser, ekkor 

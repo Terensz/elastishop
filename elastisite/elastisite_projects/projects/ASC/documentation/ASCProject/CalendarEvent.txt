@@ -1,0 +1,115 @@
+Calendar event
+==============
+Ez egy összetett működések összessége az időzített események rögzítésére, egyszeri és rendszeres események létrehozására, és az aktuális, vagy fontos események listázására.
+Ezeknek a működéseknek a magját az EventPackage tartalmazza, a finomhangolásokat pedig az ASC project.
+
+Az esemény bármi lehet, de itt a projectben kimondottan az adott unit (unit: az admin skála bármely egysége, pl. főcél, project, feladat) határidejét jelenti.
+Eseményként hivatkozom rá a későbbiekben, mert programozási szempontból, és a szoftverben szereplő általános elnevezése szerint az.
+
+Nagyvonalakban a működésekről, amiket az EventPackage és az ASC project végez.
+
+I.: Események hozzáadása
+------------------------
+Az ASC project unit-szerkesztőjében (bármely admin skála bármilyen nézetében a unitok fejlécében levő ceruza ikon) hozzáadható a esemény. 
+Szürke szövegdobozban van minden, ami ide tartozik, pont azokat az inputokat jelenítjük meg, amiket a google naptár használ. (A működés onnan lett ello... kölcsönvéve).
+
+II.: Napi lista előkészítése, az esemény-aktualitások létrehozása
+-----------------------------------------------------------------
+Ez a legösszetettebb mind közül. A core metódusok a CalendarEventChecker class-ban vannak, a kiegészítések pedig a projectben az AscCalendarEventChecker-ben.
+
+Esemény-aktualitás: az esemény egy példánya, ami akkor jön létre, amikor az esemény aktuálissá válik. Azért létezik ez a fogalom, mert vannak ismétlődő események, 
+ahol az esemény pusztán a leírást tartalmazza arról, hogy mikor kell ezeknek az eseményeknek aktuálissá válniuk. Az egyszeri események aktualitása maga az esemény. 
+(Program szinten: mindkét típusból képzünk egy-egy aktualitást)
+
+A lényege ennek a működésnek: egyszeri lefutással megnézzük az adott felhasználóhoz tartozó minden egyes eventnél, annak az összes napját végigpörgetve, hogy melyik az, amelyikből már képződnie kellett egy aktualitásnak.
+Azt is megnézzük, hogy van-e már ilyen aktualitásunk, ezt nagy vonalakban az esemény azonosítója és a dátum alapján tudjuk megnézni.
+Ha nincs még ilyen aktualitásunk, akkor a CalendarEventChecker létrehozza azt.
+
+Mi mit csinál? 
+
+AscCalendarEventChecker: a projectben szereplő class, ami gondoskodik arról, hogy az adott projecthez specifikusan le lehessen kérdeztetni az eseményeket a CalendarEventChecker-rel, ami egy általános class a keretrendszerben.
+Erre azért van szükség, mert a teljes lekérdezés tartalmaz pár táblát, amit szintén össze kell joinolnunk a CalendarEvent csomag általános tábláival.
+
+CalendarEventChecker: általános class, arra szolgál, hogy a projectben szereplő project-specifikus táblákat és azok mezőit megkapva kérdezze le az eseményeket és gyártson belőlük aktualitásokat, és ezeket tárolja el az adatbázisban.
+
+CalendarEvent: általános entitás, maga az esemény, tartalmazva azt, hogy egyszeri vagy ismétlődő, és az ismétlődéssel kapcsolatos minden adatot.
+- Ismétlési gyakoriság és ismétlési egység : ez a két adat megadja, hogy az hány hetente, havonta vagy évente kell ismétlődnie az eseménynek (pl. "2 hetente", ebből a szókapcsolatból a "2" az ismétlési gyakoriság, és a "hetente" az )
+- Frequency type, vagy gyakorisági típus: ez egy minta, ami alapján bármilyen ismétlődés összeállítható. Azért létezik ez, hogy a unit-szerkesztő legördülőjébe vannak gyakran használt ismétlési minták előre beállítva.
+- Kezdődátum: ez egyben az esedékesség is. Az ASC projectben nem dolgozunk az események végdátumával.
+- Kezdő óra/perc: nem köteleő megadni, ha nincs megadva, akkor az esemény aznap aktuális, ha ez meg van adva, akkor az esemény addik a pontig aktuális, onnantól késik.
+- Ismétlési napok (hétfő, ... vasárnap) megadható, hogy mely napokon ismétlődjön az esemény, és akkor kimondottan azokon fog aktualizálódni.
+Pl. egy kéthavonta ismétlődő eseménynél megadhatjuk, hogy szerdán és pénteken aktualizálódjon. Életszerű példa: kéthavonta szerdán tartunk egy meetinget a társszervezetekkel, és pénteken rendbe kell hozni és vissza kell rendezni a helyszínt.
+Én nem akarunk ezért külön feladatot készíteni, hiszen a feladat pl. a rendezvény teljes lebonyolítása, de pl. kétszer kell vele foglalkoznunk kéthavonta.
+Ilyenkor ha az első eseményt 2023.06.07-én (szerdán) vettük fel kéthavonta szerdai és pénteki ismétlődésre, akkor júliusban nem generálódik aktualitás, viszont júliusban a hónapnak pont abban a hetében, amikor az esemény létrejött, 
+szerdára és péntekre generálódik egy-egy esemény-aktualitás.
+Ha nem adnánk meg a szerdát és pénteket, akkor pont azon a napon válna aktuálissá az ismétlődő esemény, vagyis esetünkben augusztus 7-én.
+
+CalendarEventActuality: az eseményből készített aktualitás. Az ismétlődő események miatt került bevezetésre, hogy külön generálódjon egy atatbázis-record, amit külön-külön lehet zárni.
+
+CalendarCheck: egy lefutása a checkernek, ami megnézi, hogy van-e kezeletlen event, amiről még nem hoztunk létre aktualitást.
+
+CalendarCheckEventActuality: egy kapcsolótábla, ami tartalmazza a CalendarCheck id-t és a CalendarEventActuality id-t.
+Vagyis tudni fogjuk, hogy az adott aktualitás melyik eseményhez és melyik naphoz tartozik.
+
+III.: A napi események listázása a dashboard-on
+-----------------------------------------------
+
+1.: A listázásról pár dolog:
+
+4 listázási kategória van: 
+
+a.: Mai teendők 
+Azok az aktualitások, amiknek az esedékessége (határideje) a mai nap, és vagy egésznaposak (nincs óra/perc beállítva), vagy még nem járt le az óra/perc a határidejükből.
+
+b.: Lejárt teendők
+Aktualitások, amiknek lejért a határideje, de még nem lettek lezárva.
+
+c.: Lezárt teendők
+Aktualitások, amik ma kerültek zárásra
+
+d.: Elhalasztott teendők 
+/**
+* @todo Ez jövőbeli feature 
+*/
+
+A lista adatainak összeállításáért az AscCalendarEventActualityService::getDashboardData() metódus felel, még közvetlenebbül az AscUnitRepository::collectDashboardData().
+Kérdezhetnéd: Hogy kerül pont ebbe a repoba? Miért nem pl. a CalendarEventRepository-ba?
+Itt ugye leszűkültek a lehetőségek, mert ez a lekérdezés egyértelműen egyedi üzleti logika, és nem pedig újrafelhasználható működés, márpedig az egész EventPackage csak újrafelhasználható metódusokat tartalmaz.
+Vagyis: nem biztos, hogy ez a jó hely neki, de nem találtam jobbat.
+
+Mit csinál az AscCalendarEventActualityService::getDashboardData()?
+Elsőként összegyűjteti a lista elemeit az AscUnitRepository class collectDashboardData() metódusával, 
+majd szortírozza az eredményt.
+Ha bármi gond lenne a dashboard 4 karikájában szereplő számokkal vagy a lista adataival, akkor ezt a két metódust debugold ki.
+
+Két dolgot kell szabályoznunk: 1.: a körökben levő számokat, 2.: a lista elemeit.
+
+2.: Hol a backend és hol vannak a frontend-bekötések?
+
+a.: RouteMap class: AscMainDashboardRouteMap.
+
+b.: Controller class: AscMainDashboardWidgetController 
+
+c.: JavaScriptek: az AscScaleBuilderScripts.php kezeli az összes javascriptet a builderben, és mivel könnyen lehet, hogy akarunk unitokat is szerkeszteni a dashboard-on is majd, így ez a file include-olódik a /asc/dashboard felületen is.
+A fő AscScaleBuilder JS objecten kívül itt ebben a file-ban önálló objectet kapott az esemény-listázó: EventActualityList-ként találod meg. (var EventActualityList = {...)
+A működése egyszerű: a controllerben a createEventActualityListView() metódus rakja össze a teljes view-ból csak az esemény-aktualitás listázó widgetjét, ami a dashboard widgettel együtt lerenderelődik.
+Viszont külön is el tudjuk készíttetni, mert vedd észre, hogy a createEventActualityListView() nem action, csak egy metódus, amit több action is használ.
+(Azt külön részletezni fogom, hogy az ajaxot hogyan érdemes megcsinálni, mindig úgy, hogy egyben elkéred az összes view-t, és a JS megnézi, hogy null vagy string, és ha string, akkor berakja a helyére. 
+Ezzel kivéded azt, hogy több hívás legyen, mint kell, és gyorsabb és jobb lesz az alkalmazás így.
+Ezt mások máshogy szokták, de szerintem így a logikus.)
+
+Tehát: az esemény-aktualitás zárását és a lista befrissítését ez a JS függvény intézi: EventActualityList.close();
+A válaszban visszajön a lista, amit befrissítünk a helyére.
+
+Hozzá kell nyúlnom a programhoz, de nem tudom, hogy tegyem...
+-------------------------------------------------------------
+
+1.: Módosítanom kell, hogy mik jelenjenek meg a /asc/dashboard-on 
+
+    Első kérdés: Melyik részéhez?
+
+    a.: "Saját admin skálák"
+
+    b.: ""
+
+2.: 

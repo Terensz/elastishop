@@ -1,0 +1,2 @@
+- Hogyan reload-oljuk a grid-et a modalból?
+    -> AdminFinanceInvoicesDataGrid.list(true); (Ha nem raksz bele true-t, akkor wrapolja a betöltött view-t.)

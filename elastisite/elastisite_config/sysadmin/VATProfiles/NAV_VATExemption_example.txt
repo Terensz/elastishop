@@ -1,0 +1,51 @@
+#mode=This is the TEST
+taxOffice.APIUrlBase=https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3
+taxOffice.statusesToResend=[WARN,WARNING,ABORT,ABORTED]
+taxOffice.allowedVATPercentages=[0]
+taxoffice.VATExemption=true
+
+finance.invoiceCreation=true
+
+#user.username=l5ajbsewmqcgens
+#user.password=Szextorpe5167429
+#user.signKey=58-bd0f-e44f7c01602741YWLM574ZHN
+#user.exchangeKey=f2f641YWLM577L6R
+#user.shortTaxNumber=58397235
+
+user.username=jxqqdz9mdgaorux
+user.password=Szextorpe5167429
+user.signKey=c9-a179-5568def4184841Z2JVYR4DXJ
+user.exchangeKey=40c141Z2JVYR74HZ
+user.shortTaxNumber=58397235
+
+issuer.name=Papp Ferenc
+issuer.displayedTaxId=58397235-1-41 | EU: ASD1234546
+issuer.taxId=58397235-1-41
+issuer.bankAccountNumber=11773411-11223344-55667788
+issuer.bankName=OTP Bank
+issuer.iban=
+issuer.swift=
+issuer.country=HU
+issuer.zipCode=1123
+issuer.city=Budapest
+issuer.street=Váci
+issuer.streetSuffix=körút
+issuer.houseNumber=23.
+issuer.staircase=2.
+issuer.floor=4.
+issuer.door=417.
+
+invoice.startingSequence=4556
+invoice.numberFormat=ESWM{year}1650000{sequence}
+
+request.headerVersion=1.0
+request.version=3.0
+
+software.id=ELASTISHOP-202304
+software.name=ElastiSite-ElastiShop
+software.operation=ONLINE_SERVICE
+software.mainVersion=v1.1
+software.devName=Papp Ferenc
+software.devContact=+36705150551
+software.devCountryCode=HU
+software.devTaxNumber=58397235
