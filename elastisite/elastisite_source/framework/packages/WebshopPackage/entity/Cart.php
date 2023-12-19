@@ -8,9 +8,10 @@ use framework\packages\UserPackage\entity\Address;
 use framework\packages\UserPackage\entity\TemporaryAccount;
 use framework\packages\WebshopPackage\entity\CartItem;
 use framework\packages\UserPackage\entity\UserAccount;
+use framework\packages\WebshopPackage\dataProvider\interfaces\PackInterface;
 use framework\packages\WebshopPackage\entity\Shipment;
 
-class Cart extends DbEntity
+class Cart extends DbEntity implements PackInterface
 {
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `cart` (
         `id` int(11) NOT NULL AUTO_INCREMENT,

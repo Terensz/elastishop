@@ -48,7 +48,7 @@ if (in_array('en', App::getContainer()->getConfig()->getSupportedLocales())) {
 }
 
 $formView->add('select')->setPropertyReference('specialPurpose')->setLabel(trans('special.purpose'))
-    ->addOption('null', 'none')
+    ->addOption('*null*', 'none')
     ->addOption(Product::SPECIAL_PURPOSE_DELIVERY_FEE, 'delivery.fee')
     ->addOption(Product::SPECIAL_PURPOSE_GIFT, 'gift')
     ;

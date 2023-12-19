@@ -21,7 +21,7 @@ class PriceDataProvider extends Service
         
     ];
     */
-    public static function assembleProductPriceData($rawData)
+    public static function assembleDataSet($rawData)
     {
         if (!isset($rawData['quantity']) || !$rawData['quantity']) {
             $rawData['quantity'] = null;
@@ -70,7 +70,7 @@ class PriceDataProvider extends Service
             $grossItemPriceFormatted = null;
         }
 
-        $data = [
+        $dataSet = [
             // 'netUnitPriceFormatted' => StringHelper::formatNumber($rawData['netUnitPrice'], 2, ',', '.'),
             'vatPercent' => $rawData['vatPercent'],
             //'quantity' => $rawData['quantity'],
@@ -92,6 +92,6 @@ class PriceDataProvider extends Service
             'grossItemPriceFormatted' => $grossItemPriceFormatted
         ];
 
-        return $data;
+        return $dataSet;
     }
 }

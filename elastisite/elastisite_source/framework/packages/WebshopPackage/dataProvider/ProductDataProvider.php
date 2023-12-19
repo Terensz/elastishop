@@ -4,6 +4,7 @@ namespace framework\packages\WebshopPackage\dataProvider;
 use App;
 use framework\component\helper\StringHelper;
 use framework\component\parent\Service;
+use framework\packages\WebshopPackage\entity\Product;
 
 class ProductDataProvider extends Service
 {
@@ -29,5 +30,14 @@ class ProductDataProvider extends Service
             'imageLink' => null,
             'images' => null,
         ];
+    }
+
+    public static function assembleDataSet(Product $object) : array
+    {
+        App::getContainer()->wireService('WebshopPackage/entity/Product');
+        $dataSet = self::getRawDataPattern();
+        $dataSet['id'] = $object->getId();
+
+        return $dataSet;
     }
 }

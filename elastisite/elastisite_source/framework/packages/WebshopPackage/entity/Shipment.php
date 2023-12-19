@@ -7,9 +7,10 @@ use framework\packages\WebshopPackage\entity\ShipmentItem;
 use framework\packages\UserPackage\entity\UserAccount;
 use framework\packages\UserPackage\entity\TemporaryAccount;
 use framework\packages\PaymentPackage\entity\Payment;
+use framework\packages\WebshopPackage\dataProvider\interfaces\PackInterface;
 use framework\packages\WebshopPackage\entity\Cart;
 
-class Shipment extends DbEntity
+class Shipment extends DbEntity implements PackInterface
 {
     // const SHIPMENT_STATUS_INACTIVE = 0;
     const SHIPMENT_STATUS_ORDER_CANCELLED = 15;
