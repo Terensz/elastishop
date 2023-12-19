@@ -27,7 +27,7 @@ class ProductDataProvider extends Service
             'discount' => null,
             'infoLink' => null,
             'imageLink' => null,
-            'images' => null,
+            'productImages' => null,
         ];
     }
 }
