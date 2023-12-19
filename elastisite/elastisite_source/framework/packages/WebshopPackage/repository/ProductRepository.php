@@ -202,7 +202,7 @@ class ProductRepository extends DbRepository
                                         OR GROUP_CONCAT(ppa.gross_price) IS NULL 
                                         OR GROUP_CONCAT(ppa.gross_price) <= 0
                                         OR GROUP_CONCAT(ppa.vat) IS NULL 
-                                        OR GROUP_CONCAT(ppa.vat) <= 0 
+                                        -- OR GROUP_CONCAT(ppa.vat) <= 0 
                                 )THEN '".self::PRODUCT_CONDITION_ANOMALOUS."'
                             ELSE '".self::PRODUCT_CONDITION_OFFERABLE."'
                             END as product_condition,

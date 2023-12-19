@@ -27,27 +27,28 @@ class PaymentDataProvider extends Service
         ];
     }
 
-    public static function assembleDataSet(Payment $payment = null)
+    public static function assembleDataSet(Payment $object = null)
     {
-        App::getContainer()->setService('PaymentPackage/entyty/Payment');
+        App::getContainer()->wireService('PaymentPackage/entity/Payment');
+        
         $dataSet = self::getRawDataPattern();
-        if (!$payment) {
+        if (!$object) {
             return $dataSet;
         }
-        $dataSet['id'] = $payment->getId();
-        $dataSet['paymentCode'] = $payment->getPaymentCode();
-        $dataSet['payment']['ipnCalled'] = $payment->getIpnCalled();
-        $dataSet['gatewayProvider'] = $payment->getGatewayProvider();
-        $dataSet['gatewayUrl'] = $payment->getGatewayUrl();
-        $dataSet['paymentMethod'] = $payment->getPaymentMethod();
-        $dataSet['totalGrossValue'] = $payment->getTotalGrossValue();
-        $dataSet['currency'] = $payment->getCurrency();
-        $dataSet['createdAt'] = $payment->getCreatedAt();
-        $dataSet['redirectedAt'] = $payment->getRedirectedAt();
-        $dataSet['closedAt'] = $payment->getClosedAt();
-        $dataSet['status'] = $payment->getStatus();
-        $dataSet['statusCode'] = $payment->getStatus() && in_array($payment->getStatus(), Payment::PAYMENT_STATUS_COLLECTION_ALL) ? $payment->getStatus() : null;
-        $dataSet['translatedStatusText'] = isset(Payment::PAYMENT_STATUS_TRANSLATION_REFERENCES[$payment->getStatus()]) ? trans(Payment::PAYMENT_STATUS_TRANSLATION_REFERENCES[$payment->getStatus()]) : null;
+        $dataSet['id'] = $object->getId();
+        $dataSet['paymentCode'] = $object->getPaymentCode();
+        $dataSet['payment']['ipnCalled'] = $object->getIpnCalled();
+        $dataSet['gatewayProvider'] = $object->getGatewayProvider();
+        $dataSet['gatewayUrl'] = $object->getGatewayUrl();
+        $dataSet['paymentMethod'] = $object->getPaymentMethod();
+        $dataSet['totalGrossValue'] = $object->getTotalGrossValue();
+        $dataSet['currency'] = $object->getCurrency();
+        $dataSet['createdAt'] = $object->getCreatedAt();
+        $dataSet['redirectedAt'] = $object->getRedirectedAt();
+        $dataSet['closedAt'] = $object->getClosedAt();
+        $dataSet['status'] = $object->getStatus();
+        $dataSet['statusCode'] = $object->getStatus() && in_array($object->getStatus(), Payment::PAYMENT_STATUS_COLLECTION_ALL) ? $object->getStatus() : null;
+        $dataSet['translatedStatusText'] = isset(Payment::PAYMENT_STATUS_TRANSLATION_REFERENCES[$object->getStatus()]) ? trans(Payment::PAYMENT_STATUS_TRANSLATION_REFERENCES[$object->getStatus()]) : null;
 
         return $dataSet;
     }

@@ -49,6 +49,7 @@ class PriceDataProvider extends Service
         $grossUnitPriceFormatted = StringHelper::formatNumber($grossUnitPriceAccurate, 2, ',', '.');
 
         if ($rawData['quantity']) {
+            // dump($rawData['quantity']);
             $netItemPriceAccurate = $netUnitPriceAccurate * $rawData['quantity'];
             $netItemPriceRounded0 = round($netItemPriceAccurate, 0);
             $netItemPriceRounded2 = round($netItemPriceAccurate, 2);
@@ -91,6 +92,7 @@ class PriceDataProvider extends Service
             'grossItemPriceRounded2' => $grossItemPriceRounded2,
             'grossItemPriceFormatted' => $grossItemPriceFormatted
         ];
+        // dump($dataSet);
 
         return $dataSet;
     }

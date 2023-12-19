@@ -7,6 +7,7 @@ use framework\component\parent\Service;
 use framework\packages\PaymentPackage\entity\Payment;
 use framework\packages\UserPackage\entity\User;
 use framework\packages\WebshopPackage\dataProvider\interfaces\PackInterface;
+use framework\packages\WebshopPackage\entity\Cart;
 use framework\packages\WebshopPackage\entity\Shipment;
 
 class PackDataProvider extends Service
@@ -54,15 +55,17 @@ class PackDataProvider extends Service
         ];
     }
 
-    public static function assembleDataSet(PackInterface $packObject, string $packItemGetter) : array
+    public static function assembleDataSet(PackInterface $packObject) : array
     {
         $dataSet = self::getRawDataPattern();
         App::getContainer()->wireService('UserPackage/entity/User');
         App::getContainer()->wireService('PaymentPackage/entity/Payment');
+        App::getContainer()->wireService('WebshopPackage/entity/Cart');
         App::getContainer()->wireService('WebshopPackage/entity/Shipment');
         App::getContainer()->wireService('WebshopPackage/dataProvider/AddressDataProvider');
         App::getContainer()->wireService('WebshopPackage/dataProvider/OrganizationDataProvider');
         App::getContainer()->wireService('WebshopPackage/dataProvider/PackItemDataProvider');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PaymentDataProvider');
 
         if ($packObject->getTemporaryAccount() && $packObject->getTemporaryAccount()->getTemporaryPerson()) {
             $customerName = $packObject->getTemporaryAccount()->getTemporaryPerson()->getName();
@@ -74,7 +77,9 @@ class PackDataProvider extends Service
             $dataSet['customer']['type'] = $customerType;
             $dataSet['customer']['note'] = $customerNote;
             $dataSet['customer']['email'] = $customerEmail;
-            $dataSet['customer']['address'] = AddressDataProvider::assembleDataSet($packObject->getTemporaryAccount()->getTemporaryPerson());
+            if ($packObject->getTemporaryAccount()->getTemporaryPerson() && $packObject->getTemporaryAccount()->getTemporaryPerson()->getAddress()) {
+                $dataSet['customer']['address'] = AddressDataProvider::assembleDataSet($packObject->getTemporaryAccount()->getTemporaryPerson()->getAddress());
+            }
             $dataSet['customer']['organization'] = OrganizationDataProvider::assembleDataSet($packObject->getTemporaryAccount()->getTemporaryPerson()->getOrganization());
         }
         $dataSet['pack']['id'] = $packObject->getId();
@@ -108,11 +113,17 @@ class PackDataProvider extends Service
         }
 
         $sumGrossItemPriceRounded2 = 0;
-        foreach ($packObject->$packItemGetter() as $packItem) {
+        $packItemCollection = [];
+        if ($packObject instanceof Cart) {
+            $packItemCollection = $packObject->getCartItem();
+        } elseif ($packObject instanceof Shipment) {
+            $packItemCollection = $packObject->getShipmentItem();
+        }
+        foreach ($packItemCollection as $packItem) {
             $packItemData = PackItemDataProvider::assembleDataSet($packItem);
             $dataSet['pack']['packItems'][] = $packItemData;
             $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
-            $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['priceData']['grossItemPriceRounded2'];
+            $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
         }
 
         $dataSet['pack']['currencyCode'] = $currencyCode;

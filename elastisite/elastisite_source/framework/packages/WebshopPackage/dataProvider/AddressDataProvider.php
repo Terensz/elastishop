@@ -4,6 +4,7 @@ namespace framework\packages\WebshopPackage\dataProvider;
 use App;
 use framework\component\helper\StringHelper;
 use framework\component\parent\Service;
+use framework\packages\UserPackage\entity\Address;
 
 class AddressDataProvider extends Service
 {
@@ -25,23 +26,26 @@ class AddressDataProvider extends Service
         ];
     }
 
-    public static function assembleDataSet($object)
+    public static function assembleDataSet(Address $object = null)
     {
+        App::getContainer()->wireService('UserPackage/entity/Address');
+        
         $dataSet = self::getRawDataPattern();
-        if ($object->getAddress()) {
-            if ($object->getAddress()->getCountry()) {
-                $dataSet['customer']['address']['country']['alpha2Code'] = $object->getAddress()->getCountry()->getAlphaTwo();
-                $dataSet['customer']['address']['country']['translatedName'] = trans($object->getAddress()->getCountry()->getTranslationReference());
-            }
-            $dataSet['zipCode'] = $object->getAddress()->getZipCode();
-            $dataSet['city'] = $object->getAddress()->getCity();
-            $dataSet['street'] = $object->getAddress()->getStreet();
-            $dataSet['streetSuffix'] = $object->getAddress()->getStreetSuffix();
-            $dataSet['houseNumber'] = $object->getAddress()->getHouseNumber();
-            $dataSet['staircase'] = $object->getAddress()->getStaircase();
-            $dataSet['floor'] = $object->getAddress()->getFloor();
-            $dataSet['door'] = $object->getAddress()->getDoor();
+        if (!$object) {
+            return $dataSet;
         }
+        if ($object->getCountry()) {
+            $dataSet['country']['alpha2Code'] = $object->getCountry()->getAlphaTwo();
+            $dataSet['country']['translatedName'] = trans($object->getCountry()->getTranslationReference());
+        }
+        $dataSet['zipCode'] = $object->getZipCode();
+        $dataSet['city'] = $object->getCity();
+        $dataSet['street'] = $object->getStreet();
+        $dataSet['streetSuffix'] = $object->getStreetSuffix();
+        $dataSet['houseNumber'] = $object->getHouseNumber();
+        $dataSet['staircase'] = $object->getStaircase();
+        $dataSet['floor'] = $object->getFloor();
+        $dataSet['door'] = $object->getDoor();
 
         return $dataSet;
     }
