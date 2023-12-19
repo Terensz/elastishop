@@ -110,8 +110,9 @@ class KeywordBuilder extends Kernel
     public function getKeywords()
     {        
         $keywords = $this->keywords;
-        $collator = new \Collator('hu_HU');
-        $collator->sort($keywords);
+        // $collator = new \Collator('hu_HU');
+        // $collator->sort($keywords);
+        // dump($keywords);
         return implode(', ', $keywords);
     }
 }
