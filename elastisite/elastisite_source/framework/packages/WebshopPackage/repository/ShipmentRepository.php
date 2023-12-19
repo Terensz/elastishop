@@ -84,7 +84,7 @@ class ShipmentRepository extends DbRepository
                             'Unavailable' as product_condition,
                             pc." . ($locale == 'en' ? 'name_en' : 'name') . " as category_name,
                             p." . ($locale == 'en' ? 'name_en' : 'name') . " as product_name,
-                            p." . ($locale == 'en' ? 'info_en' : 'info') . " as product_info,
+                            p." . ($locale == 'en' ? 'short_info_en' : 'short_info') . " as product_short_info,
                             ".($getDescription ? "p.description".($locale == 'en' ? '_en' : '') : "''")." as product_description,
                             p." . ($locale == 'en' ? 'slug_en' : 'slug') . " as product_slug,
                             p.status as product_status,

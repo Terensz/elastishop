@@ -313,7 +313,7 @@ class GatewayOperator extends OnlineGatewayOperator
             // $originalDescription = $shipmentItemData['product']['productDescription'];
             // $modifiedDescription = StringHelper::cutLongString(strip_tags($originalDescription), 49);
             // $modifiedDescription = empty($modifiedDescription) ? $shipmentItemData['product']['productName'] : $modifiedDescription;
-            $modifiedDescription = $shipmentItemData['product']['productInfo'] ? : $shipmentItemData['product']['productName'];
+            $modifiedDescription = $shipmentItemData['product']['productShortInfo'] ? : $shipmentItemData['product']['productName'];
             // dump('originalDescription: '.$originalDescription);
             // dump('modifiedDescription: '.$modifiedDescription);
             $transactionItems[] = [

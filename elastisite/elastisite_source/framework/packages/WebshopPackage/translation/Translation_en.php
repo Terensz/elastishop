@@ -40,8 +40,8 @@ class Translation_en
             'special.purpose' => 'Special purpose',
             'delivery.fee' => 'Delivery fee',
             'gift' => 'Gift',
-            'info' => 'Info (default language)',
-            'english.info' => 'English info',
+            'short.info' => 'Short info (default language)',
+            'english.short.info' => 'English short info',
             'administrators.unfinished.orders.info' => 'You are currently logged in as an administrator at the moment.<br>
             Administrators have additional features here, but no possibility to finish a purchase. 
             If you want to test the webshop, please register a user, than log in as an administrator, go to the administrators area (cogwheel icon on the top-right corner), 

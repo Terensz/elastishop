@@ -1,5 +1,5 @@
 <?php
-namespace framework\packages\dataProvider\service;
+namespace framework\packages\WebshopPackage\dataProvider;
 
 use App;
 use framework\component\helper\StringHelper;
@@ -15,7 +15,9 @@ class PackDataProvider extends Service
                 'type' => null,
                 'note' => null,
                 'email' => null,
-                'mobile' => null
+                'mobile' => null,
+                'address' => null,
+                'organization' => null
             ],
             'pack' => [
                 'id' => null,
@@ -42,5 +44,29 @@ class PackDataProvider extends Service
                 'sumGrossPriceFormatted' => null
             ]
         ];
+    }
+
+    public static function assembleDataSet($packObject, string $packItemGetter)
+    {
+        $packData = self::getRawDataPattern();
+        App::getContainer()->wireService('WebshopPackage/dataProvider/AddressDataProvider');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/OrganizationDataProvider');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackItemDataProvider');
+
+        if ($packObject->getTemporaryAccount() && $packObject->getTemporaryAccount()->getTemporaryPerson()) {
+            $customerName = $packObject->getTemporaryAccount()->getTemporaryPerson()->getName();
+            $recipientName = $packObject->getTemporaryAccount()->getTemporaryPerson()->getRecipientName();
+            $customerType = $packObject->getTemporaryAccount()->getTemporaryPerson()->getCustomerType();
+            $customerNote = $packObject->getTemporaryAccount()->getTemporaryPerson()->getCustomerNote();
+            $customerEmail = $packObject->getTemporaryAccount()->getTemporaryPerson()->getEmail();
+            $packData['customer']['name'] = $recipientName ? : $customerName;
+            $packData['customer']['type'] = $customerType;
+            $packData['customer']['note'] = $customerNote;
+            $packData['customer']['email'] = $customerEmail;
+            $shipmentData['customer']['address'] = AddressDataProvider::assembleDataSet($packObject->getTemporaryAccount()->getTemporaryPerson());
+            $shipmentData['customer']['organization'] = OrganizationDataProvider::assembleDataSet($packObject->getTemporaryAccount()->getTemporaryPerson()->getOrganization());
+        }
+        $packData['pack']['id'] = $packObject->getId();
+        // $packData['pack']['packItems'] = PackItemDataProvider::assembleDataSet($packObject->$packItemGetter());
     }
 }

@@ -79,7 +79,7 @@ class WebshopProductService extends Service
                 'productCondition' => $rawProductsDataRow['product_condition'],
                 'productCategoryName' => $rawProductsDataRow['category_name'],
                 'productName' => $rawProductsDataRow['product_name'],
-                'productInfo' => $rawProductsDataRow['product_info'],
+                'productShortInfo' => $rawProductsDataRow['product_short_info'],
                 'productDescription' => $rawProductsDataRow['product_description'],
                 'productSlug' => $rawProductsDataRow['product_slug'],
                 'productStatus' => $rawProductsDataRow['product_status'],

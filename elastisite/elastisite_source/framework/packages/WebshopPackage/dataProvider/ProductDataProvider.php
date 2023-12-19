@@ -1,5 +1,5 @@
 <?php
-namespace framework\packages\dataProvider\service;
+namespace framework\packages\WebshopPackage\dataProvider;
 
 use App;
 use framework\component\helper\StringHelper;
@@ -16,7 +16,7 @@ class ProductDataProvider extends Service
             'condition' => null,
             'productCategoryName' => null,
             'name' => null,
-            'info' => null,
+            'shortInfo' => null,
             'description' => null,
             'slug' => null,
             'status' => null,

@@ -23,12 +23,12 @@ class EditProductSchema extends FormSchema
                         'required' => false
                     )
                 ),
-                'info' => array(
+                'shortInfo' => array(
                     'validatorRules' => array(
                         'required' => true
                     )
                 ),
-                'infoEn' => array(
+                'shortInfoEn' => array(
                     'validatorRules' => array(
                         'required' => false
                     )

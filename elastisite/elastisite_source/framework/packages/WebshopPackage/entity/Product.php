@@ -33,8 +33,8 @@ class Product extends DbEntity
         `website` varchar(250) DEFAULT NULL,
         `name` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
         `name_en` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
-        `info` varchar(250) COLLATE utf8_hungarian_ci NOT NULL,
-        `info_en` varchar(250) COLLATE utf8_hungarian_ci DEFAULT NULL,
+        `short_info` varchar(250) COLLATE utf8_hungarian_ci NOT NULL,
+        `short_info_en` varchar(250) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `slug` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `slug_en` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `description` text COLLATE utf8_hungarian_ci NOT NULL,
@@ -95,8 +95,8 @@ class Product extends DbEntity
     protected $website;
     protected $name;
     protected $nameEn;
-    protected $info;
-    protected $infoEn;
+    protected $shortInfo;
+    protected $shortInfoEn;
     protected $slug;
     protected $slugEn;
     protected $description;
@@ -167,24 +167,24 @@ class Product extends DbEntity
         return $this->nameEn;
     }
 
-    public function setInfo($info)
+    public function setShortInfo($shortInfo)
     {
-        $this->info = $info;
+        $this->shortInfo = $shortInfo;
     }
 
-    public function getInfo()
+    public function getShortInfo()
     {
-        return $this->info;
+        return $this->shortInfo;
     }
 
-    public function setInfoEn($infoEn)
+    public function setShortInfoEn($shortInfoEn)
     {
-        $this->infoEn = $infoEn;
+        $this->shortInfoEn = $shortInfoEn;
     }
 
-    public function getInfoEn()
+    public function getShortInfoEn()
     {
-        return $this->infoEn;
+        return $this->shortInfoEn;
     }
 
     public function setSlug($slug)

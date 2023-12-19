@@ -40,8 +40,8 @@ class Translation_hu
             'special.purpose' => 'Különleges cél',
             'delivery.fee' => 'Kiszállítási díj',
             'gift' => 'Ajándék',
-            'info' => 'Info (Fontos! Ez jelenik meg a cím alatti leírásként a Facebook-on linkelve a terméket.)',
-            'english.info' => 'Angol info',
+            'short.info' => 'Rövid info (Fontos! Ez jelenik meg a cím alatti leírásként a Facebook-on linkelve a terméket.)',
+            'english.short.info' => 'Angol rövid info',
             'administrators.unfinished.orders.info' => 'Jelenleg üzemeltetőként van bejelentkezve.<br>
             Néhány funkció (pl. hibás termék javítása) csak ezzel a hozzáféréssel lesz elérhető itt, a publikus felületen, viszont nem fog tudni vásárolni.<br>
             Ha a webáruházat akarja tesztelni: jelentkezzen ki, majd regisztráljon egy normál felhasználót, majd jelentkezzen be újra üzemeltetőként,
