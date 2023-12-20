@@ -58,24 +58,24 @@ class ShipmentService extends Service
         return $result;
     }
 
-    public static function getShipmentProductData(array $shipmentIds)
-    {
-        if (empty($shipmentIds)) {
-            return [];
-        }
-        // App::getContainer()->wireService('WebshopPackage/entity/Shipment');
-        App::getContainer()->wireService('WebshopPackage/repository/ShipmentRepository');
-        App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
+    // public static function getShipmentProductData(array $shipmentIds)
+    // {
+    //     if (empty($shipmentIds)) {
+    //         return [];
+    //     }
+    //     // App::getContainer()->wireService('WebshopPackage/entity/Shipment');
+    //     App::getContainer()->wireService('WebshopPackage/repository/ShipmentRepository');
+    //     App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
 
-        // dump($shipmentIds);
-        $rawShipmentProductData = ShipmentRepository::getShipmentProductData(App::getContainer()->getSession()->getLocale(), false, $shipmentIds);
-        // dump($rawShipmentProductData);
-        $arrangedShipmentProductData = ProductListDataProvider::arrangeProductsData($rawShipmentProductData);
-        // dump($arrangedShipmentProductData);exit;
+    //     // dump($shipmentIds);
+    //     $rawShipmentProductData = ShipmentRepository::getShipmentProductData(App::getContainer()->getSession()->getLocale(), false, $shipmentIds);
+    //     // dump($rawShipmentProductData);
+    //     $arrangedShipmentProductData = ProductListDataProvider::arrangeProductsData($rawShipmentProductData);
+    //     // dump($arrangedShipmentProductData);exit;
 
-        return $arrangedShipmentProductData;
-    }
-    
+    //     return $arrangedShipmentProductData;
+    // }
+
     public static function assembleShipmentDataCollection(array $collection) : array
     {
         // dump($collection);exit;

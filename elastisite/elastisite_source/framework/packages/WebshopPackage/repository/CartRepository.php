@@ -158,107 +158,107 @@ class CartRepository extends DbRepository
         }
     }
 
-    public static function getCartProductData($locale, $whereConditions, array $cartIds, $debug = false)
-    {
-        $dbm = App::getContainer()->getDbManager();
-        App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
-        $stm = self::getCartProductDataQueryBase($locale, false, $whereConditions);
+    // public static function getCartProductData($locale, $whereConditions, array $cartIds, $debug = false)
+    // {
+    //     $dbm = App::getContainer()->getDbManager();
+    //     App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
+    //     $stm = self::getCartProductDataQueryBase($locale, false, $whereConditions);
 
-        $cartIdPlaceholders = null;
-        if (!empty($cartIds)) {
-            $cartIdPlaceholders = implode(', ', array_map(function ($cartId, $index) {
-                return ":cart_id_" . $index;
-            }, $cartIds, array_keys($cartIds)));
-        }
+    //     $cartIdPlaceholders = null;
+    //     if (!empty($cartIds)) {
+    //         $cartIdPlaceholders = implode(', ', array_map(function ($cartId, $index) {
+    //             return ":cart_id_" . $index;
+    //         }, $cartIds, array_keys($cartIds)));
+    //     }
 
-        // dump($shipmentIds);
-        // dump($shipmentIdPlaceholders);
+    //     // dump($shipmentIds);
+    //     // dump($shipmentIdPlaceholders);
 
-        $params = [];
-        foreach ($cartIds as $index => $cartId) {
-            $params[":cart_id_" . $index] = $cartId;
-        }
+    //     $params = [];
+    //     foreach ($cartIds as $index => $cartId) {
+    //         $params[":cart_id_" . $index] = $cartId;
+    //     }
 
-        $cartConditionString = '';
-        if ($cartIdPlaceholders) {
-            $cartConditionString = "AND ci.cart_id IN ({$cartIdPlaceholders})";
-        }
-        $stm = str_replace('[cartConditionString]', $cartConditionString, $stm);
-        // dump(nl2br($stm));
-        // dump($params);
+    //     $cartConditionString = '';
+    //     if ($cartIdPlaceholders) {
+    //         $cartConditionString = "AND ci.cart_id IN ({$cartIdPlaceholders})";
+    //     }
+    //     $stm = str_replace('[cartConditionString]', $cartConditionString, $stm);
+    //     // dump(nl2br($stm));
+    //     // dump($params);
 
-        if ($debug) {
-            dump(nl2br($stm));
-            dump($params);
-        }
+    //     if ($debug) {
+    //         dump(nl2br($stm));
+    //         dump($params);
+    //     }
 
-        $result = $dbm->findAll($stm, $params);
-        // dump($result);exit;
-        return $result;
-    }
+    //     $result = $dbm->findAll($stm, $params);
+    //     // dump($result);exit;
+    //     return $result;
+    // }
 
     /**
      * This is a part of self::getShipmentProductData().
      * Works similarly like the ProductRepository::getProductsData(), and returns a dataset with the same format.
     */
-    private static function getCartProductDataQueryBase(string $locale, bool $getDescription) : string
-    {
-        App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
-        App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
-        App::getContainer()->wireService('WebshopPackage/entity/Cart');
-        App::getContainer()->wireService('WebshopPackage/entity/ProductPrice');
+    // private static function getCartProductDataQueryBase(string $locale, bool $getDescription) : string
+    // {
+    //     App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
+    //     App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
+    //     App::getContainer()->wireService('WebshopPackage/entity/Cart');
+    //     App::getContainer()->wireService('WebshopPackage/entity/ProductPrice');
 
-        $stm = "        SELECT 
-                            -- GROUP_CONCAT(DISTINCT shi.id) as 'unique_key',
-                            ci.id as 'unique_key',
-                            ci.quantity as 'quantity',
-                            p.id as product_id,
-                            p.special_purpose as product_special_purpose,
-                            p.product_category_id as category_id,
-                            CASE
-                                WHEN p.code IS NULL OR p.code = '' THEN p.id
-                                ELSE p.code
-                            END AS product_sku ,
-                            -- GROUP_CONCAT(DISTINCT p.id) as product_id,
-                            -- GROUP_CONCAT(DISTINCT p.product_category_id) as category_id,
-                            'Unavailable' as product_condition,
-                            pc." . ($locale == 'en' ? 'name_en' : 'name') . " as category_name,
-                            p." . ($locale == 'en' ? 'name_en' : 'name') . " as product_name,
-                            p." . ($locale == 'en' ? 'short_info_en' : 'short_info') . " as product_short_info,
-                            ".($getDescription ? "p.description".($locale == 'en' ? '_en' : '') : "''")." as product_description,
-                            p." . ($locale == 'en' ? 'slug_en' : 'slug') . " as product_slug,
-                            p.status as product_status,
-                            p.code as product_code,
-                            GROUP_CONCAT(DISTINCT cur_ppl.code) as ppl_currency_code,
-                            GROUP_CONCAT(DISTINCT ppl.price_type) as ppl_price_type,
-                            GROUP_CONCAT(DISTINCT ppl.net_price) as ppl_net, 
-                            GROUP_CONCAT(DISTINCT ppl.gross_price) as ppl_gross, 
-                            GROUP_CONCAT(DISTINCT ppl.vat) as ppl_vat,
-                            GROUP_CONCAT(DISTINCT ppa_binder.id) as ppa_binder_id,
-                            SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT ppa.id), ',', 1) as ppa_binder_product_price_id,
-                            GROUP_CONCAT(DISTINCT cur_ppa.code) as ppa_currency_code,
-                            GROUP_CONCAT(DISTINCT ppa.price_type) as ppa_price_type,
-                            GROUP_CONCAT(DISTINCT ppa.net_price) as ppa_net, 
-                            GROUP_CONCAT(DISTINCT ppa.gross_price) as ppa_gross, 
-                            GROUP_CONCAT(DISTINCT ppa.vat) as ppa_vat,
-                            CONCAT('".($locale == 'en' ? WebshopRequestService::getShowProductLinkBase('en') : WebshopRequestService::getShowProductLinkBase($locale))."' , p." . ($locale == 'en' ? 'slug_en' : 'slug') . ") as product_info_link,
-                            GROUP_CONCAT(DISTINCT CONCAT(pi.slug , '[main]' , pi.main) SEPARATOR '[separator]') as product_image_slugs
-                        FROM cart_item ci 
-                        LEFT JOIN product_price ppa ON ppa.id = ci.product_price_id 
-                        LEFT JOIN product_price_active ppa_binder ON ppa_binder.product_price_id = ppa.id 
-                        LEFT JOIN product p ON p.id = ci.product_id
-                        LEFT JOIN product_category pc ON pc.id = p.product_category_id 
-                        LEFT JOIN product_price ppl ON (ppl.product_id = p.id AND ppl.price_type = '".ProductPrice::PRICE_TYPE_LIST."') -- List (ppl) 
-                        LEFT JOIN currency cur_ppl ON cur_ppl.id = ppl.currency_id 
-                        LEFT JOIN currency cur_ppa ON cur_ppa.id = ppa.currency_id 
-                        LEFT JOIN product_image pi ON pi.product_id = p.id
-                        WHERE p.website = '".App::getWebsite()."' 
-                        AND (pc.id IS NULL OR pc.website = '".App::getWebsite()."')
-                        [cartConditionString]
-                        GROUP BY ci.id , p.id
-                        ORDER BY ci.id ASC
-        ";
+    //     $stm = "        SELECT 
+    //                         -- GROUP_CONCAT(DISTINCT shi.id) as 'unique_key',
+    //                         ci.id as 'unique_key',
+    //                         ci.quantity as 'quantity',
+    //                         p.id as product_id,
+    //                         p.special_purpose as product_special_purpose,
+    //                         p.product_category_id as category_id,
+    //                         CASE
+    //                             WHEN p.code IS NULL OR p.code = '' THEN p.id
+    //                             ELSE p.code
+    //                         END AS product_sku ,
+    //                         -- GROUP_CONCAT(DISTINCT p.id) as product_id,
+    //                         -- GROUP_CONCAT(DISTINCT p.product_category_id) as category_id,
+    //                         'Unavailable' as product_condition,
+    //                         pc." . ($locale == 'en' ? 'name_en' : 'name') . " as category_name,
+    //                         p." . ($locale == 'en' ? 'name_en' : 'name') . " as product_name,
+    //                         p." . ($locale == 'en' ? 'short_info_en' : 'short_info') . " as product_short_info,
+    //                         ".($getDescription ? "p.description".($locale == 'en' ? '_en' : '') : "''")." as product_description,
+    //                         p." . ($locale == 'en' ? 'slug_en' : 'slug') . " as product_slug,
+    //                         p.status as product_status,
+    //                         p.code as product_code,
+    //                         GROUP_CONCAT(DISTINCT cur_ppl.code) as ppl_currency_code,
+    //                         GROUP_CONCAT(DISTINCT ppl.price_type) as ppl_price_type,
+    //                         GROUP_CONCAT(DISTINCT ppl.net_price) as ppl_net, 
+    //                         GROUP_CONCAT(DISTINCT ppl.gross_price) as ppl_gross, 
+    //                         GROUP_CONCAT(DISTINCT ppl.vat) as ppl_vat,
+    //                         GROUP_CONCAT(DISTINCT ppa_binder.id) as ppa_binder_id,
+    //                         SUBSTRING_INDEX(GROUP_CONCAT(DISTINCT ppa.id), ',', 1) as ppa_binder_product_price_id,
+    //                         GROUP_CONCAT(DISTINCT cur_ppa.code) as ppa_currency_code,
+    //                         GROUP_CONCAT(DISTINCT ppa.price_type) as ppa_price_type,
+    //                         GROUP_CONCAT(DISTINCT ppa.net_price) as ppa_net, 
+    //                         GROUP_CONCAT(DISTINCT ppa.gross_price) as ppa_gross, 
+    //                         GROUP_CONCAT(DISTINCT ppa.vat) as ppa_vat,
+    //                         CONCAT('".($locale == 'en' ? WebshopRequestService::getShowProductLinkBase('en') : WebshopRequestService::getShowProductLinkBase($locale))."' , p." . ($locale == 'en' ? 'slug_en' : 'slug') . ") as product_info_link,
+    //                         GROUP_CONCAT(DISTINCT CONCAT(pi.slug , '[main]' , pi.main) SEPARATOR '[separator]') as product_image_slugs
+    //                     FROM cart_item ci 
+    //                     LEFT JOIN product_price ppa ON ppa.id = ci.product_price_id 
+    //                     LEFT JOIN product_price_active ppa_binder ON ppa_binder.product_price_id = ppa.id 
+    //                     LEFT JOIN product p ON p.id = ci.product_id
+    //                     LEFT JOIN product_category pc ON pc.id = p.product_category_id 
+    //                     LEFT JOIN product_price ppl ON (ppl.product_id = p.id AND ppl.price_type = '".ProductPrice::PRICE_TYPE_LIST."') -- List (ppl) 
+    //                     LEFT JOIN currency cur_ppl ON cur_ppl.id = ppl.currency_id 
+    //                     LEFT JOIN currency cur_ppa ON cur_ppa.id = ppa.currency_id 
+    //                     LEFT JOIN product_image pi ON pi.product_id = p.id
+    //                     WHERE p.website = '".App::getWebsite()."' 
+    //                     AND (pc.id IS NULL OR pc.website = '".App::getWebsite()."')
+    //                     [cartConditionString]
+    //                     GROUP BY ci.id , p.id
+    //                     ORDER BY ci.id ASC
+    //     ";
 
-        return $stm;
-    }
+    //     return $stm;
+    // }
 }

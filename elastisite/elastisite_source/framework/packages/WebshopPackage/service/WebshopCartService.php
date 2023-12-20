@@ -468,7 +468,7 @@ class WebshopCartService extends Service
                 // $productId = $cartTrigger->getProduct()->getId();
                 $customerZipCode = $packDataSet['customer']['address']['zipCode'];
                 $customerCountryAlpha2Code = $packDataSet['customer']['address']['country']['alpha2Code'];
-                $sumGrossItemPriceRounded2 =  $packDataSet['summary']['sumGrossItemPriceRounded2'];
+                $sumGrossItemPriceRounded2 =  $packDataSet['summary']['sumGrossNonSpecialPriceAccurate'];
 
                 /**
                  * CountryAlpha2

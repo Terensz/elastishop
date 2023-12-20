@@ -88,7 +88,7 @@ $userTypeTranslations = [
             ?>
         <?php endforeach; ?>
         <div class="card-footer">
-        <?php echo in_array($packDataSet['pack']['status'], Shipment::STATUS_COLLECTION_UNPAID_STATUSES) ? trans('total.payable') : trans('total.paid'); ?>: <b><?php echo $packDataSet['summary']['sumGrossItemPriceFormatted'].' '.$packDataSet['pack']['currencyCode']; ?></b>
+        <?php echo in_array($packDataSet['pack']['status'], Shipment::STATUS_COLLECTION_UNPAID_STATUSES) ? trans('total.payable') : trans('total.paid'); ?>: <b><?php echo $packDataSet['summary']['sumGrossPriceFormatted'].' '.$packDataSet['pack']['currencyCode']; ?></b>
         </div>
         <?php 
         if (isset($additionalShipmentCardFooter) && $additionalShipmentCardFooter) {

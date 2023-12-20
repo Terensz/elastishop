@@ -27,15 +27,40 @@ use framework\packages\UserPackage\entity\User;
             <h4><?php echo trans('unfinished.orders'); ?> (<?php echo (string)count($packDataCollection); ?>)</h4>
         </div>
     </div>
+    <div class="unfinishedOrders-button-show">
+        <div class="mb-4">
+            <button type="button" onclick="UnfinishedOrders.show(event);" class="btn btn-primary"><?php echo trans('show'); ?></button>
+        </div>
+    </div>
+    <div class="unfinishedOrders-button-hide" style="display: none;">
+        <div class="mb-4">
+            <button type="button" onclick="UnfinishedOrders.hide(event);" class="btn btn-primary"><?php echo trans('hide'); ?></button>
+        </div>
+    </div>
+    <div class="unfinishedOrders-container" style="display: none;">
+    <?php 
+    // dump($packDataSet);
+    // dump($packDataSet);
+    // permittedUserType
+    // permittedForCurrentUser
+    // if ()
+    $additionalShipmentCardFooter = 'framework/packages/WebshopPackage/view/Sections/ShipmentsInProgress/AdditionalShipmentCardFooter.php';
+    include('framework/packages/WebshopPackage/view/Common/ShipmentList/ShipmentList.php');
+    ?>
+    </div>
+<script>
+    var UnfinishedOrders = {
+        show: function() {
+            $('.unfinishedOrders-container').show();
+            $('.unfinishedOrders-button-show').hide();
+            $('.unfinishedOrders-button-hide').show();
+        },
+        hide: function() {
+            $('.unfinishedOrders-container').hide();
+            $('.unfinishedOrders-button-show').show();
+            $('.unfinishedOrders-button-hide').hide();
+        }
+    };
+</script>
     <?php endif; ?>
-
-<?php 
-// dump($packDataSet);
-// dump($packDataSet);
-// permittedUserType
-// permittedForCurrentUser
-// if ()
-$additionalShipmentCardFooter = 'framework/packages/WebshopPackage/view/Sections/ShipmentsInProgress/AdditionalShipmentCardFooter.php';
-include('framework/packages/WebshopPackage/view/Common/ShipmentList/ShipmentList.php');
-?>
 <?php endif; ?>

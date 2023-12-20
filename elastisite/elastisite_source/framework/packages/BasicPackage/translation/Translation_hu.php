@@ -7,6 +7,8 @@ class Translation_hu
     public function getTranslation()
     {
         return array(
+            'show' => 'Mutasd',
+            'hide' => 'Rejtsd el',
             'information' => 'Információ',
             'meaning.of.words' => 'Szavak, kifejezések jelentése',
             'add' => 'Hozzáad',

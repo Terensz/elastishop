@@ -95,7 +95,7 @@ class WebshopResponseAssembler_ProductList extends Service
         $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
 
         // dump(App::getContainer()->getSession()->get('webshop_cartId'));
-        // dump($cartData);exit;
+        // dump($packDataSet);exit;
 
         $viewParams = [
             'listAllLink' => $listAllLink,

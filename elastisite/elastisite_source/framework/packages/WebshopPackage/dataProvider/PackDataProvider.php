@@ -51,7 +51,9 @@ class PackDataProvider extends Service
             ],
             'summary' => [
                 'sumGrossPriceRounded2' => null,
-                'sumGrossPriceFormatted' => null
+                'sumGrossPriceFormatted' => null,
+                'sumGrossNonSpecialPriceAccurate' => null,
+                // 'sumGrossPriceFormatted' => null,
             ]
         ];
     }
@@ -119,6 +121,7 @@ class PackDataProvider extends Service
         }
 
         $sumGrossItemPriceRounded2 = 0;
+        $sumGrossNonSpecialPriceAccurate = 0;
         $packItemCollection = [];
         if ($packObject instanceof Cart) {
             $packItemCollection = $packObject->getCartItem();
@@ -127,15 +130,20 @@ class PackDataProvider extends Service
         }
         foreach ($packItemCollection as $packItem) {
             $packItemData = PackItemDataProvider::assembleDataSet($packItem);
+            // dump($packItem->getProduct()->getSpecialPurpose());
+            if (empty($packItem->getProduct()->getSpecialPurpose())) {
+                $sumGrossNonSpecialPriceAccurate += $packItemData['product']['activePrice']['grossItemPriceAccurate'];
+            }
             $dataSet['pack']['packItems']['productId-'.$packItemData['product']['id']] = $packItemData;
             $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
             $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
         }
 
         $dataSet['pack']['currencyCode'] = $currencyCode;
-        $dataSet['summary']['sumGrossItemPriceRounded2'] = $sumGrossItemPriceRounded2;
-        $dataSet['summary']['sumGrossItemPriceFormatted'] = StringHelper::formatNumber($sumGrossItemPriceRounded2, 2, ',', '.');
-
+        $dataSet['summary']['sumGrossPriceRounded2'] = $sumGrossItemPriceRounded2;
+        $dataSet['summary']['sumGrossPriceFormatted'] = StringHelper::formatNumber($sumGrossItemPriceRounded2, 2, ',', '.');
+        $dataSet['summary']['sumGrossNonSpecialPriceAccurate'] = $sumGrossNonSpecialPriceAccurate;
+        
         return $dataSet;
     }
 }

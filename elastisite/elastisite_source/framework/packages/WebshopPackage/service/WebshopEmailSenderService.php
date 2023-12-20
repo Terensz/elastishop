@@ -57,7 +57,7 @@ class WebshopEmailSenderService extends Service
             'mobile' => $packDataSet['customer']['mobile'],
             'orderedProducts' => $orderedProducts,
             'currency' => $currencyCode,
-            'totalPayable' => $packDataSet['summary']['sumGrossItemPriceFormatted']
+            'totalPayable' => $packDataSet['summary']['sumGrossPriceFormatted']
         ]);
         $mailer->textAssembler->create();
         $mailer->setBody($mailer->textAssembler->getView());
