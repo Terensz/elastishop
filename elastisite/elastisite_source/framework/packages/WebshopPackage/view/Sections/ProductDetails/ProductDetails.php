@@ -2,8 +2,18 @@
 // dump($offeredQuantity);
 // dump($packDataSet);
 ?>
-<div style="display: flex;">
-    <div style="flex: 0 0 300px;">
+<style>
+    .productInfoModal-flex-container {
+        display: flex;
+    }
+    @media (max-width: 991px) {
+        .productInfoModal-flex-container {
+            flex-direction: column; /* Váltás függőleges elrendezésre kis képernyőn */
+        }
+    }
+</style>
+<div class="productInfoModal-flex-container">
+    <div class="productInfoModal-productCard" style="flex: 0 0 300px;">
         <?php 
         $cartItemData = null;
         if (isset($packDataSet['pack']['packItems']['productId-'.$productData['id']])) {
@@ -19,7 +29,8 @@
         include('framework/packages/WebshopPackage/view/Sections/ProductList/ProductCard.php');
         ?>
     </div>
-    <div style="flex-grow: 1; margin-left: 20px;">
+    <!-- Ennek le kellene ugrania a masik melle -->
+    <div class="productInfoModal-productDetails" style="flex-grow: 1; margin-left: 20px;">
         <div class="card">
             <div class="card-body">
             <?php 
