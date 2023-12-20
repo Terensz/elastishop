@@ -18,10 +18,9 @@ class WebshopResponseAssembler_PaymentModal extends Service
 
         // $viewParams['paymentServiceData'] = null;
         $viewParams['paymentService'] = null;
-        if ($viewParams['shipmentDataSet'] && $viewParams['errors']['Summary']['errorsCount'] == 0) {
-            $viewParams['paymentService'] = new OnlinePaymentService('Barion', isset($viewParams['shipmentDataSet'][0]) ? $viewParams['shipmentDataSet'][0] : null);
+        if ($viewParams['packDataCollection'] && $viewParams['errors']['Summary']['errorsCount'] == 0) {
+            $viewParams['paymentService'] = new OnlinePaymentService('Barion', isset($viewParams['packDataCollection'][0]) ? $viewParams['packDataCollection'][0] : null);
         }
-
         
         if ($viewParams['errors']['Summary']['errorsCount'] > 0) {
             $viewPath = 'framework/packages/WebshopPackage/view/Sections/PaymentModal/Error/PaymentModalError.php';

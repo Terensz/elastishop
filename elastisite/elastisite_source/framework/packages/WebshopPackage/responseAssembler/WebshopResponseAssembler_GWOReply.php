@@ -13,11 +13,11 @@ class WebshopResponseAssembler_GWOReply extends Service
     public static function sendConfirmationMail($viewParams)
     {
         // dump($viewParams);exit;
-        if (isset($viewParams['shipmentDataSet'][0]['shipment']) && !$viewParams['shipmentDataSet'][0]['shipment']['confirmationSentAt']) {
+        if (isset($viewParams['packDataSet'][0]['pack']) && !$viewParams['packDataSet'][0]['pack']['confirmationSentAt']) {
             // App::WebshopEmailService
-            // $shipmentData = $viewParams['shipmentDataSet'][0]['shipment'];
+            // $shipmentData = $viewParams['packDataSet'][0]['pack'];
             App::getContainer()->wireService('WebshopPackage/service/WebshopEmailSenderService');
-            WebshopEmailSenderService::sendMail_orderSuccessful($viewParams['shipmentDataSet']);
+            WebshopEmailSenderService::sendMail_orderSuccessful($viewParams['packDataSet']);
         }
         // dump($viewParams);exit;
     }

@@ -84,7 +84,7 @@ class ShipmentService extends Service
      * The sub-dataset 'activeProductPrice' means that productPrice the product was purchased on. Regardless which price is currently active.
     */
 
-    public static function assembleShipmentDataSet(array $collection, bool $returnOneShipmentData = false) : array
+    public static function assembleShipmentDataCollection(array $collection, bool $returnOneShipmentData = false) : array
     {
         // dump($collection);exit;
         App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
@@ -151,15 +151,15 @@ class ShipmentService extends Service
     //     foreach ($collection['objectCollection'] as $shipment) {
     //         // dump($shipment); exit;
     //         $shipmentData = $shipmentPattern;
-    //         $shipmentData['shipment']['id'] = $shipment->getId();
-    //         $shipmentData['shipment']['code'] = $shipment->getCode();
-    //         $shipmentData['shipment']['priority'] = $shipment->getPriority();
-    //         $shipmentData['shipment']['paymentMethod'] = $shipment->getPaymentMethod();
-    //         $shipmentData['shipment']['createdAt'] = $shipment->getCreatedAt();
-    //         $shipmentData['shipment']['status'] = $shipment->getStatus();
-    //         $shipmentData['shipment']['publicStatusText'] = isset(Shipment::$statuses[$shipment->getStatus()]) ? trans(Shipment::$statuses[$shipment->getStatus()]['publicTitle']) : null;
-    //         $shipmentData['shipment']['adminStatusText'] = isset(Shipment::$statuses[$shipment->getStatus()]) ? trans(Shipment::$statuses[$shipment->getStatus()]['adminTitle']) : null;
-    //         $shipmentData['shipment']['confirmationSentAt'] = $shipment->getConfirmationSentAt();
+    //         $shipmentData['pack']['id'] = $shipment->getId();
+    //         $shipmentData['pack']['code'] = $shipment->getCode();
+    //         $shipmentData['pack']['priority'] = $shipment->getPriority();
+    //         $shipmentData['pack']['paymentMethod'] = $shipment->getPaymentMethod();
+    //         $shipmentData['pack']['createdAt'] = $shipment->getCreatedAt();
+    //         $shipmentData['pack']['status'] = $shipment->getStatus();
+    //         $shipmentData['pack']['publicStatusText'] = isset(Shipment::$statuses[$shipment->getStatus()]) ? trans(Shipment::$statuses[$shipment->getStatus()]['publicTitle']) : null;
+    //         $shipmentData['pack']['adminStatusText'] = isset(Shipment::$statuses[$shipment->getStatus()]) ? trans(Shipment::$statuses[$shipment->getStatus()]['adminTitle']) : null;
+    //         $shipmentData['pack']['confirmationSentAt'] = $shipment->getConfirmationSentAt();
 
     //         if ($shipment->getTemporaryAccount() && $shipment->getTemporaryAccount()->getTemporaryPerson()) {
     //             // dump($shipment->getTemporaryAccount());exit;
@@ -181,8 +181,8 @@ class ShipmentService extends Service
     //         // dump($shipment->getUserAccount());exit;
     //         $currentUserType = App::getContainer()->getUser()->getType();
     //         $permittedUserType = $shipment->getUserAccount() ? self::PERMITTED_USER_TYPE_USER : self::PERMITTED_USER_TYPE_GUEST;
-    //         $shipmentData['shipment']['permittedUserType'] = $permittedUserType;
-    //         $shipmentData['shipment']['permittedForCurrentUser'] = $permittedUserType == self::PERMITTED_USER_TYPE_BOTH 
+    //         $shipmentData['pack']['permittedUserType'] = $permittedUserType;
+    //         $shipmentData['pack']['permittedForCurrentUser'] = $permittedUserType == self::PERMITTED_USER_TYPE_BOTH 
     //             || (($permittedUserType == self::PERMITTED_USER_TYPE_GUEST && $currentUserType == User::TYPE_GUEST) 
     //                 || ($permittedUserType == self::PERMITTED_USER_TYPE_USER && $currentUserType == User::TYPE_USER));
 
@@ -191,15 +191,15 @@ class ShipmentService extends Service
     //             $shipmentItemData = $shipmentItemPattern;
     //             $shipmentItemData['shipmentItem']['id'] = $shipmentItem->getId();
     //             $shipmentItemData['product'] = isset($shipmentProductData[$shipmentItem->getId()]) ? $shipmentProductData[$shipmentItem->getId()] : null;
-    //             $shipmentData['shipment']['packItems'][] = $shipmentItemData;
+    //             $shipmentData['pack']['packItems'][] = $shipmentItemData;
     //             // dump($shipmentItemData['product']['actualPrice']);
     //             $currencyCode = $shipmentItemData['product']['actualPrice']['currencyCode'];
     //             $sumGrossItemPriceRounded2 += $shipmentItemData['product']['actualPrice']['grossItemPriceRounded2'];
     //         }
 
-    //         $shipmentData['shipment']['summary']['sumGrossItemPriceRounded2'] = $sumGrossItemPriceRounded2;
-    //         $shipmentData['shipment']['summary']['sumGrossItemPriceFormatted'] = StringHelper::formatNumber($sumGrossItemPriceRounded2, 2, ',', '.');
-    //         $shipmentData['shipment']['currencyCode'] = $currencyCode;
+    //         $shipmentData['summary']['sumGrossItemPriceRounded2'] = $sumGrossItemPriceRounded2;
+    //         $shipmentData['summary']['sumGrossItemPriceFormatted'] = StringHelper::formatNumber($sumGrossItemPriceRounded2, 2, ',', '.');
+    //         $shipmentData['pack']['currencyCode'] = $currencyCode;
 
     //         /**
     //          * Payment
@@ -211,20 +211,20 @@ class ShipmentService extends Service
     //             // dump($assembledPaymentData);
     //             // dump($assembledPaymentData);
     //             if (in_array($payment->getStatus(), Payment::PAYMENT_STATUS_COLLECTION_SUCCEEDED)) {
-    //                 $shipmentData['shipment']['payments']['successful'] = $assembledPaymentData;
-    //                 $shipmentData['shipment']['payments']['active'] = $assembledPaymentData;
+    //                 $shipmentData['pack']['payments']['successful'] = $assembledPaymentData;
+    //                 $shipmentData['pack']['payments']['active'] = $assembledPaymentData;
     //             } elseif (in_array($payment->getStatus(), Payment::PAYMENT_STATUS_COLLECTION_FAILED_FOREVER)) {
-    //                 $shipmentData['shipment']['payments']['failedForever'][] = $assembledPaymentData;
+    //                 $shipmentData['pack']['payments']['failedForever'][] = $assembledPaymentData;
     //             } else {
-    //                 $shipmentData['shipment']['payments']['active'] = $assembledPaymentData;
+    //                 $shipmentData['pack']['payments']['active'] = $assembledPaymentData;
     //             }
                 
     //             // else {
-    //             //     $shipmentData['shipment']['payments']['failed'][] = $assembledPaymentData;
+    //             //     $shipmentData['pack']['payments']['failed'][] = $assembledPaymentData;
     //             // }
     //         }
 
-    //         // dump($shipmentData['shipment']['payments']);exit;
+    //         // dump($shipmentData['pack']['payments']);exit;
 
     //         $dataSet[] = $shipmentData;
     //     }

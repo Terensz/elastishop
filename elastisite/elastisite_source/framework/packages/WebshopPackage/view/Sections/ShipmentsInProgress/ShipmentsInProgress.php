@@ -19,19 +19,19 @@ use framework\packages\UserPackage\entity\User;
 </div>
 <?php else: ?>
     <?php  
-    // dump($shipmentDataSet);    
+    // dump($packDataSet);    
     ?>
-    <?php if (count($shipmentDataSet) > 0): ?>
+    <?php if (count($packDataCollection) > 0): ?>
     <div class="row">
         <div class="col-md-12 card-pack-header">
-            <h4><?php echo trans('unfinished.orders'); ?> (<?php echo (string)count($shipmentDataSet); ?>)</h4>
+            <h4><?php echo trans('unfinished.orders'); ?> (<?php echo (string)count($packDataCollection); ?>)</h4>
         </div>
     </div>
     <?php endif; ?>
 
 <?php 
-// dump($shipmentDataSet);
-// dump($shipmentDataSet);
+// dump($packDataSet);
+// dump($packDataSet);
 // permittedUserType
 // permittedForCurrentUser
 // if ()

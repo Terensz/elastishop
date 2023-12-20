@@ -15,7 +15,7 @@ $userTypeTranslations = [
     'User' => trans('user.type.authenticated.user'),
     'Both' => trans('user.type.anyone'),
 ];
-// dump($shipmentDataSetRow['pack']);
+// dump($packDataSet['pack']);
 ?>
     <div class="card">
         <div class="<?php echo $cardHeaderStyleClasses; ?> card-header d-flex justify-content-between align-items-center">
@@ -32,7 +32,7 @@ $userTypeTranslations = [
                     <td class="table-m-1" width="10px">
                     </td>
                     <td class="table-m-1">
-                        <b><?php echo $shipmentDataSetRow['pack']['createdAt']; ?></b>
+                        <b><?php echo $packDataSet['pack']['createdAt']; ?></b>
                     </td>
                 </tr>
                 <tr>
@@ -42,7 +42,7 @@ $userTypeTranslations = [
                     <td class="table-m-1" width="10px">
                     </td>
                     <td class="table-m-1">
-                        <b><?php echo $shipmentDataSetRow['pack']['publicStatusText']; ?></b>
+                        <b><?php echo $packDataSet['pack']['publicStatusText']; ?></b>
                     </td>
                 </tr>
                 <tr>
@@ -52,14 +52,14 @@ $userTypeTranslations = [
                     <td class="table-m-1" width="10px">
                     </td>
                     <td class="table-m-1">
-                        <b><?php echo isset($userTypeTranslations[$shipmentDataSetRow['pack']['permittedUserType']]) ? $userTypeTranslations[$shipmentDataSetRow['pack']['permittedUserType']] : $shipmentDataSetRow['pack']['permittedUserType']; ?></b>
+                        <b><?php echo isset($userTypeTranslations[$packDataSet['pack']['permittedUserType']]) ? $userTypeTranslations[$packDataSet['pack']['permittedUserType']] : $packDataSet['pack']['permittedUserType']; ?></b>
                     </td>
                 </tr>
                 <?php  
                 $paymentMethods = OnlinePaymentService::getAvailableGatewayProviders();
                 $displayedPaymentMethod = null;
                 foreach ($paymentMethods as $availablePaymentMethod) {
-                    if ($availablePaymentMethod['referenceName'] == $shipmentDataSetRow['pack']['paymentMethod']) {
+                    if ($availablePaymentMethod['referenceName'] == $packDataSet['pack']['paymentMethod']) {
                         $displayedPaymentMethod = $availablePaymentMethod['displayedName'];
                     }
                 }
@@ -71,12 +71,12 @@ $userTypeTranslations = [
                     <td class="table-m-1" width="10px">
                     </td>
                     <td class="table-m-1">
-                        <b><?php echo $displayedPaymentMethod ? : $shipmentDataSetRow['pack']['paymentMethod']; ?></b>
+                        <b><?php echo $displayedPaymentMethod ? : $packDataSet['pack']['paymentMethod']; ?></b>
                     </td>
                 </tr>
             </table>
         </div>
-        <?php foreach ($shipmentDataSetRow['pack']['packItems'] as $shipmentItem): ?>
+        <?php foreach ($packDataSet['pack']['packItems'] as $shipmentItem): ?>
             <?php 
             $mainProductImageLink = $shipmentItem['product']['mainProductImageLink'];
             $productName = $shipmentItem['product']['name'];
@@ -88,7 +88,7 @@ $userTypeTranslations = [
             ?>
         <?php endforeach; ?>
         <div class="card-footer">
-        <?php echo in_array($shipmentDataSetRow['pack']['status'], Shipment::STATUS_COLLECTION_UNPAID_STATUSES) ? trans('total.payable') : trans('total.paid'); ?>: <b><?php echo $shipmentDataSetRow['summary']['sumGrossItemPriceFormatted'].' '.$shipmentDataSetRow['pack']['currencyCode']; ?></b>
+        <?php echo in_array($packDataSet['pack']['status'], Shipment::STATUS_COLLECTION_UNPAID_STATUSES) ? trans('total.payable') : trans('total.paid'); ?>: <b><?php echo $packDataSet['summary']['sumGrossItemPriceFormatted'].' '.$packDataSet['pack']['currencyCode']; ?></b>
         </div>
         <?php 
         if (isset($additionalShipmentCardFooter) && $additionalShipmentCardFooter) {

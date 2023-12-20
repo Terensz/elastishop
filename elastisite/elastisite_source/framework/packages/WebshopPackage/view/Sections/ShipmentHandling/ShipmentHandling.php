@@ -5,8 +5,6 @@ use framework\packages\WebshopPackage\entity\Shipment;
 
 App::getContainer()->wireService('WebshopPackage/entity/Shipment');
 App::getContainer()->wireService('PaymentPackage/service/OnlinePaymentService');
-// dump($shipmentDataSet);
-// $additionalShipmentCardFooter = 'framework/packages/WebshopPackage/view/Sections/ShipmentsInProgress/AdditionalShipmentCardFooter.php';
 include('framework/packages/WebshopPackage/view/Common/ShipmentList/ShipmentList.php');
 ?>
 <?php 
@@ -28,10 +26,10 @@ include('framework/packages/WebshopPackage/view/Common/ShipmentList/ShipmentList
     }
 
     $shipmentStatus = null;
-    if (isset($shipmentDataSet[0]['shipment'])) {
-        $shipmentStatus = $shipmentDataSet[0]['shipment']['status'];
+    if (isset($packDataCollection[0]['pack'])) {
+        $shipmentStatus = $packDataCollection[0]['pack']['status'];
     }
-    // dump($shipmentDataSet);
+    // dump($packDataSet);
     ?>
     <?php if (in_array($shipmentStatus, Shipment::STATUS_COLLECTION_USER_ALLOWED_TO_EDIT)): ?>
     <div class="card<?php echo $paymentMethodCardErrorClass; ?>">

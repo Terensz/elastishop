@@ -6,13 +6,13 @@ use framework\packages\PaymentPackage\entity\Payment;
 // dump($paymentService->preparePayment());
 
 $paymentService->preparePayment();
-$shipmentDataSet = $paymentService->shipmentDataSet;
-// dump($shipmentDataSet);
+$packDataSet = $paymentService->packDataSet;
+// dump($packDataSet);
 // dump($paymentService->providerApiResponse);
 
 if ($paymentService->providerApiResponse['Errors'] == [] 
     && $paymentService->providerApiResponse['Status'] == Payment::PAYMENT_STATUS_PREPARED 
-    // && $shipmentDataSet['summary']['sumGrossItemPriceRounded2'] == $paymentService->providerApiResponse['Status']
+    // && $packDataSet['summary']['sumGrossItemPriceRounded2'] == $paymentService->providerApiResponse['Status']
     ): ?>
 
 <script>

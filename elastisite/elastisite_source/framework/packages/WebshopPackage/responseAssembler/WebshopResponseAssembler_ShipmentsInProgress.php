@@ -22,12 +22,12 @@ class WebshopResponseAssembler_ShipmentsInProgress extends Service
         App::getContainer()->wireService('WebshopPackage/service/ShipmentService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopService');
         $collection = ShipmentRepository::getShipmentCollectionWithSpecificStatuses(Shipment::STATUS_COLLECTION_SHIPMENTS_IN_PROGRESS, App::getContainer()->getSession()->get('visitorCode'));
-        $shipmentDataSet = ShipmentService::assembleShipmentDataSet($collection);
+        $packDataCollection = ShipmentService::assembleShipmentDataCollection($collection);
 
         // dump($collection);
 
         $viewParams = [
-            'shipmentDataSet' => $shipmentDataSet
+            'packDataCollection' => $packDataCollection
             // 'productsData' => $productsData,
         ];
 
