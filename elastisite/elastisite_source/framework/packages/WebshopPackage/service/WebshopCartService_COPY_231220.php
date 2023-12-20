@@ -449,7 +449,7 @@ class WebshopCartService extends Service
         $productTriggerCollection = [];
         $cartTriggerCollection = [];
         $inactiveTriggers = [];
-        $cartDataSet = self::assembleCartDataSet($cart);
+        $packDataSet = self::assembleCartDataSet($cart);
         foreach ($cartTriggers as $cartTrigger) {
             if ($cartTrigger->getStatus() == CartTrigger::STATUS_DISABLED) {
                 $cartTriggerCollection = self::handleCartTriggerCollection($cartTriggerCollection, $cartTrigger, false, true);
@@ -463,9 +463,9 @@ class WebshopCartService extends Service
                  * This check runs in the beginning and at the checkout also, and ZipCode just comes to the database while the checkout process.
                 */
                 // $productId = $cartTrigger->getProduct()->getId();
-                $customerZipCode = $cartDataSet['customer']['address']['zipCode'];
-                $customerCountryAlpha2Code = $cartDataSet['customer']['address']['country']['alpha2Code'];
-                $sumGrossItemPriceRounded2 =  $cartDataSet['cart']['summary']['sumGrossItemPriceRounded2'];
+                $customerZipCode = $packDataSet['customer']['address']['zipCode'];
+                $customerCountryAlpha2Code = $packDataSet['customer']['address']['country']['alpha2Code'];
+                $sumGrossItemPriceRounded2 =  $packDataSet['cart']['summary']['sumGrossItemPriceRounded2'];
 
                 /**
                  * CountryAlpha2
@@ -538,7 +538,7 @@ class WebshopCartService extends Service
          * Step 2: Search for the trigger's product in the cart, and if we found one, than we deactivate it.
         */
         // $foundCartItemData = null;
-        foreach ($cartDataSet['cart']['cartItems'] as $cartItemData) {
+        foreach ($packDataSet['cart']['cartItems'] as $cartItemData) {
             /**
              * Check cart items if we have a pre-registered trigger for any of those product
             */
@@ -576,7 +576,7 @@ class WebshopCartService extends Service
 
         // dump($cartTriggerCollection);exit;
 
-        // dump($cartDataSet);exit;
+        // dump($packDataSet);exit;
     }
 
     public static function handleCartTriggerCollection($cartTriggerCollection, CartTrigger $cartTrigger, $triggered, $calledByInactive = false)

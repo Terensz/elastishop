@@ -1,20 +1,20 @@
 <?php 
 // dump($offeredQuantity);
-// dump($cartDataSet);
+// dump($packDataSet);
 ?>
 <div style="display: flex;">
     <div style="flex: 0 0 300px;">
         <?php 
         $cartItemData = null;
-        if (isset($cartDataSet['pack']['packItems']['productId-'.$productData['productId']])) {
-            $cartItemData = $cartDataSet['pack']['packItems']['productId-'.$productData['productId']];
+        if (isset($packDataSet['pack']['packItems']['productId-'.$productData['id']])) {
+            $cartItemData = $packDataSet['pack']['packItems']['productId-'.$productData['id']];
         }
         $maxWidthPixels = '300';
         $options['skipFooter'] = true;
         // $cartItemData
         $cartItemData = null;
-        if (isset($cartDataSet['cart']['cartItems']['productId-'.$productData['productId']])) {
-            $cartItemData = $cartDataSet['cart']['cartItems']['productId-'.$productData['productId']];
+        if (isset($packDataSet['cart']['cartItems']['productId-'.$productData['id']])) {
+            $cartItemData = $packDataSet['pack']['packItems']['productId-'.$productData['id']];
         }
         include('framework/packages/WebshopPackage/view/Sections/ProductList/ProductCard.php');
         ?>
@@ -28,7 +28,7 @@
                 'displaySaveButton' => true
             ];
             include('framework/packages/WebshopPackage/view/Sections/SideCart/SetCartItemQuantityModal.php');
-            $productDescription = $productData['productDescription']; 
+            $productDescription = $productData['description']; 
             include('ProductDescription.php');
             ?>
             </div>

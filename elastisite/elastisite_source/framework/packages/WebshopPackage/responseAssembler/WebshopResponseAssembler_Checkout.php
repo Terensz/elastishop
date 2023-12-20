@@ -96,11 +96,11 @@ class WebshopResponseAssembler_Checkout extends Service
          * We use it in the invoice, extracting used ids to get the products data.
         */
         $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
-        // dump($cartDataSet);exit;
+        // dump($packDataSet);exit;
         /**
          * Checking if cart is empty, and if yes, than we offer a fancy link to get back to the webshop.
         */
-        if (empty($cartDataSet['cart']['cartItems'])) {
+        if (empty($packDataSet['cart']['cartItems'])) {
             // dsadasd
             $viewPath = 'framework/packages/WebshopPackage/view/Sections/Checkout/Error/EmptyCart.php';
             return WebshopResponseAssembler::returnAlternativeView('WebshopPackage_Checkout', $viewPath, []);
@@ -118,15 +118,15 @@ class WebshopResponseAssembler_Checkout extends Service
         /**
          * The proper format for the Invoice view.
         */
-        $invoiceData = WebshopInvoiceService::convertCartDataToInvoiceData($cartDataSet);
+        $invoiceData = WebshopInvoiceService::convertCartDataToInvoiceData($packDataSet);
 
         /**
          * We are now extracting product ids from the cart, to get the properly formatted product data.
         */
         $cartItemProductIds = [];
-        if (isset($cartDataSet['cart']['cartItems']) && !empty($cartDataSet['cart']['cartItems'])) {
-            foreach ($cartDataSet['cart']['cartItems'] as $cartDataSetRow) {
-                $cartItemData = $cartDataSetRow['cartItem'];
+        if (isset($packDataSet['cart']['cartItems']) && !empty($packDataSet['cart']['cartItems'])) {
+            foreach ($packDataSet['cart']['cartItems'] as $packDataSetRow) {
+                $cartItemData = $packDataSetRow['cartItem'];
                 $cartItemProductIds[] = $cartItemData['product']['productId'];
             }
         }

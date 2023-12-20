@@ -119,7 +119,7 @@ class ProductRepository extends DbRepository
          * Setting up options
         */
         $page = isset($options['page']) ? $options['page'] : 1;
-        $getDescription = isset($options['getDecription']) ? $options['getDecription'] : false;
+        $getDescription = isset($options['getDescription']) ? $options['getDescription'] : false;
         $maxItemsOnPage = isset($options['maxItemsOnPage']) ? $options['maxItemsOnPage'] : WebshopService::getSetting('WebshopPackage_maxProductsOnPage');
         $showAnomalous =  isset($options['showAnomalous']) ? $options['showAnomalous'] : false;
         $showInactive = isset($options['showInactive']) ? $options['showInactive'] : false;

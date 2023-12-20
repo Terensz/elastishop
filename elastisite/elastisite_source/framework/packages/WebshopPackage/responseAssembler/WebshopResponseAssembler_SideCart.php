@@ -22,7 +22,7 @@ class WebshopResponseAssembler_SideCart extends Service
         $cart = WebshopCartService::getCart();
         App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
         $packDataSet = PackDataProvider::assembleDataSet($cart);
-        // dump($testDataSet);
+        // dump($packDataSet);exit;
         
         // $shipmentRepo = new ShipmentRepository();
         // $shipment = $shipmentRepo->find(1319);
@@ -31,11 +31,11 @@ class WebshopResponseAssembler_SideCart extends Service
         // exit;
 
         // WebshopCartService::checkAndExecuteTriggers();
-        // dump($cartDataSet); exit;
+        // dump($packDataSet); exit;
         // $processedRequestData = $processedRequestData ? : WebshopRequestService::getProcessedRequestData();
         // $locale = App::getContainer()->getSession()->getLocale();
 
-        // dump($cartDataSet); exit;
+        // dump($packDataSet); exit;
 
         $viewParams = [
             'packDataSet' => $packDataSet ? : [],

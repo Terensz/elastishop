@@ -28,12 +28,12 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
         $newQuantity = null;
         // $actualCartItemData = null;
         $productData = null;
-        if (!empty($cartDataSet['cart']['cartItems'])) {
-            foreach ($cartDataSet['cart']['cartItems'] as $cartDataSetRow) {
-                // dump($cartDataSetRow);
-                $cartItemData = $cartDataSetRow['cartItem'];
+        if (!empty($packDataSet['pack']['packItems'])) {
+            foreach ($packDataSet['pack']['packItems'] as $packDataSetRow) {
+                // dump($packDataSetRow);
+                $cartItemData = $packDataSetRow;
                 // dump($cartItemData);
-                if (isset($cartItemData['product']) && isset($cartItemData['product']['activeProductPrice']['offerId']) && $cartItemData['product']['activeProductPrice']['offerId'] == $offerId) {
+                if (isset($cartItemData['product']) && isset($cartItemData['product']['activePrice']['offerId']) && $cartItemData['product']['activePrice']['offerId'] == $offerId) {
                     // dump($cartItemData['product']);exit;
                     if ($cartItemData['product']['specialPurpose']) {
                         echo 'Did not win';exit;
@@ -65,7 +65,7 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
 
             if ($submitted) {
                 $newQuantity = (int)App::getContainer()->getRequest()->get('newQuantity');
-                WebshopCartService::addToCart($offerId, $newQuantity);
+                $addedToCart = WebshopCartService::addToCart($offerId, $newQuantity);
                 // if (!$actualCartItemData) {
                 //     if ($newQuantity) {
                 //         WebshopCartService::addToCart($offerId, $newQuantity);
@@ -73,7 +73,7 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
                 // } else {
                 //     WebshopCartService::addToCart($offerId, $newQuantity);
                 // }
-                // dump($newQuantity);
+                // dump($addedToCart);exit;
                 // dump($actualCartItemData); exit;
             }
         }

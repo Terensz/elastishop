@@ -27,21 +27,21 @@
     //     'productImages' => $productImages,
     // ];
     // dump($productsData);
-    // dump($cartDataSet);
+    // dump($packDataSet);
     // dump($productsData);
 ?>
 
 <!-- <div class="pc-container">
     <div class="pcoded-content card-container"> -->
-        <?php if (!empty($productsData)): ?>
+        <?php if (!empty($productListDataSet)): ?>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-3 g-4">
         <!-- <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-4" style="width: 100%;"> -->
-            <?php foreach ($productsData as $productData): ?>
+            <?php foreach ($productListDataSet as $productData): ?>
                 <?php 
                 // dump($cartData);
                 $cartItemData = null;
-                if (isset($cartDataSet['cart']['cartItems']['productId-'.$productData['productId']]['cartItem'])) {
-                    $cartItemData = $cartDataSet['cart']['cartItems']['productId-'.$productData['productId']]['cartItem'];
+                if (isset($packDataSet['pack']['packItems']['productId-'.$productData['id']])) {
+                    $cartItemData = $packDataSet['pack']['packItems']['productId-'.$productData['id']];
                 }
                 include('ProductCard.php');
                 ?>

@@ -51,14 +51,14 @@ class WebshopResponseAssembler_ProductDetails extends Service
         $oldQuantity = null;
         // $actualCartItemData = null;
         $productData = null;
-        if (!empty($cartDataSet['cart']['cartItems'])) {
-            // dump($cartDataSet['cart']['cartItems']);
-            foreach ($cartDataSet['cart']['cartItems'] as $cartDataSetRow) {
+        if (!empty($packDataSet['pack']['packItems'])) {
+            // dump($packDataSet['cart']['cartItems']);
+            foreach ($packDataSet['pack']['packItems'] as $packDataSetRow) {
                 
-                $cartItemData = $cartDataSetRow['cartItem'];
+                $cartItemData = $packDataSetRow;
                 // dump($cartItemData);
 
-                if (isset($cartItemData['product']) && isset($cartItemData['product']['productId']) && $cartItemData['product']['productId'] == $productId) {
+                if (isset($cartItemData['product']) && isset($cartItemData['product']['id']) && $cartItemData['product']['id'] == $productId) {
                     $oldQuantity = $cartItemData['quantity'];
                     // $cartItemData['product']['name'];
                     $productData = $cartItemData['product'];
@@ -68,14 +68,14 @@ class WebshopResponseAssembler_ProductDetails extends Service
         }
 
         // dump($oldQuantity);exit;
-        // dump($cartDataSet);
+        // dump($packDataSet);
         // exit;
 
         // dump($productPriceActive);exit;
         $rawProductsData = $productRepository->getProductsData(App::getContainer()->getSession()->getLocale(), [
             'productId' => $productId,
         ], [
-            'getDecription' => true
+            'getDescription' => true
         ]);
         $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData);
         $productData = isset($productsData[0]) ? $productsData[0] : null;
@@ -98,7 +98,7 @@ class WebshopResponseAssembler_ProductDetails extends Service
 
         // dump($productData);exit;
         // $productData['productName']
-        $productName = $productData['productName'];
+        $productName = $productData['name'];
 
         return [
             'view' => $view,

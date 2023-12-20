@@ -27,7 +27,7 @@ $cartItemCounter = 0;
     ?>
     <?php foreach ($packDataSet['pack']['packItems'] as $packItem): ?>
     <?php 
-    // $cartItemData = $cartDataSetRow['cartItem'];
+    // $cartItemData = $packDataSetRow['cartItem'];
     // dump($cartItemData);
     // dump('hello');
     // dump($cartItemData['product']['productData']['activeProductPrice']);

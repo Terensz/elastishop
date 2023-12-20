@@ -116,10 +116,10 @@ class WebshopInvoiceService extends Service
         return $pattern;
     }
 
-    public static function convertCartDataToInvoiceData($cartDataSet)
+    public static function convertCartDataToInvoiceData($packDataSet)
     {
-        // dump($cartDataSet);//exit;
-        $cartData = $cartDataSet['cart'];
+        // dump($packDataSet);//exit;
+        $cartData = $packDataSet['cart'];
         App::getContainer()->wireService('FinancePackage/entity/InvoiceItem');
 
         $invoiceItemsData = [];

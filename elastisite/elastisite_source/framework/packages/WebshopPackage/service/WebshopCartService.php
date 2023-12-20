@@ -579,7 +579,7 @@ class WebshopCartService extends Service
 
         // dump($cartTriggerCollection);exit;
 
-        // dump($cartDataSet);exit;
+        // dump($packDataSet);exit;
     }
 
     public static function handleCartTriggerCollection($cartTriggerCollection, CartTrigger $cartTrigger, $triggered, $calledByInactive = false)
