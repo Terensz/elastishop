@@ -582,7 +582,7 @@ class WebshopAdminWidgetController extends WidgetController
         // $shipmentItemsViewPath = 'framework/packages/WebshopPackage/view/widget/AdminWebshopShipmentsWidget/shipmentItems.php';
         // $shipmentItemsView = $this->renderWidget('shipmentItemsView', $shipmentItemsViewPath, [
         //     'shipmentItems' => $form->getEntity()->getShipmentItem(),
-        //     'priceData' => $priceData,
+        //      => $priceData,
         //     'currency' => $currency
         // ]);
 

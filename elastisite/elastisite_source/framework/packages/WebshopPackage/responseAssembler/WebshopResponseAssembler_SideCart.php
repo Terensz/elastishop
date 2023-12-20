@@ -18,18 +18,17 @@ class WebshopResponseAssembler_SideCart extends Service
         App::getContainer()->wireService('WebshopPackage/service/WebshopService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopCartService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
-        $cartDataSet = WebshopCartService::assembleCartDataSet();
 
         $cart = WebshopCartService::getCart();
         App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
-        $testDataSet = PackDataProvider::assembleDataSet($cart);
-        dump($testDataSet);
+        $packDataSet = PackDataProvider::assembleDataSet($cart);
+        // dump($testDataSet);
         
-        $shipmentRepo = new ShipmentRepository();
-        $shipment = $shipmentRepo->find(1319);
-        $testDataSet = PackDataProvider::assembleDataSet($shipment);
-        dump($testDataSet);
-        exit;
+        // $shipmentRepo = new ShipmentRepository();
+        // $shipment = $shipmentRepo->find(1319);
+        // $testDataSet = PackDataProvider::assembleDataSet($shipment);
+        // dump($testDataSet);
+        // exit;
 
         // WebshopCartService::checkAndExecuteTriggers();
         // dump($cartDataSet); exit;
@@ -39,7 +38,7 @@ class WebshopResponseAssembler_SideCart extends Service
         // dump($cartDataSet); exit;
 
         $viewParams = [
-            'cartDataSet' => $cartDataSet ? : [],
+            'packDataSet' => $packDataSet ? : [],
             'checkoutLink' => '/webshop/checkout'
         ];
 

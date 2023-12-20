@@ -4,6 +4,7 @@ namespace framework\packages\WebshopPackage\dataProvider;
 use App;
 use framework\component\helper\StringHelper;
 use framework\component\parent\Service;
+use framework\packages\FinancePackage\service\DiscountHelper;
 use framework\packages\WebshopPackage\entity\Product;
 use framework\packages\WebshopPackage\entity\ProductPrice;
 use framework\packages\WebshopPackage\repository\ProductPriceRepository;
@@ -30,8 +31,8 @@ class ProductDataProvider extends Service
             'activePrice' => null,
             'discount' => null,
             'infoLink' => null,
-            'imageLink' => null,
-            'images' => null,
+            'mainProductImageLink' => null,
+            'productImages' => null,
         ];
     }
 
@@ -42,6 +43,7 @@ class ProductDataProvider extends Service
         App::getContainer()->wireService('WebshopPackage/repository/ProductPriceRepository');
         App::getContainer()->wireService('WebshopPackage/dataProvider/PriceDataProvider');
         App::getContainer()->wireService('WebshopPackage/dataProvider/ProductCategoryDataProvider');
+        App::getContainer()->wireService('FinancePackage/service/DiscountHelper');
         
         $dataSet = self::getRawDataPattern();
         $dataSet['id'] = $object->getId();
@@ -62,23 +64,39 @@ class ProductDataProvider extends Service
             ['key' => 'product_id', 'value' => $object->getId()],
             ['key' => 'price_type', 'value' => ProductPrice::PRICE_TYPE_LIST],
         ]]);
-        $dataSet['listPrice'] = PriceDataProvider::assembleDataSet([
+        $dataSet['listPrice'] = array_merge([
+            'id' => $listProductPrice->getId(),
+            'offerId' => null,
+            'currencyCode' => $listProductPrice->getCurrency()->getCode(),
+        ], PriceDataProvider::assembleDataSet([
             'grossUnitPrice' => $listProductPrice->getGrossPrice(),
             'vatPercent' => $listProductPrice->getVat(),
             'quantity' => $quantity
-        ]);
-        $dataSet['actualPrice'] = PriceDataProvider::assembleDataSet([
+        ]));
+        $dataSet['actualPrice'] = array_merge([
+            'id' => $actualProductPrice->getId(),
+            'offerId' => null,
+            'currencyCode' => $actualProductPrice->getCurrency()->getCode(),
+        ], PriceDataProvider::assembleDataSet([
             'grossUnitPrice' => $actualProductPrice->getGrossPrice(),
             'vatPercent' => $actualProductPrice->getVat(),
             'quantity' => $quantity
-        ]);
+        ]));
         // dump($actualProductPrice->getProduct()->getProductPriceActive());exit;
-        $dataSet['activePrice'] = PriceDataProvider::assembleDataSet([
-            'grossUnitPrice' => $actualProductPrice->getProduct()->getProductPriceActive()->getProductPrice()->getGrossPrice(),
-            'vatPercent' => $actualProductPrice->getProduct()->getProductPriceActive()->getProductPrice()->getVat(),
+        $activeProductPrice = $actualProductPrice->getProduct()->getProductPriceActive()->getProductPrice();
+        $dataSet['activePrice'] = array_merge([
+            'id' => $activeProductPrice->getId(),
+            'offerId' => $actualProductPrice->getProduct()->getProductPriceActive()->getId(),
+            'currencyCode' => $activeProductPrice->getCurrency()->getCode(),
+        ], PriceDataProvider::assembleDataSet([
+            'grossUnitPrice' => $activeProductPrice->getGrossPrice(),
+            'vatPercent' => $activeProductPrice->getVat(),
             'quantity' => $quantity
-        ]);
-        $dataSet['activePrice']['currencyCode'] = $actualProductPrice->getCurrency()->getCode();
+        ]));
+
+        $discountData = DiscountHelper::calculateDiscount($dataSet['listPrice'], $dataSet['actualPrice']);
+        // dump($discountData);exit;
+        $dataSet['discountData'] = $discountData;
 
         return $dataSet;
     }

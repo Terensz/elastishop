@@ -5,16 +5,18 @@ use App;
 use framework\component\parent\Service;
 use framework\kernel\base\ConfigReader;
 use framework\kernel\view\ViewRenderer;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\repository\ProductPriceActiveRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 
 class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
 {
     public static function assembleResponse($processedRequestData = null, $data = [])
     {
         App::getContainer()->wireService('WebshopPackage/service/WebshopCartService');
-        $cartDataSet = WebshopCartService::assembleCartDataSet();
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
 
         // dump($cartData); exit;
         $offerId = (int)App::getContainer()->getRequest()->get('offerId');
@@ -52,12 +54,12 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
 
         if ($productPriceActive) {
             if (!$productData) {
-                App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
+                App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
                 // dump($productPriceActive);exit;
                 $rawProductsData = $productPriceActive->getProduct()->getRepository()->getProductsData(App::getContainer()->getSession()->getLocale(), [
                     'productId' => $productPriceActive->getProduct()->getId(),
                 ], []);
-                $productsData = WebshopProductService::arrangeProductsData($rawProductsData);
+                $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData);
                 $productData = isset($productsData[0]) ? $productsData[0] : null;
             }
 
@@ -83,7 +85,7 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
             'offerId' => $offerId,
             'offeredQuantity' => $offeredQuantity,
             'productData' => $productData,
-            'cartDataSet' => $cartDataSet ? : [],
+            'packDataSet' => $packDataSet ? : [],
         ];
 
         // $data = [

@@ -309,7 +309,7 @@ class GatewayOperator extends OnlineGatewayOperator
         foreach ($this->onlinePaymentService->shipmentDataSet['shipment']['shipmentItems'] as $shipmentItemDataRow) {
             $shipmentItemData = $shipmentItemDataRow['shipmentItem'];
             // dump($shipmentItemData);
-            $itemTotal = $shipmentItemData['product']['activeProductPrice']['priceData']['grossItemPriceRounded2'];
+            $itemTotal = $shipmentItemData['product']['activeProductPrice']['grossItemPriceRounded2'];
             // $originalDescription = $shipmentItemData['product']['productDescription'];
             // $modifiedDescription = StringHelper::cutLongString(strip_tags($originalDescription), 49);
             // $modifiedDescription = empty($modifiedDescription) ? $shipmentItemData['product']['productName'] : $modifiedDescription;
@@ -319,10 +319,10 @@ class GatewayOperator extends OnlineGatewayOperator
             $transactionItems[] = [
                 "Name" => $shipmentItemData['product']['productName'],
                 "Description" => $modifiedDescription,
-                "Quantity" => $shipmentItemData['product']['activeProductPrice']['priceData']['quantity'],
+                "Quantity" => $shipmentItemData['product']['activeProductPrice']['quantity'],
                 "Unit" => "piece",
-                "UnitPrice" => $shipmentItemData['product']['activeProductPrice']['priceData']['grossUnitPriceRounded2'],
-                "ItemTotal" => $shipmentItemData['product']['activeProductPrice']['priceData']['grossItemPriceRounded2'],
+                "UnitPrice" => $shipmentItemData['product']['activeProductPrice']['grossUnitPriceRounded2'],
+                "ItemTotal" => $shipmentItemData['product']['activeProductPrice']['grossItemPriceRounded2'],
                 "SKU" => $shipmentItemData['product']['SKU']
             ];
             $total += $itemTotal;

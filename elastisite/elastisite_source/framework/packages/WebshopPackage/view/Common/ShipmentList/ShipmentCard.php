@@ -80,9 +80,9 @@ $userTypeTranslations = [
             <?php 
             $mainProductImageLink = $shipmentItem['shipmentItem']['product']['mainProductImageLink'];
             $productName = $shipmentItem['shipmentItem']['product']['productName'];
-            $grossItemPriceFormatted = $shipmentItem['shipmentItem']['product']['activeProductPrice']['priceData']['grossItemPriceFormatted'];
-            $quantity = $shipmentItem['shipmentItem']['product']['activeProductPrice']['priceData']['quantity'];
-            $grossUnitPriceFormatted = $shipmentItem['shipmentItem']['product']['activeProductPrice']['priceData']['grossUnitPriceFormatted'];
+            $grossItemPriceFormatted = $shipmentItem['shipmentItem']['product']['activeProductPrice']['grossItemPriceFormatted'];
+            $quantity = $shipmentItem['shipmentItem']['product']['activeProductPrice']['quantity'];
+            $grossUnitPriceFormatted = $shipmentItem['shipmentItem']['product']['activeProductPrice']['grossUnitPriceFormatted'];
             $currencyCode = $shipmentItem['shipmentItem']['product']['activeProductPrice']['currencyCode'];
             include('framework/packages/WebshopPackage/view/Common/ProductTinyCardFooter/ProductTinyCardFooter.php');
             ?>

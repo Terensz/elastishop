@@ -6,15 +6,15 @@
     <div style="flex: 0 0 300px;">
         <?php 
         $cartItemData = null;
-        if (isset($cartDataSet['cart']['cartItems']['productId-'.$productData['productId']])) {
-            $cartItemData = $cartDataSet['cart']['cartItems']['productId-'.$productData['productId']];
+        if (isset($cartDataSet['pack']['packItems']['productId-'.$productData['productId']])) {
+            $cartItemData = $cartDataSet['pack']['packItems']['productId-'.$productData['productId']];
         }
         $maxWidthPixels = '300';
         $options['skipFooter'] = true;
         // $cartItemData
         $cartItemData = null;
-        if (isset($cartDataSet['cart']['cartItems']['productId-'.$productData['productId']]['cartItem'])) {
-            $cartItemData = $cartDataSet['cart']['cartItems']['productId-'.$productData['productId']]['cartItem'];
+        if (isset($cartDataSet['cart']['cartItems']['productId-'.$productData['productId']])) {
+            $cartItemData = $cartDataSet['cart']['cartItems']['productId-'.$productData['productId']];
         }
         include('framework/packages/WebshopPackage/view/Sections/ProductList/ProductCard.php');
         ?>

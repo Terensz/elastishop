@@ -18,6 +18,7 @@ class PackDataProvider extends Service
 
     public static function getRawDataPattern()
     {
+        App::getContainer()->wireService('WebshopPackage/dataProvider/AddressDataProvider');
         return [
             'customer' => [
                 'name' => null,
@@ -25,7 +26,7 @@ class PackDataProvider extends Service
                 'note' => null,
                 'email' => null,
                 'mobile' => null,
-                'address' => null,
+                'address' => AddressDataProvider::getRawDataPattern(),
                 'organization' => null
             ],
             'pack' => [
@@ -55,9 +56,12 @@ class PackDataProvider extends Service
         ];
     }
 
-    public static function assembleDataSet(PackInterface $packObject) : array
+    public static function assembleDataSet(PackInterface $packObject = null) : array
     {
         $dataSet = self::getRawDataPattern();
+        if (!$packObject) {
+            return $dataSet;
+        }
         App::getContainer()->wireService('UserPackage/entity/User');
         App::getContainer()->wireService('PaymentPackage/entity/Payment');
         App::getContainer()->wireService('WebshopPackage/entity/Cart');
@@ -121,7 +125,7 @@ class PackDataProvider extends Service
         }
         foreach ($packItemCollection as $packItem) {
             $packItemData = PackItemDataProvider::assembleDataSet($packItem);
-            $dataSet['pack']['packItems'][] = $packItemData;
+            $dataSet['pack']['packItems']['productId-'.$packItemData['product']['id']] = $packItemData;
             $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
             $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
         }

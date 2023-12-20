@@ -2,7 +2,6 @@
 namespace framework\packages\WebshopPackage\dataProvider;
 
 use App;
-use framework\component\helper\StringHelper;
 use framework\component\parent\Service;
 use framework\packages\BusinessPackage\entity\Organization;
 
@@ -10,11 +9,12 @@ class OrganizationDataProvider extends Service
 {
     public static function getRawDataPattern()
     {
+        App::getContainer()->wireService('WebshopPackage/dataProvider/AddressDataProvider');
         return [
             'id' => null,
             'name' => null,
             'taxId' => null,
-            'address' => null
+            'address' => AddressDataProvider::getRawDataPattern()
         ];
     }
 

@@ -1,4 +1,4 @@
-<?php  
+<?php
     // $productsData[] = [
     //     'productId' => $rawProductsDataRow['product_id'],
     //     'categoryId' => $rawProductsDataRow['category_id'],
@@ -47,29 +47,29 @@
         </div>
         <?php else: ?>
         <div class="card-image-container m-0 p-0" style="background-color: #000;">
-            
+
         </div>
         <?php endif; ?>
         <div class="card-header p-2 d-flex justify-content-between align-items-center">
             <div class="card-header-textContainer ellipsis-container" style="width: 100%;">
-                <h6 class="mb-0 ellipsis-text"><?php echo $productData['productName']; ?></h6>
+                <h6 class="mb-0 ellipsis-text"><?php echo $productData['name']; ?></h6>
             </div>
         </div>
         <div class="card-body p-2">
 
             <div class="webshop-productCard-price">
                 <h4 class="mb-0 ellipsis-text">
-                <?php if ($productData['discount']['hasDiscount']): ?>
-                    <b><span class="fontColor-extraPale" style="text-decoration: line-through;"><?php echo $productData['listProductPrice']['priceData']['grossUnitPriceRounded0'].' '.$productData['listProductPrice']['currencyCode']; ?></span></b>
+                <?php if ($productData['discountData']['hasDiscount']): ?>
+                    <b><span class="fontColor-extraPale" style="text-decoration: line-through;"><?php echo $productData['listPrice']['grossUnitPriceRounded0'].' '.$productData['listPrice']['currencyCode']; ?></span></b>
                 <?php endif; ?>
-                    <b><?php echo $productData['activeProductPrice']['priceData']['grossUnitPriceRounded0'].' '.$productData['activeProductPrice']['currencyCode']; ?></b>
+                    <b><?php echo $productData['actualPrice']['grossUnitPriceRounded0'].' '.$productData['actualPrice']['currencyCode']; ?></b>
                 </h4>
             </div>
 
-            <?php if (!empty($productData['productCategoryName'])): ?>
+            <?php if (!empty($productData['productCategory']['name'])): ?>
             <div class="row">
                 <div class="col-md-12">
-                    <h6 class="mb-0 ellipsis-text fontColor-pale"><?php echo trans('category') . ': ' . $productData['productCategoryName']; ?></h6>
+                    <h6 class="mb-0 ellipsis-text fontColor-pale"><?php echo trans('category') . ': ' . $productData['productCategory']['name']; ?></h6>
                 </div>
             </div>
             <?php endif; ?>
@@ -79,7 +79,7 @@
         <div class="card-footer p-2">
             <div class="d-flex">
 
-                <a href="" onclick="Webshop.setCartItemQuantityInit(event, <?php echo $productData['activeProductPrice']['offerId']; ?>);" class="ajaxCallerLink pc-link" style="display: flex; gap: 4px; text-decoration: none;">
+                <a href="" onclick="Webshop.setCartItemQuantityInit(event, <?php echo $productData['activePrice']['offerId']; ?>);" class="ajaxCallerLink pc-link" style="display: flex; gap: 4px; text-decoration: none;">
                     <span class="">
                         <img src="/public_folder/plugin/Bootstrap-icons/Dashkit-blue/cart.svg" style="width:16px; height: 16px;">
                     </span>
@@ -88,7 +88,7 @@
                     </span>
                 </a>
 
-                <a href="<?php echo $productInfoLink = '/'.$localizedProductInfoLinkBase.$productData['productId']; ?>" onclick="Webshop.showProductDetailsModalInit(event, '<?php echo $productData['productId']; ?>');" class="pc-link" style="display: flex; gap: 0px; text-decoration: none; padding-left: 8px;">
+                <a href="<?php echo $productInfoLink = '/'.$localizedProductInfoLinkBase.$productData['id']; ?>" onclick="Webshop.showProductDetailsModalInit(event, '<?php echo $productData['id']; ?>');" class="pc-link" style="display: flex; gap: 0px; text-decoration: none; padding-left: 8px;">
                     <span class="">
                         <img src="/public_folder/plugin/Bootstrap-icons/Dashkit-blue/info-circle.svg" style="width:16px; height: 16px;">
                     </span>

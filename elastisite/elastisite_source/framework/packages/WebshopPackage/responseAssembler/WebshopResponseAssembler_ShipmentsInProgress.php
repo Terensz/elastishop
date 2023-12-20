@@ -10,7 +10,7 @@ use framework\packages\WebshopPackage\entity\Shipment;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\repository\ShipmentRepository;
 use framework\packages\WebshopPackage\service\ShipmentService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 use framework\packages\WebshopPackage\service\WebshopService;
 
 class WebshopResponseAssembler_ShipmentsInProgress extends Service

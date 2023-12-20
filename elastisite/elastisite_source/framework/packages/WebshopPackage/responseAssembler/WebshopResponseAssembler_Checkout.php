@@ -7,11 +7,12 @@ use framework\kernel\view\ViewRenderer;
 use framework\packages\BusinessPackage\repository\OrganizationRepository;
 use framework\packages\UserPackage\entity\User;
 use framework\packages\UserPackage\repository\AddressRepository;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
 use framework\packages\WebshopPackage\service\WebshopFinishCheckoutService;
 use framework\packages\WebshopPackage\service\WebshopInvoiceService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 use framework\packages\WebshopPackage\service\WebshopRequestService;
 use framework\packages\WebshopPackage\service\WebshopService;
 use framework\packages\WebshopPackage\service\WebshopTemporaryAccountService;
@@ -26,7 +27,8 @@ class WebshopResponseAssembler_Checkout extends Service
         App::getContainer()->wireService('WebshopPackage/service/WebshopInvoiceService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopCartService');
-        App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
         App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
         App::getContainer()->wireService('WebshopPackage/service/WebshopFinishCheckoutService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopTemporaryAccountService');
@@ -93,7 +95,7 @@ class WebshopResponseAssembler_Checkout extends Service
          * The most important data for this section.
          * We use it in the invoice, extracting used ids to get the products data.
         */
-        $cartDataSet = WebshopCartService::assembleCartDataSet();
+        $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
         // dump($cartDataSet);exit;
         /**
          * Checking if cart is empty, and if yes, than we offer a fancy link to get back to the webshop.
@@ -143,7 +145,7 @@ class WebshopResponseAssembler_Checkout extends Service
         /**
          * Than we arrange our data.
         */
-        $productsData = WebshopProductService::arrangeProductsData($rawProductsData);
+        $productListDataSet = ProductListDataProvider::arrangeProductsData($rawProductsData);
 
         /**
          * Assembling customer data
@@ -168,11 +170,11 @@ class WebshopResponseAssembler_Checkout extends Service
         // dump(WebshopFinishCheckoutService::assembleCartErrors($cart));exit;
 
         $viewParams = [
-            'productsData' => $productsData,
             // 'customerType' => $cart->getCustomerType(),
             'organizationsData' => self::collectOrganizationsData(),
             'addressesData' => self::collectAddressesData(),
-            'cartDataSet' => $cartDataSet,
+            'packDataSet' => $packDataSet,
+            'productListDataSet' => $productListDataSet,
             'temporaryAccountData' => $temporaryAccountData,
             // 'customerData' => $customerData,
             'invoiceData' => $invoiceData,

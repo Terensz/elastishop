@@ -6,7 +6,7 @@
 <?php if (!empty($productData)): ?>
 <div>
     <h4 class="mb-1 ellipsis-text">
-        <b><?php echo $productData['productName']; ?></b>
+        <b><?php echo $productData['name']; ?></b>
     </h4>
 </div>
 
@@ -44,7 +44,7 @@
                     <?php if (isset($options['displaySaveButton'])): ?>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <button type="button" class="btn btn-primary" onclick="Webshop.setCartItemQuantitySubmit(event, '<?php echo $productData['activeProductPrice']['offerId']; ?>');">Mentés</button>
+                        <button type="button" class="btn btn-primary" onclick="Webshop.setCartItemQuantitySubmit(event, '<?php echo $productData['activePrice']['offerId']; ?>');">Mentés</button>
                     </div>
                     <?php endif; ?>
                 <?php if (isset($options['displaySaveButton'])): ?>

@@ -6,7 +6,6 @@ use framework\component\helper\StringHelper;
 use framework\component\parent\Service;
 use framework\packages\UserPackage\entity\User;
 use framework\packages\UserPackage\repository\UserAccountRepository;
-use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\entity\Cart;
 use framework\packages\WebshopPackage\entity\CartTrigger;
 use framework\packages\WebshopPackage\entity\ProductPriceActive;
@@ -450,9 +449,7 @@ class WebshopCartService extends Service
         $productTriggerCollection = [];
         $cartTriggerCollection = [];
         $inactiveTriggers = [];
-        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
-        $packDataSet = PackDataProvider::assembleDataSet($cart);
-        // dump($packDataSet);exit;
+        $cartDataSet = self::assembleCartDataSet($cart);
         foreach ($cartTriggers as $cartTrigger) {
             if ($cartTrigger->getStatus() == CartTrigger::STATUS_DISABLED) {
                 $cartTriggerCollection = self::handleCartTriggerCollection($cartTriggerCollection, $cartTrigger, false, true);
@@ -466,9 +463,9 @@ class WebshopCartService extends Service
                  * This check runs in the beginning and at the checkout also, and ZipCode just comes to the database while the checkout process.
                 */
                 // $productId = $cartTrigger->getProduct()->getId();
-                $customerZipCode = $packDataSet['customer']['address']['zipCode'];
-                $customerCountryAlpha2Code = $packDataSet['customer']['address']['country']['alpha2Code'];
-                $sumGrossItemPriceRounded2 =  $packDataSet['summary']['sumGrossItemPriceRounded2'];
+                $customerZipCode = $cartDataSet['customer']['address']['zipCode'];
+                $customerCountryAlpha2Code = $cartDataSet['customer']['address']['country']['alpha2Code'];
+                $sumGrossItemPriceRounded2 =  $cartDataSet['cart']['summary']['sumGrossItemPriceRounded2'];
 
                 /**
                  * CountryAlpha2
@@ -541,12 +538,12 @@ class WebshopCartService extends Service
          * Step 2: Search for the trigger's product in the cart, and if we found one, than we deactivate it.
         */
         // $foundCartItemData = null;
-        foreach ($packDataSet['pack']['packItems'] as $cartItemData) {
+        foreach ($cartDataSet['cart']['cartItems'] as $cartItemData) {
             /**
              * Check cart items if we have a pre-registered trigger for any of those product
             */
-            if (isset($cartTriggerCollection[$cartItemData['product']['id']])) {
-                $cartTriggerRow = $cartTriggerCollection[$cartItemData['product']['id']];
+            if (isset($cartTriggerCollection[$cartItemData['cartItem']['product']['productId']])) {
+                $cartTriggerRow = $cartTriggerCollection[$cartItemData['cartItem']['product']['productId']];
                 /**
                  * At this point we ONLY handle the DISCARD request, we will handle the applies later, together with the new items.
                 */
@@ -759,143 +756,143 @@ class WebshopCartService extends Service
 
     
 
-    // public static function getCartProductData(int $cartId, $debug = false)
-    // {
-    //     if (empty($cartId)) {
-    //         return null;
-    //     }
-    //     App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
-    //     App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
-    //     $rawCartProductData = CartRepository::getCartProductData(App::getContainer()->getSession()->getLocale(), false, [$cartId], $debug);
-    //     // dump($rawCartProductData);//exit;
-    //     $arrangedCartProductData = ProductListDataProvider::arrangeProductsData($rawCartProductData);
-    //     // dump($arrangedCartProductData);exit;
-    //     return $arrangedCartProductData;
-    // }
+    public static function getCartProductData(int $cartId, $debug = false)
+    {
+        if (empty($cartId)) {
+            return null;
+        }
+        App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
+        $rawCartProductData = CartRepository::getCartProductData(App::getContainer()->getSession()->getLocale(), false, [$cartId], $debug);
+        // dump($rawCartProductData);//exit;
+        $arrangedCartProductData = ProductListDataProvider::arrangeProductsData($rawCartProductData);
+        // dump($arrangedCartProductData);exit;
+        return $arrangedCartProductData;
+    }
 
-    // public static function assembleCartDataSet(Cart $cart = null) : ? array
-    // {
-    //     if (!$cart) {
-    //         $cart = self::getCart();
-    //     }
-    //     if (!$cart) {
-    //         return null;
-    //     }
-    //     App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
-    //     App::getContainer()->wireService('WebshopPackage/service/WebshopInvoiceService');
+    public static function assembleCartDataSet(Cart $cart = null) : ? array
+    {
+        if (!$cart) {
+            $cart = self::getCart();
+        }
+        if (!$cart) {
+            return null;
+        }
+        App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
+        App::getContainer()->wireService('WebshopPackage/service/WebshopInvoiceService');
 
-    //     $shipmentProductData = self::getCartProductData($cart->getId());
+        $shipmentProductData = self::getCartProductData($cart->getId());
 
-    //     $shipmentItemPattern = [
-    //         'cartItem' => [
-    //             'id' => null,
-    //             'product' => [],
-    //             'quantity' => null
-    //         ]
-    //     ];
-    //     $shipmentPattern = [
-    //         'customer' => [
-    //             'name' => null,
-    //             'type' => null,
-    //             'note' => null,
-    //             'email' => null,
-    //             'address' => WebshopInvoiceService::getRawAddressPattern()
-    //         ],
-    //         'cart' => [
-    //             'id' => null,
-    //             'permittedUserType' => null,
-    //             'permittedForCurrentUser' => null,
-    //             'publicStatusText' => null,
-    //             'adminStatusText' => null,
-    //             'cartItems' => [],
-    //             'payments' => [
-    //                 'active' => null,
-    //                 'successful' => null,
-    //                 'failedForever' => []
-    //             ],
-    //             'currencyCode' => null,
-    //             'confirmationSentAt' => null,
-    //             'summary' => [
-    //                 'sumGrossItemPriceRounded2' => null,
-    //                 'sumGrossItemPriceFormatted' => null
-    //             ]
-    //         ]
-    //     ];
+        $shipmentItemPattern = [
+            'cartItem' => [
+                'id' => null,
+                'product' => [],
+                'quantity' => null
+            ]
+        ];
+        $shipmentPattern = [
+            'customer' => [
+                'name' => null,
+                'type' => null,
+                'note' => null,
+                'email' => null,
+                'address' => WebshopInvoiceService::getRawAddressPattern()
+            ],
+            'cart' => [
+                'id' => null,
+                'permittedUserType' => null,
+                'permittedForCurrentUser' => null,
+                'publicStatusText' => null,
+                'adminStatusText' => null,
+                'cartItems' => [],
+                'payments' => [
+                    'active' => null,
+                    'successful' => null,
+                    'failedForever' => []
+                ],
+                'currencyCode' => null,
+                'confirmationSentAt' => null,
+                'summary' => [
+                    'sumGrossItemPriceRounded2' => null,
+                    'sumGrossItemPriceFormatted' => null
+                ]
+            ]
+        ];
 
-    //     $currencyCode = null;
-    //     $shipmentData = $shipmentPattern;
-    //     $shipmentData['cart']['id'] = $cart->getId();
+        $currencyCode = null;
+        $shipmentData = $shipmentPattern;
+        $shipmentData['cart']['id'] = $cart->getId();
 
-    //     if ($cart->getTemporaryAccount() && $cart->getTemporaryAccount()->getTemporaryPerson()) {
-    //         $customerName = $cart->getTemporaryAccount()->getTemporaryPerson()->getName();
-    //         $recipientName = $cart->getTemporaryAccount()->getTemporaryPerson()->getRecipientName();
-    //         $customerType = $cart->getTemporaryAccount()->getTemporaryPerson()->getCustomerType();
-    //         $customerNote = $cart->getTemporaryAccount()->getTemporaryPerson()->getCustomerNote();
-    //         $customerEmail = $cart->getTemporaryAccount()->getTemporaryPerson()->getEmail();
-    //         $shipmentData['customer']['name'] = $recipientName ? : $customerName;
-    //         $shipmentData['customer']['type'] = $customerType;
-    //         $shipmentData['customer']['note'] = $customerNote;
-    //         $shipmentData['customer']['email'] = $customerEmail;
-    //         if ($cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()) {
-    //             if ($cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCountry()) {
-    //                 $shipmentData['customer']['address']['country']['alpha2Code'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCountry()->getAlphaTwo();
-    //                 $shipmentData['customer']['address']['country']['translatedName'] = trans($cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCountry()->getTranslationReference());
-    //             }
-    //             $shipmentData['customer']['address']['zipCode'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getZipCode();
-    //             $shipmentData['customer']['address']['city'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCity();
-    //             $shipmentData['customer']['address']['street'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getStreet();
-    //             $shipmentData['customer']['address']['streetSuffix'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getStreetSuffix();
-    //             $shipmentData['customer']['address']['houseNumber'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getHouseNumber();
-    //             $shipmentData['customer']['address']['staircase'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getStaircase();
-    //             $shipmentData['customer']['address']['floor'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getFloor();
-    //             $shipmentData['customer']['address']['door'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getDoor();
-    //         }
-    //     }
+        if ($cart->getTemporaryAccount() && $cart->getTemporaryAccount()->getTemporaryPerson()) {
+            $customerName = $cart->getTemporaryAccount()->getTemporaryPerson()->getName();
+            $recipientName = $cart->getTemporaryAccount()->getTemporaryPerson()->getRecipientName();
+            $customerType = $cart->getTemporaryAccount()->getTemporaryPerson()->getCustomerType();
+            $customerNote = $cart->getTemporaryAccount()->getTemporaryPerson()->getCustomerNote();
+            $customerEmail = $cart->getTemporaryAccount()->getTemporaryPerson()->getEmail();
+            $shipmentData['customer']['name'] = $recipientName ? : $customerName;
+            $shipmentData['customer']['type'] = $customerType;
+            $shipmentData['customer']['note'] = $customerNote;
+            $shipmentData['customer']['email'] = $customerEmail;
+            if ($cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()) {
+                if ($cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCountry()) {
+                    $shipmentData['customer']['address']['country']['alpha2Code'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCountry()->getAlphaTwo();
+                    $shipmentData['customer']['address']['country']['translatedName'] = trans($cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCountry()->getTranslationReference());
+                }
+                $shipmentData['customer']['address']['zipCode'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getZipCode();
+                $shipmentData['customer']['address']['city'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCity();
+                $shipmentData['customer']['address']['street'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getStreet();
+                $shipmentData['customer']['address']['streetSuffix'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getStreetSuffix();
+                $shipmentData['customer']['address']['houseNumber'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getHouseNumber();
+                $shipmentData['customer']['address']['staircase'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getStaircase();
+                $shipmentData['customer']['address']['floor'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getFloor();
+                $shipmentData['customer']['address']['door'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getDoor();
+            }
+        }
 
-    //     $currentUserType = App::getContainer()->getUser()->getType();
-    //     $permittedUserType = $cart->getUserAccount() ? self::PERMITTED_USER_TYPE_USER : self::PERMITTED_USER_TYPE_GUEST;
-    //     $shipmentData['cart']['permittedUserType'] = $permittedUserType;
-    //     $shipmentData['cart']['permittedForCurrentUser'] = $permittedUserType == self::PERMITTED_USER_TYPE_BOTH 
-    //         || (($permittedUserType == self::PERMITTED_USER_TYPE_GUEST && $currentUserType == User::TYPE_GUEST) 
-    //             || ($permittedUserType == self::PERMITTED_USER_TYPE_USER && $currentUserType == User::TYPE_USER));
+        $currentUserType = App::getContainer()->getUser()->getType();
+        $permittedUserType = $cart->getUserAccount() ? self::PERMITTED_USER_TYPE_USER : self::PERMITTED_USER_TYPE_GUEST;
+        $shipmentData['cart']['permittedUserType'] = $permittedUserType;
+        $shipmentData['cart']['permittedForCurrentUser'] = $permittedUserType == self::PERMITTED_USER_TYPE_BOTH 
+            || (($permittedUserType == self::PERMITTED_USER_TYPE_GUEST && $currentUserType == User::TYPE_GUEST) 
+                || ($permittedUserType == self::PERMITTED_USER_TYPE_USER && $currentUserType == User::TYPE_USER));
 
-    //     $sumGrossItemPriceRounded2 = 0;
+        $sumGrossItemPriceRounded2 = 0;
 
-    //     $orderedCartItems = [];
-    //     foreach ($cart->getCartItem() as $cartItem) {
-    //         if (!$cartItem->getProduct()->getSpecialPurpose()) {
-    //             $orderedCartItems[] = $cartItem;
-    //         }
-    //     }
-    //     foreach ($cart->getCartItem() as $cartItem) {
-    //         if ($cartItem->getProduct()->getSpecialPurpose()) {
-    //             $orderedCartItems[] = $cartItem;
-    //         }
-    //     }
+        $orderedCartItems = [];
+        foreach ($cart->getCartItem() as $cartItem) {
+            if (!$cartItem->getProduct()->getSpecialPurpose()) {
+                $orderedCartItems[] = $cartItem;
+            }
+        }
+        foreach ($cart->getCartItem() as $cartItem) {
+            if ($cartItem->getProduct()->getSpecialPurpose()) {
+                $orderedCartItems[] = $cartItem;
+            }
+        }
 
-    //     foreach ($orderedCartItems as $shipmentItem) {
-    //         $shipmentItemData = $shipmentItemPattern;
-    //         $shipmentItemData['cartItem']['id'] = $shipmentItem->getId();
-    //         $shipmentItemData['cartItem']['product'] = isset($shipmentProductData[$shipmentItem->getId()]) ? $shipmentProductData[$shipmentItem->getId()] : null;
-    //         if (!isset($shipmentItemData['cartItem']['product']['activeProductPrice']['quantity'])) {
-    //             // dump(self::getCartProductData($cart->getId(), true));
-    //             // self::getCartProductData($cart->getId(), true);
-    //             // dump($shipmentItemData);exit;
-    //         }
-    //         $shipmentItemData['cartItem']['quantity'] = $shipmentItemData['cartItem']['product']['activeProductPrice']['quantity'];
-    //         $shipmentData['cart']['cartItems']['productId-'.$shipmentItemData['cartItem']['product']['productId']] = $shipmentItemData;
-    //         // if (!isset($shipmentItemData['cartItem']['product']['activeProductPrice']['currencyCode'])) {
-    //         //     dump($shipmentProductData);
-    //         //     dump($shipmentItemData);
-    //         // }
-    //         $currencyCode = $shipmentItemData['cartItem']['product']['activeProductPrice']['currencyCode'];
-    //         $sumGrossItemPriceRounded2 += $shipmentItemData['cartItem']['product']['activeProductPrice']['grossItemPriceRounded2'];
-    //     }
+        foreach ($orderedCartItems as $shipmentItem) {
+            $shipmentItemData = $shipmentItemPattern;
+            $shipmentItemData['cartItem']['id'] = $shipmentItem->getId();
+            $shipmentItemData['cartItem']['product'] = isset($shipmentProductData[$shipmentItem->getId()]) ? $shipmentProductData[$shipmentItem->getId()] : null;
+            if (!isset($shipmentItemData['cartItem']['product']['activeProductPrice']['quantity'])) {
+                // dump(self::getCartProductData($cart->getId(), true));
+                // self::getCartProductData($cart->getId(), true);
+                // dump($shipmentItemData);exit;
+            }
+            $shipmentItemData['cartItem']['quantity'] = $shipmentItemData['cartItem']['product']['activeProductPrice']['quantity'];
+            $shipmentData['cart']['cartItems']['productId-'.$shipmentItemData['cartItem']['product']['productId']] = $shipmentItemData;
+            // if (!isset($shipmentItemData['cartItem']['product']['activeProductPrice']['currencyCode'])) {
+            //     dump($shipmentProductData);
+            //     dump($shipmentItemData);
+            // }
+            $currencyCode = $shipmentItemData['cartItem']['product']['activeProductPrice']['currencyCode'];
+            $sumGrossItemPriceRounded2 += $shipmentItemData['cartItem']['product']['activeProductPrice']['grossItemPriceRounded2'];
+        }
 
-    //     $shipmentData['cart']['summary']['sumGrossItemPriceRounded2'] = $sumGrossItemPriceRounded2;
-    //     $shipmentData['cart']['summary']['sumGrossItemPriceFormatted'] = StringHelper::formatNumber($sumGrossItemPriceRounded2, 2, ',', '.');
-    //     $shipmentData['cart']['currencyCode'] = $currencyCode;
+        $shipmentData['cart']['summary']['sumGrossItemPriceRounded2'] = $sumGrossItemPriceRounded2;
+        $shipmentData['cart']['summary']['sumGrossItemPriceFormatted'] = StringHelper::formatNumber($sumGrossItemPriceRounded2, 2, ',', '.');
+        $shipmentData['cart']['currencyCode'] = $currencyCode;
 
-    //     return $shipmentData;
-    // }
+        return $shipmentData;
+    }
 }

@@ -146,8 +146,8 @@ class WebshopInvoiceService extends Service
                 // dump($cartItemData['product']['productData']);
                 $priceData = PriceDataService::assembleProductPriceData([
                     'quantity' => $cartItemData['quantity'],
-                    'grossUnitPrice' => $cartItemData['product']['activeProductPrice']['priceData']['grossUnitPriceAccurate'],
-                    'vatPercent' => $cartItemData['product']['activeProductPrice']['priceData']['vatPercent']
+                    'grossUnitPrice' => $cartItemData['product']['activeProductPrice']['grossUnitPriceAccurate'],
+                    'vatPercent' => $cartItemData['product']['activeProductPrice']['vatPercent']
                 ]);
                 
                 // [
@@ -155,7 +155,7 @@ class WebshopInvoiceService extends Service
                 //     'currencyCode' => $itemCurrencyCode,
                 //     'quantity' => $cartItemData['quantity'],
                 //     'unitOfMeasure' => InvoiceItem::UNIT_OF_MEASURE_PIECE,
-                //     'priceData' => $priceData
+                //      => $priceData
                 // ];
 
                 $invoiceItemData['invoiceItem']['product']['name'] = $cartItemData['product']['productName'];
@@ -221,8 +221,8 @@ class WebshopInvoiceService extends Service
 
     //             $priceData = PriceDataService::assembleProductPriceData([
     //                 'quantity' => $cartItemData['quantity'],
-    //                 'netUnitPrice' => $cartItemData['product']['productData']['activeProductPrice']['priceData']['netUnitPrice'],
-    //                 'vatPercent' => $cartItemData['product']['productData']['activeProductPrice']['priceData']['vatPercent']
+    //                 'netUnitPrice' => $cartItemData['product']['productData']['activeProductPrice']['netUnitPrice'],
+    //                 'vatPercent' => $cartItemData['product']['productData']['activeProductPrice']['vatPercent']
     //             ]);
 
     //             $invoiceItemsData[] = [
@@ -230,7 +230,7 @@ class WebshopInvoiceService extends Service
     //                 'currencyCode' => $itemCurrencyCode,
     //                 'quantity' => $cartItemData['quantity'],
     //                 'unitOfMeasure' => InvoiceItem::UNIT_OF_MEASURE_PIECE,
-    //                 'priceData' => $priceData
+    //                  => $priceData
     //             ];
     //             $summaryGrossAmountAccurate += $priceData['grossItemPriceAccurate'];
     //         }

@@ -7,7 +7,7 @@ use framework\packages\FinancePackage\service\DiscountHelper;
 use framework\packages\WebshopPackage\entity\Product;
 use framework\packages\WebshopPackage\entity\ProductImage;
 
-class WebshopProductService extends Service
+class ProductListDataProvider extends Service
 {
     public static function arrangeProductsData($rawProductsData)
     {
@@ -47,48 +47,57 @@ class WebshopProductService extends Service
                 $imageCounter++;
             }
 
-            $listProductPriceData = [
+            $listProductPriceData = array_merge([
+                'id' => null, // not important data 
+                'offerId' => null,
                 'currencyCode' => $rawProductsDataRow['ppl_currency_code'],
-                'priceType' => $rawProductsDataRow['ppl_price_type'],
-                'priceData' => PriceDataService::assembleProductPriceData([
-                    'quantity' => !empty($rawProductsDataRow['quantity']) ? $rawProductsDataRow['quantity'] : null,
-                    'grossUnitPrice' => $rawProductsDataRow['ppl_gross'],
-                    'vatPercent' => $rawProductsDataRow['ppl_vat'],
-                ])
-            ];
+                // 'priceType' => $rawProductsDataRow['ppl_price_type'],
+            ], PriceDataService::assembleProductPriceData([
+                'quantity' => !empty($rawProductsDataRow['quantity']) ? $rawProductsDataRow['quantity'] : null,
+                'grossUnitPrice' => $rawProductsDataRow['ppl_gross'],
+                'vatPercent' => $rawProductsDataRow['ppl_vat'],
+            ]));
 
-            $activeProductPriceData = [
+            $activeProductPriceData = array_merge([
+                'id' => $rawProductsDataRow['ppa_binder_product_price_id'],
                 'offerId' => $rawProductsDataRow['ppa_binder_id'],
-                'productPriceId' => $rawProductsDataRow['ppa_binder_product_price_id'],
                 'currencyCode' => $rawProductsDataRow['ppa_currency_code'],
-                'priceType' => $rawProductsDataRow['ppa_price_type'],
-                'priceData' => PriceDataService::assembleProductPriceData([
-                    'quantity' => !empty($rawProductsDataRow['quantity']) ? $rawProductsDataRow['quantity'] : null,
-                    'grossUnitPrice' => $rawProductsDataRow['ppa_gross'],
-                    'vatPercent' => $rawProductsDataRow['ppa_vat'],
-                ])
-            ];
+                // 'priceType' => $rawProductsDataRow['ppa_price_type'],
+            ], PriceDataService::assembleProductPriceData([
+                'quantity' => !empty($rawProductsDataRow['quantity']) ? $rawProductsDataRow['quantity'] : null,
+                'grossUnitPrice' => $rawProductsDataRow['ppa_gross'],
+                'vatPercent' => $rawProductsDataRow['ppa_vat'],
+            ]));
 
-            // dump($activeProductPriceData);
+            $actualProductPriceData = $activeProductPriceData;
+            /**
+             * Only activeProductPriceData has offerId.
+            */
+            $actualProductPriceData['offerId'] = null;
 
             $uniqueKey = $rawProductsDataRow['unique_key'] ? : $index;
             $productsData[$uniqueKey] = [
-                'productId' => $rawProductsDataRow['product_id'],
+                'id' => $rawProductsDataRow['product_id'],
+                'name' => $rawProductsDataRow['product_name'],
                 'specialPurpose' => $rawProductsDataRow['product_special_purpose'],
-                'categoryId' => $rawProductsDataRow['category_id'],
-                'productCondition' => $rawProductsDataRow['product_condition'],
-                'productCategoryName' => $rawProductsDataRow['category_name'],
-                'productName' => $rawProductsDataRow['product_name'],
-                'productShortInfo' => $rawProductsDataRow['product_short_info'],
-                'productDescription' => $rawProductsDataRow['product_description'],
-                'productSlug' => $rawProductsDataRow['product_slug'],
-                'productStatus' => $rawProductsDataRow['product_status'],
-                'productStatusText' => Product::getStatusText($rawProductsDataRow['product_status']),
+                'productCategory' => [
+                    'id' => $rawProductsDataRow['category_id'],
+                    'name' => $rawProductsDataRow['category_name'],
+                    'slug' => null,
+                    'productCategory' => null
+                ],
+                'condition' => $rawProductsDataRow['product_condition'],
+                'shortInfo' => $rawProductsDataRow['product_short_info'],
+                'description' => $rawProductsDataRow['product_description'],
+                'slug' => $rawProductsDataRow['product_slug'],
+                'status' => $rawProductsDataRow['product_status'],
+                'statusText' => Product::getStatusText($rawProductsDataRow['product_status']),
                 'SKU' => $rawProductsDataRow['product_sku'],
-                'listProductPrice' => $listProductPriceData,
-                'activeProductPrice' => $activeProductPriceData,
+                'listPrice' => $listProductPriceData,
+                'actualPrice' => $actualProductPriceData,
+                'activePrice' => $activeProductPriceData,
                 'discount' => DiscountHelper::calculateDiscount($listProductPriceData, $activeProductPriceData, $rawProductsData),
-                'productInfoLink' => $rawProductsDataRow['product_info_link'],
+                'infoLink' => $rawProductsDataRow['product_info_link'],
                 'mainProductImageLink' => $mainProductImageLink ? : $firstProductImageLink,
                 'productImages' => $productImages,
             ];

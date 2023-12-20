@@ -63,12 +63,12 @@ class ShipmentService extends Service
         }
         // App::getContainer()->wireService('WebshopPackage/entity/Shipment');
         App::getContainer()->wireService('WebshopPackage/repository/ShipmentRepository');
-        App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
 
         // dump($shipmentIds);
         $rawShipmentProductData = ShipmentRepository::getShipmentProductData(App::getContainer()->getSession()->getLocale(), false, $shipmentIds);
         // dump($rawShipmentProductData);
-        $arrangedShipmentProductData = WebshopProductService::arrangeProductsData($rawShipmentProductData);
+        $arrangedShipmentProductData = ProductListDataProvider::arrangeProductsData($rawShipmentProductData);
         // dump($arrangedShipmentProductData);exit;
 
         return $arrangedShipmentProductData;
@@ -179,7 +179,7 @@ class ShipmentService extends Service
                 $shipmentData['shipment']['shipmentItems'][] = $shipmentItemData;
                 // dump($shipmentItemData['shipmentItem']['product']['activeProductPrice']);
                 $currencyCode = $shipmentItemData['shipmentItem']['product']['activeProductPrice']['currencyCode'];
-                $sumGrossItemPriceRounded2 += $shipmentItemData['shipmentItem']['product']['activeProductPrice']['priceData']['grossItemPriceRounded2'];
+                $sumGrossItemPriceRounded2 += $shipmentItemData['shipmentItem']['product']['activeProductPrice']['grossItemPriceRounded2'];
             }
 
             $shipmentData['shipment']['summary']['sumGrossItemPriceRounded2'] = $sumGrossItemPriceRounded2;

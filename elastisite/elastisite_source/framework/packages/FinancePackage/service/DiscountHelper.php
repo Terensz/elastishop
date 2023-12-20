@@ -8,13 +8,15 @@ class DiscountHelper extends Service
 {
     public static function calculateDiscount($listProductPrice, $activeProductPrice, $debug = null)
     {
+        // dump($listProductPrice);
+        // dump($activeProductPrice);
         // Check that both arrays are filled
         if (empty($listProductPrice) || empty($activeProductPrice)) {
             throw new \Exception('Missing data');
         }
 
-        $discountAmount = $listProductPrice['priceData']['grossUnitPriceAccurate'] - $activeProductPrice['priceData']['grossUnitPriceAccurate'];
-        if ($discountAmount && $discountAmount > 0 && !empty($listProductPrice['priceData']['grossUnitPriceAccurate']) && $listProductPrice['priceData']['grossUnitPriceAccurate'] > 0) {
+        $discountAmount = $listProductPrice['grossUnitPriceAccurate'] - $activeProductPrice['grossUnitPriceAccurate'];
+        if ($discountAmount && $discountAmount > 0 && !empty($listProductPrice['grossUnitPriceAccurate']) && $listProductPrice['grossUnitPriceAccurate'] > 0) {
         
             // Check that currencies are the same
             if ($listProductPrice['currencyCode'] !== $activeProductPrice['currencyCode']) {
@@ -25,13 +27,13 @@ class DiscountHelper extends Service
             // Számítsa ki a kedvezményt összegben és százalékban
             // dump($listProductPrice);
             // dump($activeProductPrice);
-            if ($listProductPrice['priceData']['grossUnitPriceAccurate'] == 0) {
+            if ($listProductPrice['grossUnitPriceAccurate'] == 0) {
                 dump($listProductPrice);
                 dump($activeProductPrice);
                 dump($debug);
             }
 
-            $discountPercent = ($discountAmount / $listProductPrice['priceData']['grossUnitPriceAccurate']) * 100;
+            $discountPercent = ($discountAmount / $listProductPrice['grossUnitPriceAccurate']) * 100;
         
             // Ha nincs kedvezmény, akkor 0% kedvezmény
             $hasDiscount = false;

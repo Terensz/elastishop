@@ -5,9 +5,10 @@ use App;
 use framework\component\core\WidgetResponse;
 use framework\component\parent\Service;
 use framework\kernel\view\ViewRenderer;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 use framework\packages\WebshopPackage\service\WebshopRequestService;
 use framework\packages\WebshopPackage\service\WebshopService;
 
@@ -18,7 +19,7 @@ class WebshopResponseAssembler_ProductDetails extends Service
 {
     public static function assembleResponse($processedRequestData = null)
     {
-        App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
         App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopCartService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopService');
@@ -45,7 +46,8 @@ class WebshopResponseAssembler_ProductDetails extends Service
             return null;
         }
 
-        $cartDataSet = WebshopCartService::assembleCartDataSet();
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
         $oldQuantity = null;
         // $actualCartItemData = null;
         $productData = null;
@@ -75,7 +77,7 @@ class WebshopResponseAssembler_ProductDetails extends Service
         ], [
             'getDecription' => true
         ]);
-        $productsData = WebshopProductService::arrangeProductsData($rawProductsData);
+        $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData);
         $productData = isset($productsData[0]) ? $productsData[0] : null;
         $locale = App::getContainer()->getSession()->getLocale();
 
@@ -84,7 +86,7 @@ class WebshopResponseAssembler_ProductDetails extends Service
         // dump($productData);exit;
 
         $viewParams = [
-            'cartDataSet' => $cartDataSet,
+            'packDataSet' => $packDataSet,
             'productData' => $productData,
             'offeredQuantity' => $offeredQuantity,
             // 'productDescription' => $productData['productDescription'],

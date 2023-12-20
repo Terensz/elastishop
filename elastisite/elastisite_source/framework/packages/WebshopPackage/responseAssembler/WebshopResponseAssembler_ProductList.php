@@ -4,9 +4,10 @@ namespace framework\packages\WebshopPackage\responseAssembler;
 use App;
 use framework\component\parent\Service;
 use framework\kernel\view\ViewRenderer;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 use framework\packages\WebshopPackage\service\WebshopRequestService;
 use framework\packages\WebshopPackage\service\WebshopService;
 
@@ -17,7 +18,7 @@ class WebshopResponseAssembler_ProductList extends Service
         App::getContainer()->wireService('WebshopPackage/service/WebshopService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopCartService');
-        App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
         App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
 
         // WebshopCartService::checkAndExecuteTriggers();
@@ -58,7 +59,7 @@ class WebshopResponseAssembler_ProductList extends Service
 
         // dump($rawProductsData);
 
-        $productsData = WebshopProductService::arrangeProductsData($rawProductsData);
+        $productListDataSet = ProductListDataProvider::arrangeProductsData($rawProductsData);
 
         /**
          * @todo ra kene jonni, hogy ezt miert csinaltam 
@@ -71,7 +72,7 @@ class WebshopResponseAssembler_ProductList extends Service
         // }
 
         // $listedProducts = $products ? $this->getListedProducts($products, $productCategory, $listParams) : null;
-        $totalListedProductsCount = count($productsData);
+        $totalListedProductsCount = count($productListDataSet);
         $maxProductsOnPage = WebshopService::getSetting('WebshopPackage_maxProductsOnPage');
         $totalPages = ceil($totalListedProductsCount / $maxProductsOnPage);
         $listAllLink = WebshopRequestService::getListAllLink();
@@ -90,14 +91,15 @@ class WebshopResponseAssembler_ProductList extends Service
         //     $searchLinkBaseCategory = $searchLinkBase.'/'.WebshopRequestService::getSlugTransRef(WebshopService::TAG_CATEGORY, $locale).'/'.$processedRequestData['categorySlug'].'/'.$searchSlug;
         // }
 
-        $cartDataSet = WebshopCartService::assembleCartDataSet();
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
 
         // dump(App::getContainer()->getSession()->get('webshop_cartId'));
         // dump($cartData);exit;
 
         $viewParams = [
             'listAllLink' => $listAllLink,
-            'productsData' => $productsData,
+            'productListDataSet' => $productListDataSet,
             'pagerData' => [
                 'currentPage' => $processedRequestData['currentPage'],
                 'maxItemsOnPage' => $maxProductsOnPage,
@@ -109,7 +111,7 @@ class WebshopResponseAssembler_ProductList extends Service
             //     'searchLinkBaseAll' => $searchLinkBaseAll,
             //     // 'searchLinkBaseCategory' => $searchLinkBaseCategory
             // ],
-            'cartDataSet' => $cartDataSet,
+            'packDataSet' => $packDataSet,
             'localizedProductInfoLinkBase' => WebshopRequestService::getSlugTransRef(WebshopService::TAG_WEBSHOP, $locale).'/'.WebshopRequestService::getSlugTransRef(WebshopService::TAG_SHOW_PRODUCT, $locale).'/'
         ];
 

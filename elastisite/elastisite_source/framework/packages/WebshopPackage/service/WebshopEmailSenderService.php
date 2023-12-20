@@ -39,8 +39,8 @@ class WebshopEmailSenderService extends Service
             $shipmentItemData['shipmentItem']['product']['productName'];
             $orderedProducts[] = [
                 'productName' => $shipmentItemData['shipmentItem']['product']['productName'],
-                'quantity' => $shipmentItemData['shipmentItem']['product']['activeProductPrice']['priceData']['quantity'],
-                'itemGross' => $shipmentItemData['shipmentItem']['product']['activeProductPrice']['priceData']['grossItemPriceFormatted'],
+                'quantity' => $shipmentItemData['shipmentItem']['product']['activeProductPrice']['quantity'],
+                'itemGross' => $shipmentItemData['shipmentItem']['product']['activeProductPrice']['grossItemPriceFormatted'],
                 'currency' => $currencyCode
             ];
         }
