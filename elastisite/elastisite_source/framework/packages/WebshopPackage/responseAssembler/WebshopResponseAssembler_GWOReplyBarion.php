@@ -41,7 +41,7 @@ class WebshopResponseAssembler_GWOReplyBarion extends Service
         // dump($fullUrlParts);exit;
         $paymentStatus = null;
         if (count($fullUrlParts) == 2) {
-            $paymentCode = $fullUrlParts[1];
+            // $paymentCode = $fullUrlParts[1];
             $shipmentCode = BasicUtils::explodeAndGetElement($fullUrlParts[0], '/', 'last');
 
             // dump($paymentCode);exit;
@@ -62,10 +62,15 @@ class WebshopResponseAssembler_GWOReplyBarion extends Service
                  * This automatically sets the Shipment status to SHIPMENT_STATUS_ORDER_PLACED, if the Payment is succeeded, and the Shipment status was in STATUS_COLLECTION_UNPAID_STATUSES.
                 */
                 $paymentStatus = $paymentService->getAndSavePaymentStatus(true);
+                // dump($paymentStatus);exit;
                 // dump($paymentService);exit;
 
                 if ($paymentService->packDataSet['pack']['payments']['successful']) {
                     WebshopResponseAssembler_GWOReply::sendConfirmationMail($viewParams);
+                    $shipment = $shipmentRepo->findOneBy(['conditions' => [
+                        ['key' => 'code', 'value' => $shipmentCode]
+                    ]]);
+                    $viewParams = WebshopResponseAssembler_ShipmentHandling::getShipmentHandlingParams(false, $shipment, true);
                     return self::returnContent($viewParams, WebshopResponseAssembler_GWOReply::RESULT_SUCCESS, $paymentStatus);
                 } else {
                     return self::returnContent($viewParams, WebshopResponseAssembler_GWOReply::RESULT_ERROR);
