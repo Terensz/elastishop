@@ -52,7 +52,7 @@ class WebshopResponseAssembler_ProductDetails extends Service
         // $actualCartItemData = null;
         $productData = null;
         if (!empty($packDataSet['pack']['packItems'])) {
-            // dump($packDataSet['cart']['cartItems']);
+            // dump($packDataSet['pack']['packItems']);
             foreach ($packDataSet['pack']['packItems'] as $packDataSetRow) {
                 
                 $cartItemData = $packDataSetRow;

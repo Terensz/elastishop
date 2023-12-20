@@ -7,7 +7,7 @@ App::getContainer()->wireService('WebshopPackage/entity/Shipment');
 App::getContainer()->wireService('WebshopPackage/service/ShipmentService');
 
 ?>
-<?php if ($shipmentDataSetRow['pack']['permittedForCurrentUser'] && in_array($shipmentDataSetRow['shipment']['status'], Shipment::STATUS_COLLECTION_SHIPMENTS_HANDLING_PROMPTED_TO_USER)): ?>
+<?php if ($shipmentDataSetRow['pack']['permittedForCurrentUser'] && in_array($shipmentDataSetRow['pack']['status'], Shipment::STATUS_COLLECTION_SHIPMENTS_HANDLING_PROMPTED_TO_USER)): ?>
 <div class="card-footer">
     <a class="ajaxCallerLink" href="/webshop/shipment/handling/<?php echo $shipmentCode; ?>"><?php echo trans('lets.handle.this.shipment'); ?></a>
 </div>

@@ -30,7 +30,7 @@ $cartItemCounter = 0;
     // $cartItemData = $packDataSetRow['cartItem'];
     // dump($cartItemData);
     // dump('hello');
-    // dump($cartItemData['product']['productData']['activeProductPrice']);
+    // dump($cartItemData['product']['productData']['actualPrice']);
     // if (!isset($cartItemData['product']['productData']['mainProductImageLink'])) {
     //     dump($cartItemData['product']);
     // }

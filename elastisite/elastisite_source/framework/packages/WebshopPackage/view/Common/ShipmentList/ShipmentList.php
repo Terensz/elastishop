@@ -18,33 +18,33 @@ if (!isset($config['colorPriorizedForAdmin'])) {
 <?php 
 
 $cardHeaderStyleClasses = 'bg-primary text-white';
-if (in_array($shipmentDataSetRow['shipment']['status'], Shipment::STATUS_COLLECTION_UNFINISHED_ORDER_STATUSES)) {
+if (in_array($shipmentDataSetRow['pack']['status'], Shipment::STATUS_COLLECTION_UNFINISHED_ORDER_STATUSES)) {
     // $cardTitleText = trans('unfinished.order');
     $cardHeaderStyleClasses = 'bg-danger text-white';
-} elseif (in_array($shipmentDataSetRow['shipment']['status'], [Shipment::SHIPMENT_STATUS_CLOSED])) {
+} elseif (in_array($shipmentDataSetRow['pack']['status'], [Shipment::SHIPMENT_STATUS_CLOSED])) {
     // $cardTitleText = trans('unfinished.order');
     $cardHeaderStyleClasses = 'bg-success text-white';
 } 
 // else {
 //     $cardTitleText = trans('order.in.progress');
-//     if (isset(Shipment::$statuses[$shipmentDataSetRow['shipment']['status']])) {
-//         $cardTitleText = Shipment::$statuses[$shipmentDataSetRow['shipment']['status']][($config['isAdmin'] ? 'adminTitle' : 'publicTitle')];
+//     if (isset(Shipment::$statuses[$shipmentDataSetRow['pack']['status']])) {
+//         $cardTitleText = Shipment::$statuses[$shipmentDataSetRow['pack']['status']][($config['isAdmin'] ? 'adminTitle' : 'publicTitle')];
 //     }
 //     $cardHeaderStyleClasses = 'bg-primary text-white';
 // }
 
 $cardTitleText = trans('order.in.progress');
-if (isset(Shipment::$statuses[$shipmentDataSetRow['shipment']['status']])) {
-    $cardTitleText = trans(Shipment::$statuses[$shipmentDataSetRow['shipment']['status']][($config['isAdmin'] ? 'adminTitle' : 'publicTitle')]);
+if (isset(Shipment::$statuses[$shipmentDataSetRow['pack']['status']])) {
+    $cardTitleText = trans(Shipment::$statuses[$shipmentDataSetRow['pack']['status']][($config['isAdmin'] ? 'adminTitle' : 'publicTitle')]);
 }
 
-if (App::getContainer()->getUser()->getType() == User::TYPE_ADMINISTRATOR && $config['colorPriorizedForAdmin'] && $shipmentDataSetRow['shipment']['priority'] == Shipment::PRIORITY_HIGH) {
+if (App::getContainer()->getUser()->getType() == User::TYPE_ADMINISTRATOR && $config['colorPriorizedForAdmin'] && $shipmentDataSetRow['pack']['priority'] == Shipment::PRIORITY_HIGH) {
     $cardHeaderStyleClasses = 'bg-warning text-white';
 }
 
 ?>
     <?php  
-        $shipmentCode = $shipmentDataSetRow['shipment']['code'];
+        $shipmentCode = $shipmentDataSetRow['pack']['code'];
         // dump($shipmentDataSetRow);
         include('ShipmentCard.php');
     ?>

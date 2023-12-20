@@ -1,5 +1,5 @@
 <?php
-namespace framework\packages\WebshopPackage\service;
+namespace framework\packages\WebshopPackage\dataProvider;
 
 use App;
 use framework\component\helper\StringHelper;

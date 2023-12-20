@@ -35,12 +35,12 @@ class WebshopEmailSenderService extends Service
 
         $currencyCode = $shipmentDataSet['shipment']['currencyCode'];
         $orderedProducts = [];
-        foreach ($shipmentDataSet['shipment']['shipmentItems'] as $shipmentItemData) {
-            $shipmentItemData['shipmentItem']['product']['productName'];
+        foreach ($shipmentDataSet['shipment']['packItems'] as $shipmentItemData) {
+            $shipmentItemData['product']['productName'];
             $orderedProducts[] = [
-                'productName' => $shipmentItemData['shipmentItem']['product']['productName'],
-                'quantity' => $shipmentItemData['shipmentItem']['product']['activeProductPrice']['quantity'],
-                'itemGross' => $shipmentItemData['shipmentItem']['product']['activeProductPrice']['grossItemPriceFormatted'],
+                'productName' => $shipmentItemData['product']['productName'],
+                'quantity' => $shipmentItemData['product']['actualPrice']['quantity'],
+                'itemGross' => $shipmentItemData['product']['actualPrice']['grossItemPriceFormatted'],
                 'currency' => $currencyCode
             ];
         }

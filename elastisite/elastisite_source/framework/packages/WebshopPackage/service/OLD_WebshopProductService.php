@@ -7,7 +7,7 @@ use framework\packages\FinancePackage\service\DiscountHelper;
 use framework\packages\WebshopPackage\entity\Product;
 use framework\packages\WebshopPackage\entity\ProductImage;
 
-class ProductListDataProvider extends Service
+class OLD_WebshopProductService extends Service
 {
     public static function arrangeProductsData($rawProductsData)
     {

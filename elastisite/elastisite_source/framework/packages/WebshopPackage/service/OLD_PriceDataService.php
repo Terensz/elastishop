@@ -7,7 +7,7 @@ use framework\component\parent\Service;
 use framework\packages\WebshopPackage\entity\Shipment;
 use framework\packages\WebshopPackage\repository\ShipmentRepository;
 
-class PriceDataService extends Service
+class OLD_PriceDataService extends Service
 {
     /*
     Example rawData:

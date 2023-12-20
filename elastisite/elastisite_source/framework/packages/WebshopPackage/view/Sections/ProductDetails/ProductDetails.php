@@ -13,7 +13,7 @@
         $options['skipFooter'] = true;
         // $cartItemData
         $cartItemData = null;
-        if (isset($packDataSet['cart']['cartItems']['productId-'.$productData['id']])) {
+        if (isset($packDataSet['pack']['packItems']['productId-'.$productData['id']])) {
             $cartItemData = $packDataSet['pack']['packItems']['productId-'.$productData['id']];
         }
         include('framework/packages/WebshopPackage/view/Sections/ProductList/ProductCard.php');

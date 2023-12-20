@@ -824,7 +824,7 @@ class WebshopCartService extends Service
 
     //     $currencyCode = null;
     //     $shipmentData = $shipmentPattern;
-    //     $shipmentData['cart']['id'] = $cart->getId();
+    //     $shipmentData['pack']['id'] = $cart->getId();
 
     //     if ($cart->getTemporaryAccount() && $cart->getTemporaryAccount()->getTemporaryPerson()) {
     //         $customerName = $cart->getTemporaryAccount()->getTemporaryPerson()->getName();
@@ -854,8 +854,8 @@ class WebshopCartService extends Service
 
     //     $currentUserType = App::getContainer()->getUser()->getType();
     //     $permittedUserType = $cart->getUserAccount() ? self::PERMITTED_USER_TYPE_USER : self::PERMITTED_USER_TYPE_GUEST;
-    //     $shipmentData['cart']['permittedUserType'] = $permittedUserType;
-    //     $shipmentData['cart']['permittedForCurrentUser'] = $permittedUserType == self::PERMITTED_USER_TYPE_BOTH 
+    //     $shipmentData['pack']['permittedUserType'] = $permittedUserType;
+    //     $shipmentData['pack']['permittedForCurrentUser'] = $permittedUserType == self::PERMITTED_USER_TYPE_BOTH 
     //         || (($permittedUserType == self::PERMITTED_USER_TYPE_GUEST && $currentUserType == User::TYPE_GUEST) 
     //             || ($permittedUserType == self::PERMITTED_USER_TYPE_USER && $currentUserType == User::TYPE_USER));
 
@@ -877,24 +877,24 @@ class WebshopCartService extends Service
     //         $shipmentItemData = $shipmentItemPattern;
     //         $shipmentItemData['cartItem']['id'] = $shipmentItem->getId();
     //         $shipmentItemData['cartItem']['product'] = isset($shipmentProductData[$shipmentItem->getId()]) ? $shipmentProductData[$shipmentItem->getId()] : null;
-    //         if (!isset($shipmentItemData['cartItem']['product']['activeProductPrice']['quantity'])) {
+    //         if (!isset($shipmentItemData['cartItem']['product']['actualPrice']['quantity'])) {
     //             // dump(self::getCartProductData($cart->getId(), true));
     //             // self::getCartProductData($cart->getId(), true);
     //             // dump($shipmentItemData);exit;
     //         }
-    //         $shipmentItemData['cartItem']['quantity'] = $shipmentItemData['cartItem']['product']['activeProductPrice']['quantity'];
-    //         $shipmentData['cart']['cartItems']['productId-'.$shipmentItemData['cartItem']['product']['productId']] = $shipmentItemData;
-    //         // if (!isset($shipmentItemData['cartItem']['product']['activeProductPrice']['currencyCode'])) {
+    //         $shipmentItemData['cartItem']['quantity'] = $shipmentItemData['cartItem']['product']['actualPrice']['quantity'];
+    //         $shipmentData['pack']['packItems']['productId-'.$shipmentItemData['cartItem']['product']['productId']] = $shipmentItemData;
+    //         // if (!isset($shipmentItemData['cartItem']['product']['actualPrice']['currencyCode'])) {
     //         //     dump($shipmentProductData);
     //         //     dump($shipmentItemData);
     //         // }
-    //         $currencyCode = $shipmentItemData['cartItem']['product']['activeProductPrice']['currencyCode'];
-    //         $sumGrossItemPriceRounded2 += $shipmentItemData['cartItem']['product']['activeProductPrice']['grossItemPriceRounded2'];
+    //         $currencyCode = $shipmentItemData['cartItem']['product']['actualPrice']['currencyCode'];
+    //         $sumGrossItemPriceRounded2 += $shipmentItemData['cartItem']['product']['actualPrice']['grossItemPriceRounded2'];
     //     }
 
-    //     $shipmentData['cart']['summary']['sumGrossItemPriceRounded2'] = $sumGrossItemPriceRounded2;
-    //     $shipmentData['cart']['summary']['sumGrossItemPriceFormatted'] = StringHelper::formatNumber($sumGrossItemPriceRounded2, 2, ',', '.');
-    //     $shipmentData['cart']['currencyCode'] = $currencyCode;
+    //     $shipmentData['summary']['sumGrossItemPriceRounded2'] = $sumGrossItemPriceRounded2;
+    //     $shipmentData['summary']['sumGrossItemPriceFormatted'] = StringHelper::formatNumber($sumGrossItemPriceRounded2, 2, ',', '.');
+    //     $shipmentData['pack']['currencyCode'] = $currencyCode;
 
     //     return $shipmentData;
     // }

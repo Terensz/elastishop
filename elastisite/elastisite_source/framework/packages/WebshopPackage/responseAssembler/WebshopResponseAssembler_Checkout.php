@@ -100,7 +100,7 @@ class WebshopResponseAssembler_Checkout extends Service
         /**
          * Checking if cart is empty, and if yes, than we offer a fancy link to get back to the webshop.
         */
-        if (empty($packDataSet['cart']['cartItems'])) {
+        if (empty($packDataSet['pack']['packItems'])) {
             // dsadasd
             $viewPath = 'framework/packages/WebshopPackage/view/Sections/Checkout/Error/EmptyCart.php';
             return WebshopResponseAssembler::returnAlternativeView('WebshopPackage_Checkout', $viewPath, []);
@@ -124,10 +124,9 @@ class WebshopResponseAssembler_Checkout extends Service
          * We are now extracting product ids from the cart, to get the properly formatted product data.
         */
         $cartItemProductIds = [];
-        if (isset($packDataSet['cart']['cartItems']) && !empty($packDataSet['cart']['cartItems'])) {
-            foreach ($packDataSet['cart']['cartItems'] as $packDataSetRow) {
-                $cartItemData = $packDataSetRow['cartItem'];
-                $cartItemProductIds[] = $cartItemData['product']['productId'];
+        if (isset($packDataSet['pack']['packItems']) && !empty($packDataSet['pack']['packItems'])) {
+            foreach ($packDataSet['pack']['packItems'] as $cartItemData) {
+                $cartItemProductIds[] = $cartItemData['product']['id'];
             }
         }
 
@@ -155,10 +154,10 @@ class WebshopResponseAssembler_Checkout extends Service
         /**
          * Assembling delivery data
         */
-        $addresses = [];
-        if ($user->getUserAccount() && $user->getUserAccount()->getPerson()) {
-            $addresses = $user->getUserAccount()->getPerson()->getAddress();
-        }
+        // $addresses = [];
+        // if ($user->getUserAccount() && $user->getUserAccount()->getPerson()) {
+        //     $addresses = $user->getUserAccount()->getPerson()->getAddress();
+        // }
         // dump($addresses);exit;
 
         // dump(self::collectAddressesData()); exit;

@@ -5,6 +5,7 @@ use App;
 use framework\component\helper\StringHelper;
 use framework\component\parent\Service;
 use framework\packages\FinancePackage\entity\InvoiceItem;
+use framework\packages\WebshopPackage\dataProvider\PriceDataProvider;
 
 class WebshopInvoiceService extends Service
 {
@@ -119,7 +120,8 @@ class WebshopInvoiceService extends Service
     public static function convertCartDataToInvoiceData($packDataSet)
     {
         // dump($packDataSet);//exit;
-        $cartData = $packDataSet['cart'];
+        $cartData = $packDataSet['pack'];
+        App::getContainer()->wireService('FinancePackage/entity/InvoiceItem');
         App::getContainer()->wireService('FinancePackage/entity/InvoiceItem');
 
         $invoiceItemsData = [];
@@ -128,13 +130,12 @@ class WebshopInvoiceService extends Service
 
         $invoiceHeaderData = self::getRawInvoiceHeaderPattern();
 
-        if (isset($cartData['cartItems']) && is_array($cartData['cartItems'])) {
+        if (isset($cartData['packItems']) && is_array($cartData['packItems'])) {
             $summaryGrossAmountAccurate = 0;
-            foreach ($cartData['cartItems'] as $cartDataRow) {
-                $cartItemData = $cartDataRow['cartItem'];
+            foreach ($cartData['packItems'] as $cartItemData) {
                 $invoiceItemData = self::getRawInvoiceItemPattern();
 
-                $itemCurrencyCode = $cartItemData['product']['activeProductPrice']['currencyCode'];
+                $itemCurrencyCode = $cartItemData['product']['actualPrice']['currencyCode'];
                 if (!$currencyCode) {
                     $currencyCode = $itemCurrencyCode;
                 } else {
@@ -144,10 +145,10 @@ class WebshopInvoiceService extends Service
                     }
                 }
                 // dump($cartItemData['product']['productData']);
-                $priceData = PriceDataService::assembleProductPriceData([
+                $priceData = PriceDataProvider::assembleDataSet([
                     'quantity' => $cartItemData['quantity'],
-                    'grossUnitPrice' => $cartItemData['product']['activeProductPrice']['grossUnitPriceAccurate'],
-                    'vatPercent' => $cartItemData['product']['activeProductPrice']['vatPercent']
+                    'grossUnitPrice' => $cartItemData['product']['actualPrice']['grossUnitPriceAccurate'],
+                    'vatPercent' => $cartItemData['product']['actualPrice']['vatPercent']
                 ]);
                 
                 // [
@@ -158,7 +159,7 @@ class WebshopInvoiceService extends Service
                 //      => $priceData
                 // ];
 
-                $invoiceItemData['invoiceItem']['product']['name'] = $cartItemData['product']['productName'];
+                $invoiceItemData['invoiceItem']['product']['name'] = $cartItemData['product']['name'];
                 $invoiceItemData['invoiceItem']['currencyCode'] = $itemCurrencyCode;
                 $invoiceItemData['invoiceItem']['quantity'] = $cartItemData['quantity'];
                 $invoiceItemData['invoiceItem']['unitOfMeasure'] = InvoiceItem::UNIT_OF_MEASURE_PIECE;
@@ -206,10 +207,10 @@ class WebshopInvoiceService extends Service
 
     //     $currencyCode = null;
 
-    //     if (isset($cartData['cartItems']) && is_array($cartData['cartItems'])) {
+    //     if (isset($cartData['packItems']) && is_array($cartData['packItems'])) {
     //         $summaryGrossAmountAccurate = 0;
-    //         foreach ($cartData['cartItems'] as $cartItemData) {
-    //             $itemCurrencyCode = $cartItemData['product']['productData']['activeProductPrice']['currencyCode'];
+    //         foreach ($cartData['packItems'] as $cartItemData) {
+    //             $itemCurrencyCode = $cartItemData['product']['productData']['actualPrice']['currencyCode'];
     //             if (!$currencyCode) {
     //                 $currencyCode = $itemCurrencyCode;
     //             } else {
@@ -221,8 +222,8 @@ class WebshopInvoiceService extends Service
 
     //             $priceData = PriceDataService::assembleProductPriceData([
     //                 'quantity' => $cartItemData['quantity'],
-    //                 'netUnitPrice' => $cartItemData['product']['productData']['activeProductPrice']['netUnitPrice'],
-    //                 'vatPercent' => $cartItemData['product']['productData']['activeProductPrice']['vatPercent']
+    //                 'netUnitPrice' => $cartItemData['product']['productData']['actualPrice']['netUnitPrice'],
+    //                 'vatPercent' => $cartItemData['product']['productData']['actualPrice']['vatPercent']
     //             ]);
 
     //             $invoiceItemsData[] = [

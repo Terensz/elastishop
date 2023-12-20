@@ -15,7 +15,7 @@ $userTypeTranslations = [
     'User' => trans('user.type.authenticated.user'),
     'Both' => trans('user.type.anyone'),
 ];
-// dump($shipmentDataSetRow['shipment']);
+// dump($shipmentDataSetRow['pack']);
 ?>
     <div class="card">
         <div class="<?php echo $cardHeaderStyleClasses; ?> card-header d-flex justify-content-between align-items-center">
@@ -32,7 +32,7 @@ $userTypeTranslations = [
                     <td class="table-m-1" width="10px">
                     </td>
                     <td class="table-m-1">
-                        <b><?php echo $shipmentDataSetRow['shipment']['createdAt']; ?></b>
+                        <b><?php echo $shipmentDataSetRow['pack']['createdAt']; ?></b>
                     </td>
                 </tr>
                 <tr>
@@ -42,7 +42,7 @@ $userTypeTranslations = [
                     <td class="table-m-1" width="10px">
                     </td>
                     <td class="table-m-1">
-                        <b><?php echo $shipmentDataSetRow['shipment']['publicStatusText']; ?></b>
+                        <b><?php echo $shipmentDataSetRow['pack']['publicStatusText']; ?></b>
                     </td>
                 </tr>
                 <tr>
@@ -52,14 +52,14 @@ $userTypeTranslations = [
                     <td class="table-m-1" width="10px">
                     </td>
                     <td class="table-m-1">
-                        <b><?php echo isset($userTypeTranslations[$shipmentDataSetRow['shipment']['permittedUserType']]) ? $userTypeTranslations[$shipmentDataSetRow['shipment']['permittedUserType']] : $shipmentDataSetRow['shipment']['permittedUserType']; ?></b>
+                        <b><?php echo isset($userTypeTranslations[$shipmentDataSetRow['pack']['permittedUserType']]) ? $userTypeTranslations[$shipmentDataSetRow['pack']['permittedUserType']] : $shipmentDataSetRow['pack']['permittedUserType']; ?></b>
                     </td>
                 </tr>
                 <?php  
                 $paymentMethods = OnlinePaymentService::getAvailableGatewayProviders();
                 $displayedPaymentMethod = null;
                 foreach ($paymentMethods as $availablePaymentMethod) {
-                    if ($availablePaymentMethod['referenceName'] == $shipmentDataSetRow['shipment']['paymentMethod']) {
+                    if ($availablePaymentMethod['referenceName'] == $shipmentDataSetRow['pack']['paymentMethod']) {
                         $displayedPaymentMethod = $availablePaymentMethod['displayedName'];
                     }
                 }
@@ -71,24 +71,24 @@ $userTypeTranslations = [
                     <td class="table-m-1" width="10px">
                     </td>
                     <td class="table-m-1">
-                        <b><?php echo $displayedPaymentMethod ? : $shipmentDataSetRow['shipment']['paymentMethod']; ?></b>
+                        <b><?php echo $displayedPaymentMethod ? : $shipmentDataSetRow['pack']['paymentMethod']; ?></b>
                     </td>
                 </tr>
             </table>
         </div>
-        <?php foreach ($shipmentDataSetRow['shipment']['shipmentItems'] as $shipmentItem): ?>
+        <?php foreach ($shipmentDataSetRow['pack']['packItems'] as $shipmentItem): ?>
             <?php 
-            $mainProductImageLink = $shipmentItem['shipmentItem']['product']['mainProductImageLink'];
-            $productName = $shipmentItem['shipmentItem']['product']['productName'];
-            $grossItemPriceFormatted = $shipmentItem['shipmentItem']['product']['activeProductPrice']['grossItemPriceFormatted'];
-            $quantity = $shipmentItem['shipmentItem']['product']['activeProductPrice']['quantity'];
-            $grossUnitPriceFormatted = $shipmentItem['shipmentItem']['product']['activeProductPrice']['grossUnitPriceFormatted'];
-            $currencyCode = $shipmentItem['shipmentItem']['product']['activeProductPrice']['currencyCode'];
+            $mainProductImageLink = $shipmentItem['product']['mainProductImageLink'];
+            $productName = $shipmentItem['product']['name'];
+            $grossItemPriceFormatted = $shipmentItem['product']['actualPrice']['grossItemPriceFormatted'];
+            $quantity = $shipmentItem['quantity'];
+            $grossUnitPriceFormatted = $shipmentItem['product']['actualPrice']['grossUnitPriceFormatted'];
+            $currencyCode = $shipmentItem['product']['actualPrice']['currencyCode'];
             include('framework/packages/WebshopPackage/view/Common/ProductTinyCardFooter/ProductTinyCardFooter.php');
             ?>
         <?php endforeach; ?>
         <div class="card-footer">
-        <?php echo in_array($shipmentDataSetRow['shipment']['status'], Shipment::STATUS_COLLECTION_UNPAID_STATUSES) ? trans('total.payable') : trans('total.paid'); ?>: <b><?php echo $shipmentDataSetRow['shipment']['summary']['sumGrossItemPriceFormatted'].' '.$shipmentDataSetRow['shipment']['currencyCode']; ?></b>
+        <?php echo in_array($shipmentDataSetRow['pack']['status'], Shipment::STATUS_COLLECTION_UNPAID_STATUSES) ? trans('total.payable') : trans('total.paid'); ?>: <b><?php echo $shipmentDataSetRow['summary']['sumGrossItemPriceFormatted'].' '.$shipmentDataSetRow['pack']['currencyCode']; ?></b>
         </div>
         <?php 
         if (isset($additionalShipmentCardFooter) && $additionalShipmentCardFooter) {

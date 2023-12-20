@@ -6,7 +6,6 @@ use framework\component\parent\Service;
 use framework\packages\FinancePackage\service\DiscountHelper;
 use framework\packages\WebshopPackage\entity\Product;
 use framework\packages\WebshopPackage\entity\ProductImage;
-use framework\packages\WebshopPackage\service\PriceDataService;
 
 class ProductListDataProvider extends Service
 {
@@ -15,7 +14,7 @@ class ProductListDataProvider extends Service
         App::getContainer()->wireService('WebshopPackage/entity/Product');
         App::getContainer()->wireService('WebshopPackage/entity/ProductImage');
         App::getContainer()->wireService('FinancePackage/service/DiscountHelper');
-        App::getContainer()->wireService('WebshopPackage/service/PriceDataService');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PriceDataProvider');
 
         // dump($rawProductsData);//exit;
 
@@ -53,7 +52,7 @@ class ProductListDataProvider extends Service
                 'offerId' => null,
                 'currencyCode' => $rawProductsDataRow['ppl_currency_code'],
                 // 'priceType' => $rawProductsDataRow['ppl_price_type'],
-            ], PriceDataService::assembleProductPriceData([
+            ], PriceDataProvider::assembleDataSet([
                 'quantity' => !empty($rawProductsDataRow['quantity']) ? $rawProductsDataRow['quantity'] : null,
                 'grossUnitPrice' => $rawProductsDataRow['ppl_gross'],
                 'vatPercent' => $rawProductsDataRow['ppl_vat'],
@@ -64,7 +63,7 @@ class ProductListDataProvider extends Service
                 'offerId' => $rawProductsDataRow['ppa_binder_id'],
                 'currencyCode' => $rawProductsDataRow['ppa_currency_code'],
                 // 'priceType' => $rawProductsDataRow['ppa_price_type'],
-            ], PriceDataService::assembleProductPriceData([
+            ], PriceDataProvider::assembleDataSet([
                 'quantity' => !empty($rawProductsDataRow['quantity']) ? $rawProductsDataRow['quantity'] : null,
                 'grossUnitPrice' => $rawProductsDataRow['ppa_gross'],
                 'vatPercent' => $rawProductsDataRow['ppa_vat'],

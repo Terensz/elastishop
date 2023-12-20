@@ -9,7 +9,7 @@ use framework\packages\WebshopPackage\entity\Product;
 use framework\packages\WebshopPackage\entity\ProductImage;
 use framework\packages\WebshopPackage\entity\ProductPrice;
 use framework\packages\WebshopPackage\repository\ProductPriceRepository;
-use framework\packages\WebshopPackage\service\PriceDataProvider;
+use framework\packages\WebshopPackage\dataProvider\PriceDataProvider;
 
 class ProductDataProvider extends Service
 {
