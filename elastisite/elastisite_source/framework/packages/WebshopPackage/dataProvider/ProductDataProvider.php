@@ -6,6 +6,7 @@ use framework\component\helper\StringHelper;
 use framework\component\parent\Service;
 use framework\packages\FinancePackage\service\DiscountHelper;
 use framework\packages\WebshopPackage\entity\Product;
+use framework\packages\WebshopPackage\entity\ProductImage;
 use framework\packages\WebshopPackage\entity\ProductPrice;
 use framework\packages\WebshopPackage\repository\ProductPriceRepository;
 use framework\packages\WebshopPackage\service\PriceDataProvider;
@@ -39,6 +40,7 @@ class ProductDataProvider extends Service
     public static function assembleDataSet(Product $object, ProductPrice $actualProductPrice, int $quantity) : array
     {
         App::getContainer()->wireService('WebshopPackage/entity/Product');
+        App::getContainer()->wireService('WebshopPackage/entity/ProductImage');
         App::getContainer()->wireService('WebshopPackage/entity/ProductPrice');
         App::getContainer()->wireService('WebshopPackage/repository/ProductPriceRepository');
         App::getContainer()->wireService('WebshopPackage/dataProvider/PriceDataProvider');
@@ -97,6 +99,28 @@ class ProductDataProvider extends Service
         $discountData = DiscountHelper::calculateDiscount($dataSet['listPrice'], $dataSet['actualPrice']);
         // dump($discountData);exit;
         $dataSet['discountData'] = $discountData;
+
+        $productImages = [];
+        $productImageObjects = $object->getProductImage();
+        foreach ($productImageObjects as $productImageObject) {
+            // dump($productImageObject->getMain());
+            $main = (int)$productImageObject->getMain() == 1 ? true : false;
+            $link = ProductImage::createProductImageLink($productImageObject->getSlug());
+            if (!$dataSet['mainProductImageLink']) {
+                $dataSet['mainProductImageLink'] = $link;
+            }
+            if ($main) {
+                $dataSet['mainProductImageLink'] = $link;
+            }
+            $productImages[] = [
+                'slug' => $productImageObject->getSlug(),
+                'link' => $link,
+                'isMain' => $main,
+            ];
+        }
+        $dataSet['productImages'] = $productImages;
+
+        // dump($dataSet);exit;
 
         return $dataSet;
     }
