@@ -56,6 +56,11 @@ class OnlinePaymentService extends Service
         App::getContainer()->wireService('PaymentPackage/repository/PaymentRepository');
 
         $this->packDataSet = $packDataSet;
+        if (isset($packDataSet[0])) {
+            dump('Nem jo!!!!!');
+            dump($packDataSet);exit;
+        }
+        // dump($packDataSet);exit;
         $this->paymentRepository = new PaymentRepository();
         // dump($this->packDataSet['pack']['payments']);
         // dump($this->paymentRepository);
@@ -76,9 +81,10 @@ class OnlinePaymentService extends Service
 
     public function findOrCreateAndSetPayment($paymentCode)
     {
+        // dump($this->packDataSet);exit;
         App::getContainer()->wireService('WebshopPackage/repository/ShipmentRepository');
         $activePaymentData = $this->packDataSet['pack']['payments']['active'];
-        $activePaymentId = $activePaymentData ? $activePaymentData['payment']['id'] : null;
+        $activePaymentId = $activePaymentData ? $activePaymentData['id'] : null;
 
         if (!$activePaymentId) {
             $this->paymentEntity = new Payment();

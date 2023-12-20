@@ -104,14 +104,16 @@ class PackDataProvider extends Service
             $dataSet['pack']['confirmationSentAt'] = $packObject->getConfirmationSentAt();
 
             foreach ($packObject->getPayment() as $payment) {
+                // dump($payment);exit;
                 $assembledPaymentData = PaymentDataProvider::assembleDataSet($payment);
+                // dump($assembledPaymentData);
                 if (in_array($payment->getStatus(), Payment::PAYMENT_STATUS_COLLECTION_SUCCEEDED)) {
-                    $shipmentData['pack']['payments']['successful'] = $assembledPaymentData;
-                    $shipmentData['pack']['payments']['active'] = $assembledPaymentData;
+                    $dataSet['pack']['payments']['successful'] = $assembledPaymentData;
+                    $dataSet['pack']['payments']['active'] = $assembledPaymentData;
                 } elseif (in_array($payment->getStatus(), Payment::PAYMENT_STATUS_COLLECTION_FAILED_FOREVER)) {
-                    $shipmentData['pack']['payments']['failedForever'][] = $assembledPaymentData;
+                    $dataSet['pack']['payments']['failedForever'][] = $assembledPaymentData;
                 } else {
-                    $shipmentData['pack']['payments']['active'] = $assembledPaymentData;
+                    $dataSet['pack']['payments']['active'] = $assembledPaymentData;
                 }
             }
         }

@@ -62,7 +62,7 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
                      * 
                     */
                 } elseif ($paymentData['active']) {
-                    $statusOld = $paymentData['active']['payment']['status'];
+                    $statusOld = $paymentData['active']['status'];
                     $paymentStatus = $paymentService->getAndSavePaymentStatus();
                     if (isset($paymentStatus['Status']) && $paymentStatus['Status'] != $statusOld) {
                         /**

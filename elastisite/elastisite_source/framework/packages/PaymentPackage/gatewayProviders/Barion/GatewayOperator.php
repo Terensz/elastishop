@@ -274,6 +274,8 @@ class GatewayOperator extends OnlineGatewayOperator
         $this->onlinePaymentService->paymentEntity->setRedirectedAt(new \DateTime());
         $this->onlinePaymentService->saveAndRefreshPaymentEntity();
         $this->onlinePaymentService->providerApiResponse = $response;
+
+        // dump($this->onlinePaymentService->paymentEntity);exit;
         // dump($curlApiCaller);exit;
         return $curlApiCaller;
     }
