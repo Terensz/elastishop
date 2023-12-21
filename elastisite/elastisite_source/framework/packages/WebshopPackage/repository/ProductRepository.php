@@ -149,15 +149,15 @@ class ProductRepository extends DbRepository
             if ($filter['specialCategorySlugKey'] == WebshopService::TAG_RECOMMENDED_PRODUCTS) {
                 $categoryOuterFilter = "AND (is_recommended = :is_recommended OR ppl_gross > ppa_gross) ";
                 $params = array_merge($params, ['is_recommended' => Product::IS_RECOMMENDED_YES]);
-                dump($params);
+                // dump($params);
             }
         }
         $stm = str_replace('[categoryOuterFilter]', $categoryOuterFilter, $stm);
 
         // dump($query['params']);
         // dump(nl2br($query['statement']));exit;
-dump(nl2br($stm));
-dump($params);
+        // dump(nl2br($stm));
+        // dump($params);
 
         $result = $dbm->findAll($stm, $params);
 
@@ -166,7 +166,7 @@ dump($params);
 
         if (empty($result)) {
             $query = $this->innerQueryConditionsAssembler($locale, $filter, $stm, self::SEARCH_ACCURACY_INACCURATE);   
-            $result = $dbm->findAll($query['statement'], $query['params']);
+            $result = $dbm->findAll($stm, $params);
         }
 
         // dump($result);exit;
