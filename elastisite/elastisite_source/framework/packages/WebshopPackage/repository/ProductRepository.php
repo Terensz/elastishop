@@ -141,18 +141,21 @@ class ProductRepository extends DbRepository
         // }
 
         $query = $this->innerQueryConditionsAssembler($locale, $filter, $stm, self::SEARCH_ACCURACY_ACCURATE);
+        $stm = $query['statement'];
+        $params = $query['params'];
+
         $categoryOuterFilter = '';
         if (isset($filter['specialCategorySlugKey']) && !empty($filter['specialCategorySlugKey'])) {
             if ($filter['specialCategorySlugKey'] == WebshopService::TAG_RECOMMENDED_PRODUCTS) {
                 $categoryOuterFilter = "AND (is_recommended = :is_recommended OR ppl_gross > ppa_gross) ";
-                $query['params'] = array_merge($query['params'], ['is_recommended' => Product::IS_RECOMMENDED_YES]);
+                $params = array_merge($params, ['is_recommended' => Product::IS_RECOMMENDED_YES]);
             }
         }
-        $query['statement'] = str_replace('[categoryOuterFilter]', $categoryOuterFilter, $query['statement']);
+        $stm = str_replace('[categoryOuterFilter]', $categoryOuterFilter, $stm);
 
         // dump($query['params']);
         // dump(nl2br($query['statement']));exit;
-        $result = $dbm->findAll($query['statement'], $query['params']);
+        $result = $dbm->findAll($stm, $params);
 
         // dump($query['params']);
         // dump($result);exit;
