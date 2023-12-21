@@ -124,45 +124,32 @@ class ProductRepository extends DbRepository
         $showAnomalous =  isset($options['showAnomalous']) ? $options['showAnomalous'] : false;
         $showInactive = isset($options['showInactive']) ? $options['showInactive'] : false;
         $offset = ($page - 1) * $maxItemsOnPage;
-    
+        
         $stm = "
         SELECT 
-            unique_key,
-            product_id,
-            product_special_purpose,
-            category_id, 
-            product_sku,
-            product_condition,
-            category_name,
-            product_name,
-            product_short_info,
-            product_description,
-            product_slug,
-            product_status,
-            ppl_currency_code, -- PPL is: list product price
-            ppl_price_type,
-            ppl_net,
-            ppl_gross,
-            ppl_vat,
-            ppa_binder_id, -- PPA is: active product price
-            ppa_binder_product_price_id, -- PPA is: active product price
-            ppa_currency_code,
-            ppa_price_type,
-            ppa_net,
-            ppa_gross,
-            ppa_vat,
-            product_info_link,
-            product_image_slugs
+            *
         FROM (
         ".self::getProductsDataQueryBase($locale, $getDescription)."
         ) core_query 
         WHERE 
             (product_condition = '".self::PRODUCT_CONDITION_OFFERABLE."'".($showAnomalous ? " OR product_condition = '".self::PRODUCT_CONDITION_ANOMALOUS."'" : "").")
             AND (product_status = '".Product::STATUS_ACTIVE."'".($showInactive ? " OR product_status = '".Product::STATUS_INACTIVE."'" : "").")
+            [categoryOuterFilter]
         LIMIT ".$offset.", ".$maxItemsOnPage."
         ";
+        // if (isset(['specialCategorySlugKey']) {
+        // }
 
         $query = $this->innerQueryConditionsAssembler($locale, $filter, $stm, self::SEARCH_ACCURACY_ACCURATE);
+        $categoryOuterFilter = '';
+        if (isset($filter['specialCategorySlugKey']) && !empty($filter['specialCategorySlugKey'])) {
+            if ($filter['specialCategorySlugKey'] == WebshopService::TAG_RECOMMENDED_PRODUCTS) {
+                $categoryOuterFilter = "AND (is_recommended = :is_recommended OR ppl_gross > ppa_gross) ";
+                $query['params'] = array_merge($query['params'], ['is_recommended' => Product::IS_RECOMMENDED_YES]);
+            }
+        }
+        $query['statement'] = str_replace('[categoryOuterFilter]', $categoryOuterFilter, $query['statement']);
+
         // dump($query['params']);
         // dump(nl2br($query['statement']));exit;
         $result = $dbm->findAll($query['statement'], $query['params']);
@@ -190,6 +177,7 @@ class ProductRepository extends DbRepository
                             null as 'quantity',
                             p.id as product_id,
                             p.special_purpose as product_special_purpose,
+                            p.is_recommended as is_recommended,
                             p.product_category_id as category_id,
                             CASE
                                 WHEN p.code IS NULL OR p.code = '' THEN p.id
@@ -243,7 +231,7 @@ class ProductRepository extends DbRepository
                         [productIdsWhereString]
                         [termWhereString] 
                         GROUP BY p.id 
-                        ORDER BY pc.id ASC
+                        -- ORDER BY pc.id ASC
         ";
         
         return $stm;
@@ -277,6 +265,7 @@ class ProductRepository extends DbRepository
 
     private function innerQueryConditionsAssembler($locale, $filter, $stmBase, $accuracy = self::SEARCH_ACCURACY_ACCURATE)
     {
+        App::getContainer()->wireService('WebshopPackage/service/WebshopService');
         /**
          * Setting up filter
         */
@@ -535,6 +524,7 @@ class ProductRepository extends DbRepository
                                 maintable.name, 
                                 ".($this->productCodeExists() ? 'maintable.code, ' : '')." pcat.name as product_category,
                                 maintable.special_purpose,
+                                maintable.is_recommended,
                                 maintable.status
                             FROM ".$this->getTableName()." maintable
                             LEFT JOIN product_category pcat ON pcat.id = maintable.product_category_id 

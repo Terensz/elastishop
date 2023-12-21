@@ -53,6 +53,11 @@ $formView->add('select')->setPropertyReference('specialPurpose')->setLabel(trans
     ->addOption(Product::SPECIAL_PURPOSE_GIFT, 'gift')
     ;
 
+$formView->add('select')->setPropertyReference('isRecommended')->setLabel(trans('recommended.product'))
+    ->addOption(Product::IS_RECOMMENDED_NO, 'no')
+    ->addOption(Product::IS_RECOMMENDED_YES, 'yes')
+    ;
+
 $formView->add('text')->setPropertyReference('shortInfo')->setLabel(trans('short.info'));
 if (in_array('en', App::getContainer()->getConfig()->getSupportedLocales())) {
     $formView->add('text')->setPropertyReference('shortInfoEn')->setLabel(trans('english.info'));

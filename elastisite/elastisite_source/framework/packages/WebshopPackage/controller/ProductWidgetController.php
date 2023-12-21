@@ -7,6 +7,7 @@ use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\repository\ProductCategoryRepository;
 use framework\packages\FormPackage\service\FormBuilder;
 use framework\packages\DataGridPackage\service\DataGridBuilder;
+use framework\packages\WebshopPackage\entity\Product;
 
 class ProductWidgetController extends WidgetController
 {
@@ -16,6 +17,7 @@ class ProductWidgetController extends WidgetController
     public function adminWebshopProductsWidgetAction()
     {
         // dump(App::get());exit;
+        $this->setService('WebshopPackage/entity/Product');
         $this->setService('WebshopPackage/repository/ProductRepository');
         // $this->setService('WebshopPackage/service/WebshopService');
         // $webshopService = $this->getService('WebshopService');
@@ -24,11 +26,18 @@ class ProductWidgetController extends WidgetController
 
         $dataGridBuilder->setValueConversion(['specialPurpose' => [
             null => trans('none'),
-            'DeliveryFee' => trans('delivery.fee')
+            'DeliveryFee' => trans('delivery.fee'),
+            'Gift' => trans('gift')
         ]]);
         $dataGridBuilder->addUseUnprocessedAsInputValue('specialPurpose');
         $dataGridBuilder->addPropertyInputType('specialPurpose', 'multiselect');
-        
+        $dataGridBuilder->setValueConversion(['isRecommended' => [
+            Product::IS_RECOMMENDED_NO => trans('no'),
+            Product::IS_RECOMMENDED_YES => trans('yes')
+        ]]);
+        $dataGridBuilder->addUseUnprocessedAsInputValue('isRecommended');
+        $dataGridBuilder->addPropertyInputType('isRecommended', 'multiselect');
+
         $dataGridBuilder->setValueConversion(['status' => [
             '0' => trans('disabled'),
             '1' => trans('active'),

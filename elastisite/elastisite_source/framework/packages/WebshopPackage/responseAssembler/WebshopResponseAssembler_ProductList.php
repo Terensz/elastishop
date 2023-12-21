@@ -45,13 +45,14 @@ class WebshopResponseAssembler_ProductList extends Service
         // $this->setService('WebshopPackage/repository/ProductCategoryRepository');
         // $productCategoryRepo = $this->getContainer()->getService('ProductCategoryRepository');
         $processedRequestData = $processedRequestData ? : WebshopRequestService::getProcessedRequestData();
-
+        
         // dump($processedRequestData);exit;
 
         // $productCategory = $processedRequestData['categoryObject'] ? : null;
         // $english = $processedRequestData['localeRequest'] == 'en' ? true : false;
         $rawProductsData = $productRepo->getProductsData(App::getContainer()->getSession()->getLocale(), [
             'categoryId' => $processedRequestData['categoryId'],
+            'specialCategorySlugKey' => $processedRequestData['specialCategorySlugKey'],
             'searchTerm' => $processedRequestData['searchTerm']
         ], [
             'page' => $processedRequestData['currentPage']

@@ -7,6 +7,8 @@ class Translation_en
     public function getTranslation()
     {
         return array(
+            'is.recommended' => 'Recommended product',
+            'recommended.product' => 'Recommended product',
             // 'trigger.off.gross.limit' => 'Trigger off gross limit',
             'must.be.empty.if.automatic' => 'Must be empty, if the effect causing stuff is automatic.',
             'direction.of.change.is.not.permitted' => 'Direction of change contains inproper value',

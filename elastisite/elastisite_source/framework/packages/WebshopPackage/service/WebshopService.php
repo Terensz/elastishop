@@ -20,11 +20,12 @@ class WebshopService extends Service
     const TAG_SEARCH = 'Search';
     const TAG_PRODUCT_SLUG = 'ProductSlug';
     const TAG_ALL_PRODUCTS = 'AllProducts';
+    const TAG_RECOMMENDED_PRODUCTS = 'RecommendedProducts';
     const TAG_DISCOUNTED_PRODUCTS = 'DiscountedProducts';
+    // const TAG_RECOMMENDED_AND_DISCOUNTED_PRODUCTS = 'RecommendedAndDiscountedProducts';
     const TAG_SHOW_PRODUCT = 'ShowProduct';
     const TAG_ANOMALOUS_PRODUCTS = 'AnomalousProducts';
     const TAG_MOST_POPULAR_PRODUCTS = 'MostPopularProducts';
-    const TAG_RECOMMENDED_PRODUCTS = 'RecommendedProducts';
 
     // const LINK_BASES = [
     //     [self::TAG_SHOW_PRODUCT] => [
@@ -142,6 +143,14 @@ class WebshopService extends Service
             'transRef' => 'recommended.products',
             'isSpecialCategory' => true
         ],
+        // self::TAG_RECOMMENDED_AND_DISCOUNTED_PRODUCTS => [
+        //     'slugTranslations' => [
+        //         'hu' => 'ajanlott_es_akcios_termekek',
+        //         'en' => 'recommended_and_discounted_products'
+        //     ],
+        //     'transRef' => 'recommended.products',
+        //     'isSpecialCategory' => true
+        // ],
         self::TAG_ANOMALOUS_PRODUCTS => [
             'slugTranslations' => [
                 'en' => 'anomalous_products',

@@ -13,6 +13,9 @@ class Product extends DbEntity
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 
+    const IS_RECOMMENDED_YES = 'Yes';
+    const IS_RECOMMENDED_NO = 'No';
+
     const SPECIAL_PURPOSE_DELIVERY_FEE = 'DeliveryFee';
     const SPECIAL_PURPOSE_GIFT = 'Gift';
 
@@ -42,6 +45,7 @@ class Product extends DbEntity
         `code` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `product_category_id` int(11) DEFAULT NULL,
         `special_purpose` varchar(100) NOT NULL,
+        `is_recommended` varchar(3) DEFAULT '".self::IS_RECOMMENDED_NO."',
         `created_at` datetime DEFAULT NULL,
         `status` int(2) NOT NULL DEFAULT '1',
         PRIMARY KEY (`id`)
@@ -104,6 +108,7 @@ class Product extends DbEntity
     protected $code;
     protected $productCategory;
     protected $specialPurpose;
+    protected $isRecommended;
     protected $productPriceActive;
     protected $productImage = array();
     protected $createdAt;
@@ -255,6 +260,16 @@ class Product extends DbEntity
     public function getSpecialPurpose()
     {
         return $this->specialPurpose;
+    }
+
+    public function setIsRecommended($isRecommended)
+    {
+        $this->isRecommended = $isRecommended;
+    }
+
+    public function getIsRecommended()
+    {
+        return $this->isRecommended;
     }
 
     // public function setActiveProductPrice2($activeProductPrice = null)

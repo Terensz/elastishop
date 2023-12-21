@@ -68,6 +68,9 @@ class WebshopRequestService extends Service
                 $specialCategorySlugKey = WebshopService::TAG_DISCOUNTED_PRODUCTS;
                 $specialCategoryTransRef = self::getSlugConfig($specialCategorySlugKey)['transRef'];
                 // $discountedList = true;
+            } elseif (WebshopService::getSetting('WebshopPackage_homepageListType') == WebshopService::TAG_RECOMMENDED_PRODUCTS) {
+                $specialCategorySlugKey = WebshopService::TAG_RECOMMENDED_PRODUCTS;
+                $specialCategoryTransRef = self::getSlugConfig($specialCategorySlugKey)['transRef'];
             } elseif (WebshopService::getSetting('WebshopPackage_homepageListType') == WebshopService::TAG_MOST_POPULAR_PRODUCTS) {
                 $specialCategorySlugKey = WebshopService::TAG_MOST_POPULAR_PRODUCTS;
                 $specialCategoryTransRef = self::getSlugConfig($specialCategorySlugKey)['transRef'];

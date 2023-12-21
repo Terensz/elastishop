@@ -64,8 +64,14 @@ class WebshopResponseAssembler_Categories extends Service
         $viewParams = [
             'categoriesData' => $categoriesData,
             'specialCategorySlugKey' => $processedRequestData['specialCategorySlugKey'],
+            'allProductsSlugKey' => 'AllProducts',
+            'recommendedProductsSlugKey' => 'RecommendedProducts',
             'allProductsTitle' => trans('all.products'),
-            'localizedWebshopUrlKey' => WebshopRequestService::getSlugTransRef(WebshopService::TAG_WEBSHOP, $locale)
+            'recommendedProductsTitle' => trans('recommended.products'),
+            'localizedWebshopUrlKey' => WebshopRequestService::getSlugTransRef(WebshopService::TAG_WEBSHOP, $locale),
+            'localizedCategoryUrlKey' => WebshopRequestService::getSlugTransRef(WebshopService::TAG_CATEGORY, $locale),
+            'localizedAllProductsSlugKey' => WebshopRequestService::getSlugTransRef(WebshopService::TAG_ALL_PRODUCTS, $locale),
+            'localizedRecommendedProductsSlugKey' => WebshopRequestService::getSlugTransRef(WebshopService::TAG_RECOMMENDED_PRODUCTS, $locale)
         ];
 
         $viewPath = 'framework/packages/WebshopPackage/view/Sections/Categories/Categories.php';

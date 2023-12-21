@@ -7,6 +7,8 @@ class Translation_hu
     public function getTranslation()
     {
         return array(
+            'is.recommended' => 'Javasolt termék',
+            'recommended.product' => 'Javasolt termék',
             // 'trigger.off.gross.limit' => 'Trigger off gross limit',
             'must.be.empty.if.automatic' => 'Ez a mező legyen üres, ha a "hatást okozó dolog" automatikusra van állítva.',
             'direction.of.change.is.not.permitted' => 'A változás iránya nem megengedett értéket tartalmaz',

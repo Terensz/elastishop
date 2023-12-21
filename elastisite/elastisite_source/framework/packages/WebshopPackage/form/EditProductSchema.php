@@ -65,6 +65,11 @@ class EditProductSchema extends FormSchema
                         'required' => false
                     )
                 ),
+                'isRecommended' => array(
+                    'validatorRules' => array(
+                        'required' => false
+                    )
+                ),
                 'status' => array(
                     'validatorRules' => array(
                         'required' => false

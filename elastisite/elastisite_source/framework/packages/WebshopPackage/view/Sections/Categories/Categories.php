@@ -61,8 +61,13 @@ $categoriesData = [
                             <label><?php echo trans('product.categories'); ?></label>
                         </li> -->
                         <?php
+                        $customCategoryActiveStr = $specialCategorySlugKey == 'RecommendedProducts' ? ' active sideMenu-active' : '';
+                        $customCategoryLink = '/'.$localizedWebshopUrlKey.'/'.$localizedCategoryUrlKey.'/'.$localizedRecommendedProductsSlugKey;
+                        $customCategoryDisplayedName = $recommendedProductsTitle;
+                        include ('CustomCategory.php');
+
                         $customCategoryActiveStr = $specialCategorySlugKey == 'AllProducts' ? ' active sideMenu-active' : '';
-                        $customCategoryLink = '/'.$localizedWebshopUrlKey;
+                        $customCategoryLink = '/'.$localizedWebshopUrlKey.'/'.$localizedCategoryUrlKey.'/'.$localizedAllProductsSlugKey;
                         $customCategoryDisplayedName = $allProductsTitle;
                         include ('CustomCategory.php');
 

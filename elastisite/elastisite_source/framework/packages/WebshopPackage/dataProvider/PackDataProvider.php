@@ -8,7 +8,9 @@ use framework\packages\PaymentPackage\entity\Payment;
 use framework\packages\UserPackage\entity\User;
 use framework\packages\WebshopPackage\dataProvider\interfaces\PackInterface;
 use framework\packages\WebshopPackage\entity\Cart;
+use framework\packages\WebshopPackage\entity\CartItem;
 use framework\packages\WebshopPackage\entity\Shipment;
+use framework\packages\WebshopPackage\entity\ShipmentItem;
 
 class PackDataProvider extends Service
 {
@@ -67,7 +69,9 @@ class PackDataProvider extends Service
         App::getContainer()->wireService('UserPackage/entity/User');
         App::getContainer()->wireService('PaymentPackage/entity/Payment');
         App::getContainer()->wireService('WebshopPackage/entity/Cart');
+        App::getContainer()->wireService('WebshopPackage/entity/CartItem');
         App::getContainer()->wireService('WebshopPackage/entity/Shipment');
+        App::getContainer()->wireService('WebshopPackage/entity/ShipmentItem');
         App::getContainer()->wireService('WebshopPackage/dataProvider/AddressDataProvider');
         App::getContainer()->wireService('WebshopPackage/dataProvider/OrganizationDataProvider');
         App::getContainer()->wireService('WebshopPackage/dataProvider/PackItemDataProvider');
@@ -129,15 +133,28 @@ class PackDataProvider extends Service
             $packItemCollection = $packObject->getShipmentItem();
         }
         foreach ($packItemCollection as $packItem) {
-            $packItemData = PackItemDataProvider::assembleDataSet($packItem);
-            // dump($packItem->getProduct()->getSpecialPurpose());
-            if (empty($packItem->getProduct()->getSpecialPurpose())) {
-                $sumGrossNonSpecialPriceAccurate += $packItemData['product']['activePrice']['grossItemPriceAccurate'];
+            if (empty($packItem->getProduct()->getSpecialPurpose()) || $packItem->getProduct()->getSpecialPurpose() == '') {
+                $packItemData = PackItemDataProvider::assembleDataSet($packItem);
+                if (empty($packItem->getProduct()->getSpecialPurpose())) {
+                    $sumGrossNonSpecialPriceAccurate += $packItemData['product']['activePrice']['grossItemPriceAccurate'];
+                }
+                $dataSet['pack']['packItems']['productId-'.$packItemData['product']['id']] = $packItemData;
+                $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
+                $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
             }
-            $dataSet['pack']['packItems']['productId-'.$packItemData['product']['id']] = $packItemData;
-            $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
-            $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
         }
+        foreach ($packItemCollection as $packItem) {
+            if (!empty($packItem->getProduct()->getSpecialPurpose()) && $packItem->getProduct()->getSpecialPurpose() != '') {
+                $packItemData = PackItemDataProvider::assembleDataSet($packItem);
+                if (empty($packItem->getProduct()->getSpecialPurpose())) {
+                    $sumGrossNonSpecialPriceAccurate += $packItemData['product']['activePrice']['grossItemPriceAccurate'];
+                }
+                $dataSet['pack']['packItems']['productId-'.$packItemData['product']['id']] = $packItemData;
+                $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
+                $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
+            }
+        }
+        // dump('ennyikeh');exit;
 
         $dataSet['pack']['currencyCode'] = $currencyCode;
         $dataSet['summary']['sumGrossPriceRounded2'] = $sumGrossItemPriceRounded2;

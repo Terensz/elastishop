@@ -167,6 +167,7 @@ class WebshopResponseAssembler_Checkout extends Service
 
         // dump(self::collectOrganizationsData());
         // dump(WebshopFinishCheckoutService::assembleCartErrors($cart));exit;
+        // dump($packDataSet);exit;
 
         $viewParams = [
             // 'customerType' => $cart->getCustomerType(),
