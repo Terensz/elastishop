@@ -83,7 +83,13 @@ class WebshopResponseAssembler_ProductDetails extends Service
 
         $offeredQuantity = $oldQuantity ? : 1;
 
-        // dump($productData);exit;
+        // dump($productData);//exit;
+        $openGraphData = App::getContainer()->getOpenGraphData(true);
+        $openGraphData['title'] = $productData['name'];
+        $openGraphData['description'] = $productData['shortInfo'];
+        $openGraphData['image'] = $productData['mainProductImageLink'];
+        App::getContainer()->setOpenGraphData($openGraphData);
+        // dump(App::getContainer()->getOpenGraphData());exit;
 
         $viewParams = [
             'packDataSet' => $packDataSet,

@@ -59,7 +59,8 @@ class WebshopResponseAssembler_Categories extends Service
             'data' => $data
         ];
 
-        // dump($categoriesData);exit;
+        // $openGraphData = App::getContainer()->getOpenGraphData();
+        // dump($openGraphData);exit;
 
         $viewParams = [
             'categoriesData' => $categoriesData,
