@@ -237,7 +237,7 @@ class ProductRepository extends DbRepository
                         LEFT JOIN product_image pi ON pi.product_id = p.id
                         WHERE p.website = '".App::getWebsite()."' 
                         AND (pc.id IS NULL OR pc.website = '".App::getWebsite()."')
-                        AND p.special_purpose IS NULL
+                        AND (p.special_purpose IS NULL OR p.special_purpose = '')
                         [statusWhereString]
                         [categoryWhereString]
                         [productIdsWhereString]
@@ -245,7 +245,7 @@ class ProductRepository extends DbRepository
                         GROUP BY p.id 
                         ORDER BY pc.id ASC
         ";
-
+        
         return $stm;
     }
 
