@@ -38,6 +38,7 @@
             $options = [
                 'displaySaveButton' => true
             ];
+            $closeModalAfterSubmit = false;
             include('framework/packages/WebshopPackage/view/Sections/SideCart/SetCartItemQuantityModal.php');
             $productDescription = $productData['description']; 
             include('ProductDescription.php');

@@ -86,10 +86,10 @@ var Webshop = {
         $('#smallModalLabel').html('<?php echo trans('setting.cart.item.quantity'); ?>');
         $('#smallModalBody').html(response.renderedSections.sectionsResponse['SetCartItemQuantityModal']['view']);
         let responseData = response.renderedSections.sectionsResponse['SetCartItemQuantityModal']['data'];
-        $('#smallModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ");");
+        $('#smallModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ", true);");
         $('#smallModal').modal('show');
     },
-    setCartItemQuantitySubmit: function(event, offerId) {
+    setCartItemQuantitySubmit: function(event, offerId, closeModal) {
         if (event) {
             event.preventDefault();
         }
@@ -100,9 +100,23 @@ var Webshop = {
         };
         // console.log('setCartItemQuantitySubmit data:');
         // console.log(data);
-        $('#editorModal').modal('hide');
-        Webshop.callAjax('setCartItemQuantitySubmit', '/webshop/setCartItemQuantity', data, 'setCartItemQuantitySubmitCallback');
+        if (closeModal) {
+            $('#editorModal').modal('hide');
+        }
+        Webshop.callAjax('setCartItemQuantitySubmit', '/webshop/setCartItemQuantity', data, (closeModal ? 'setCartItemQuantitySubmitCallback' : 'setProductDetailsCartItemQuantitySubmitCallback'));
     },
+    /*
+    It's called by the product info modal
+    */
+    setProductDetailsCartItemQuantitySubmitCallback: function(response) {
+        // console.log('setProductDetailsCartItemQuantitySubmitCallback');
+        let responseData = response.renderedSections.sectionsResponse['SetCartItemQuantityModal']['data'];
+        Structure.throwToast(responseData.toastTitle, responseData.toastBody);
+        Structure.call(window.location.href, false, true, false);
+    },
+    /*
+    It's called by the standalone quantity modal
+    */
     setCartItemQuantitySubmitCallback: function(response) {
         console.log(response);
         $('#smallModal').modal('hide');
@@ -143,9 +157,14 @@ var Webshop = {
             let searchTerm = $('#webshop_search_term').val();
             let searchLink = linkBase + searchTerm;
             $('#webshopSearchLink').prop('href', searchLink);
+            console.log('webshopSearchLink: ', document.getElementById("webshopSearchLink").outerHTML);
             $('#webshopSearchLink').click();
         } else {
+            console.log('empty string <?php echo $searchLinkData['searchLinkBase']; ?>');
             $('#webshopSearchLink').prop('href', '<?php echo $searchLinkData['searchLinkBase']; ?>');
+            // console.log("Structure.call('<?php echo $searchLinkData['searchLinkBase']; ?>');");
+            // Structure.call('<?php echo $searchLinkData['searchLinkBase']; ?>');
+            console.log('webshopSearchLink: ', document.getElementById("webshopSearchLink").outerHTML);
             $('#webshopSearchLink').click();
         }
     },

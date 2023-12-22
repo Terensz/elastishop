@@ -44,7 +44,7 @@
                     <?php if (isset($options['displaySaveButton'])): ?>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <button type="button" class="btn btn-primary" onclick="Webshop.setCartItemQuantitySubmit(event, '<?php echo $productData['activePrice']['offerId']; ?>');">Mentés</button>
+                        <button type="button" class="btn btn-primary" onclick="Webshop.setCartItemQuantitySubmit(event, '<?php echo $productData['activePrice']['offerId']; ?>', <?php echo $closeModalAfterSubmit ? 'true': 'false'; ?>);">Mentés</button>
                     </div>
                     <?php endif; ?>
                 <?php if (isset($options['displaySaveButton'])): ?>

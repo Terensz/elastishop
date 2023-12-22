@@ -91,7 +91,7 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
         // $data = [
         //     'offerId' => $offerId
         // ];
-
+        $closeModalAfterSubmit = true;
         $viewPath = 'framework/packages/WebshopPackage/view/Sections/SideCart/SetCartItemQuantityModal.php';
         $view = ViewRenderer::renderWidget('WebshopPackage_SetCartItemQuantityModal', $viewPath, $viewParams);
 

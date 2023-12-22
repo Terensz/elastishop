@@ -135,14 +135,30 @@ var Structure = {
             $('#' + id).html('<div style="width: ' + width + 'px; height: ' + height + 'px;"></div>');
         });
     },
-    call: function (url, forceReload, pushUrlToHistory) {
-        pushUrlToHistory = (typeof pushUrlToHistory === 'undefined') ? true : pushUrlToHistory;
-        $("#editorModal").unbind("hidden.bs.modal");
-        $('#editorModalLabel').html('');
-        $('#editorModalBody').html('');
+    call: function (url, forceReload, pushUrlToHistory, resetEditorModal) {
+        if (typeof forceReload == 'undefined') {
+            forceReload = false;
+        }
+        if (typeof pushUrlToHistory == 'undefined') {
+            pushUrlToHistory = true;
+        }
+        if (typeof resetEditorModal == 'undefined') {
+            resetEditorModal = true;
+        }
+        // console.log('resetEditorModal: ', resetEditorModal);
+        // pushUrlToHistory = (typeof pushUrlToHistory === 'undefined') ? true : pushUrlToHistory;
+        if (resetEditorModal) {
+            $("#editorModal").unbind("hidden.bs.modal");
+            $('#editorModalLabel').html('');
+            $('#editorModalBody').html('');
+            $('.daterangepicker').remove();
+        }
+
         LoadingHandler.start();
-        $('.daterangepicker').remove();
         url = (typeof url !== 'undefined') ? url : window.location;
+
+        console.log('url: ', url);
+
         if (pushUrlToHistory) {
             window.history.pushState("object or string", "Title", url);
         }
@@ -168,6 +184,8 @@ var Structure = {
                 } else {
                     Structure.changed = true;
                 }
+
+                // console.log('Structure.changed: ', Structure.changed);
 
                 if (Structure.changed == false && response.data['structureName'] == 'basic2Panel') {
                     // $('#leftPanel-container').hide();
@@ -263,6 +281,7 @@ var Structure = {
                 // 	CP.load();
                 // }
                 CP.load();
+
             },
             'error': function (request, error) {
                 ElastiTools.checkResponse(request.responseText);

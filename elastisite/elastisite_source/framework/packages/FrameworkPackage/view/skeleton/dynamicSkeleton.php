@@ -78,24 +78,6 @@ endif;
 	This page needs JavaScript activated to work.
 	<style>#documentBody { display:none; }</style>
 </noscript>
-<div id="documentBody" class="preventTouchScroll">
-	<div id="documentBackground" class="preventTouchScroll"></div>
-	<div id="structureScripts"><?php echo $container->getWidgetScripts(); ?></div>
-	<div id="structure">
-		{{ structure }}
-	</div>
-</div>
-<div id="systemTranslations" style="display: none;">
-<?php
-// dump($container->getSystemTranslations());exit;
-foreach ($container->getSystemTranslations() as $systemTranslationKey => $systemTranslationValue) {
-	$systemTranslationKey = str_replace('.', '_', $systemTranslationKey);
-?>
-	<div id="systemTranslation-<?php echo $systemTranslationKey; ?>"><?php echo $systemTranslationValue; ?></div>
-<?php
-}
-?>
-</div>
 
 	<!-- ConfirmModal -->
 	<div class="modal fade" id="confirmModal" tabindex="-1">
@@ -210,6 +192,24 @@ foreach ($container->getSystemTranslations() as $systemTranslationKey => $system
 		<!-- <iframe id="defaultLightbox-iframe" width="560" height="315" src="https://www.youtube.com/embed/pWaHZ2oRE7s" frameborder="0" allowfullscreen></iframe> -->
 	</div>
 
+<div id="documentBody" class="preventTouchScroll">
+	<div id="documentBackground" class="preventTouchScroll"></div>
+	<div id="structureScripts"><?php echo $container->getWidgetScripts(); ?></div>
+	<div id="structure">
+		{{ structure }}
+	</div>
+</div>
+<div id="systemTranslations" style="display: none;">
+<?php
+// dump($container->getSystemTranslations());exit;
+foreach ($container->getSystemTranslations() as $systemTranslationKey => $systemTranslationValue) {
+	$systemTranslationKey = str_replace('.', '_', $systemTranslationKey);
+?>
+	<div id="systemTranslation-<?php echo $systemTranslationKey; ?>"><?php echo $systemTranslationValue; ?></div>
+<?php
+}
+?>
+</div>
 
 	<!-- EditorModal Bootstrap 5.3.0 -->
 	<!-- <div id="editorModal" class="modal" tabindex="-1" role="dialog">
