@@ -6,6 +6,7 @@ use framework\component\core\WidgetResponse;
 use framework\component\parent\Service;
 use framework\kernel\view\ViewRenderer;
 use framework\packages\PaymentPackage\service\OnlinePaymentService;
+use framework\packages\UserPackage\entity\User;
 use framework\packages\WebshopPackage\entity\Shipment;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\repository\ShipmentRepository;
@@ -22,9 +23,15 @@ class WebshopResponseAssembler_ShipmentsInProgress extends Service
         App::getContainer()->wireService('WebshopPackage/service/ShipmentService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopService');
         $collection = ShipmentRepository::getShipmentCollectionWithSpecificStatuses(Shipment::STATUS_COLLECTION_SHIPMENTS_IN_PROGRESS, App::getContainer()->getSession()->get('visitorCode'));
-        $packDataCollection = ShipmentService::assembleShipmentDataCollection($collection);
+        $packDataCollectionUnfiltered = ShipmentService::assembleShipmentDataCollection($collection);
 
-        // dump($collection);
+        $packDataCollection = [];
+        foreach ($packDataCollectionUnfiltered as $packDataSet) {
+            if ($packDataSet['pack']['permittedForCurrentUser'] || (!$packDataSet['pack']['permittedForCurrentUser'] && $packDataSet['pack']['permittedUserType'] == User::TYPE_GUEST)) {
+                $packDataCollection[] = $packDataSet;
+            }
+        }
+        // dump($packDataCollection);exit;
 
         $viewParams = [
             'packDataCollection' => $packDataCollection

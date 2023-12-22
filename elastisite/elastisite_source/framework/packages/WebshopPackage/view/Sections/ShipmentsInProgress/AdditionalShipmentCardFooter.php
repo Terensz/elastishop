@@ -1,18 +1,19 @@
 <?php
 
+use framework\packages\UserPackage\entity\User;
 use framework\packages\WebshopPackage\entity\Shipment;
 use framework\packages\WebshopPackage\service\ShipmentService;
 
 App::getContainer()->wireService('WebshopPackage/entity/Shipment');
 App::getContainer()->wireService('WebshopPackage/service/ShipmentService');
-
+// dump($packDataSet['pack']['permittedForCurrentUser']);
 ?>
 <?php if ($packDataSet['pack']['permittedForCurrentUser'] && in_array($packDataSet['pack']['status'], Shipment::STATUS_COLLECTION_SHIPMENTS_HANDLING_PROMPTED_TO_USER)): ?>
 <div class="card-footer">
     <a class="ajaxCallerLink" href="/webshop/shipment/handling/<?php echo $shipmentCode; ?>"><?php echo trans('lets.handle.this.shipment'); ?></a>
 </div>
 <?php else: ?>
-    <?php if ($packDataSet['pack']['permittedUserType'] == ShipmentService::PERMITTED_USER_TYPE_GUEST): ?>
+    <?php if ($packDataSet['pack']['permittedUserType'] == ShipmentService::PERMITTED_USER_TYPE_GUEST && App::getContainer()->getUser()->getType() == User::TYPE_USER): ?>
     <div class="card-footer">
         Ez a megrendelés regisztráció nélkül került rögzítésre, így azért, hogy az Ön anonimitását meg tudja őrizni, nem kapcsolódik hozzá felhasználói fiók. A megrendelés folytatására két lehetősége van:<br>
         1.: <a class="" href="/logout">Kijelentkezik</a> a programból, így tudja folytatni a regisztráció nélküli megrendlést. A regisztráció nélküli megrendelések a böngésző munkamenetéhez kapcsolódnak, 
