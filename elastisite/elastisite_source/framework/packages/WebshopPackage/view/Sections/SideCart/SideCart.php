@@ -36,10 +36,10 @@ $cartItemCounter = 0;
     // }
     $mainProductImageLink = $packItem['product']['mainProductImageLink'];
     $productName = $packItem['product']['name'];
-    $grossItemPriceFormatted = $packItem['product']['actualPrice']['grossUnitPriceFormatted'];
+    $grossUnitPriceFormatted = $packItem['product']['actualPrice']['grossUnitPriceFormatted'];
     $quantity = $packItem['quantity'];
-    $grossUnitPriceFormatted = $packItem['quantity'] * $packItem['product']['actualPrice']['grossUnitPriceRounded2'];
-    $grossUnitPriceFormatted = StringHelper::formatNumber($grossUnitPriceFormatted, 2, ',', '.');
+    $grossItemPriceFormatted = $packItem['quantity'] * $packItem['product']['actualPrice']['grossUnitPriceRounded2'];
+    $grossItemPriceFormatted = StringHelper::formatNumber($grossItemPriceFormatted, 2, ',', '.');
     $currencyCode = $packItem['product']['actualPrice']['currencyCode'];
     $specialPurpose = $packItem['product']['specialPurpose'];
     /**
@@ -50,6 +50,24 @@ $cartItemCounter = 0;
     $cartItemCounter++;
     ?>
     <?php endforeach; ?>
+    <div class="card-footer card-background-highlighted">
+        <table style="width: 100%;">
+            <tr>
+                <td class="table-m-1" style="text-align: right; width: 66px;">
+                </td>
+                <td class="table-m-1" style="width: 10px;"></td>
+                <td class="table-m-1" style="width: auto;">
+                    <div>
+                        <?php echo trans('altogether'); ?>
+                    </div>
+                    <div>
+                        <b><?php echo $packDataSet['summary']['sumGrossPriceFormatted'].' '.$currencyCode; ?></b>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
     <div class="card-footer">
         <div class="col-md-12 sidebar-text-container d-flex align-items-center">
             <?php if ($cartItemCounter == 0): ?>

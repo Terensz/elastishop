@@ -7,6 +7,7 @@ class Translation_en
     public function getTranslation()
     {
         return array(
+            'altogether' => 'Altogether',
             'cart' => 'Cart',
             'is.recommended' => 'Recommended product',
             'recommended.product' => 'Recommended product',

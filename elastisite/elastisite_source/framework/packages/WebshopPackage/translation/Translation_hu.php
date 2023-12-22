@@ -7,6 +7,7 @@ class Translation_hu
     public function getTranslation()
     {
         return array(
+            'altogether' => 'Összesen',
             'cart' => 'Kosár',
             'is.recommended' => 'Javasolt termék',
             'recommended.product' => 'Javasolt termék',
