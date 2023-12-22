@@ -146,6 +146,21 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
         return true;
     }
 
+    /**
+     * @var VisitorConsentAcceptance $barionThirdPartyCookieAcceptance = null
+    */
+    public static function getSzamlazzHuThirdPartyCookieAcceptance()
+    {
+        App::getContainer()->wireService('LegalPackage/service/CookieConsentService');
+        App::getContainer()->wireService('LegalPackage/entity/VisitorConsentAcceptance');
+        $thirdPartyCookieAcceptance = CookieConsentService::findThirdPartyCookiesAcceptances(false, 'SzamlazzHu');
+        if (!$thirdPartyCookieAcceptance || ($thirdPartyCookieAcceptance && $thirdPartyCookieAcceptance->getAcceptance() == VisitorConsentAcceptance::ACCEPTANCE_REFUSED)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static function getPaymentServiceData($packDataSet)
     {
         // dump($packDataSet);
@@ -178,6 +193,25 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
         $textAssembler->setDocumentType('entry');
         $textAssembler->setPackage('WebshopPackage');
         $textAssembler->setReferenceKey('BarionCookieWasRefused');
+        $textAssembler->setPlaceholdersAndValues([
+            'httpDomain' => App::getContainer()->getUrl()->getHttpDomain()
+        ]);
+        $textAssembler->create();
+        $textView = $textAssembler->getView();
+
+        return $textView;
+        // dump($textView);exit;
+    }
+
+    public static function assembleSzamlazzHuCookieRefusedText()
+    {
+        App::getContainer()->wireService('ToolPackage/service/TextAssembler');
+        $textAssembler = new TextAssembler();
+        // dump($this->getContentTextService($subscriber));
+        // $textAssembler->setContentTextService($this->getContentTextService());
+        $textAssembler->setDocumentType('entry');
+        $textAssembler->setPackage('WebshopPackage');
+        $textAssembler->setReferenceKey('SzamlazzHuCookieWasRefused');
         $textAssembler->setPlaceholdersAndValues([
             'httpDomain' => App::getContainer()->getUrl()->getHttpDomain()
         ]);
@@ -227,6 +261,14 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
                 ]
             ],
             'BarionCookieConsent' => [
+                'messages' => [
+                    'barionCookieConsentMessage' => null,
+                ],
+                'summary' => [
+                    'errorsCount' => 0,
+                ]
+            ],
+            'SzamlazzHuCookieConsent' => [
                 'messages' => [
                     'barionCookieConsentMessage' => null,
                 ],
@@ -300,6 +342,19 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
             // $barionCookieText = WebshopResponseAssembler_ShipmentHandling::assembleBarionCookieRefusedText();
             $errors['BarionCookieConsent']['messages']['barionCookieConsentMessage'] = WebshopResponseAssembler_ShipmentHandling::assembleBarionCookieRefusedText();
             $errors['BarionCookieConsent']['summary']['errorsCount']++;
+            $errors['Summary']['errorsCount']++;
+        }
+
+        /**
+         * Checking SzamlazzHu cookie consent.
+         * Without this the user cannot have the Barion pixel in their browser, which prevent them of paying for the shipment.
+        */
+        $szamlazzHuThirdPartyCookieAcceptance = WebshopResponseAssembler_ShipmentHandling::getSzamlazzHuThirdPartyCookieAcceptance();
+        // $barionCookieText = null;
+        if (!$szamlazzHuThirdPartyCookieAcceptance && $shipment) {
+            // $barionCookieText = WebshopResponseAssembler_ShipmentHandling::assembleBarionCookieRefusedText();
+            $errors['SzamlazzHuCookieConsent']['messages']['szamlazzHuCookieConsentMessage'] = WebshopResponseAssembler_ShipmentHandling::assembleSzamlazzHuCookieRefusedText();
+            $errors['SzamlazzHuCookieConsent']['summary']['errorsCount']++;
             $errors['Summary']['errorsCount']++;
         }
         // dump($barionCookieRefusedText);//exit;

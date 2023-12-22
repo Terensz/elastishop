@@ -62,6 +62,7 @@ class Translation_hu
             'user.type.guest' => 'Regisztráció nélküli látogató',
             'permitted.user.type' => 'Engedélyezett felhasználó-típus',
             'barion.cookie.consents' => 'Barion sütik elfogadása',
+            'szamlazz.hu.cookie.consents' => 'Szamlazz.hu sütik elfogadása',
             'resetting.cookie.consents' => 'Sütivel kapcsolatos döntések visszaállítása',
             'unfinished.order' => 'Félbehagyott megrendelés',
             'selecting.payment.method' => 'Fizetési mód kiválasztása',

@@ -79,6 +79,29 @@ include('framework/packages/WebshopPackage/view/Common/ShipmentList/ShipmentList
     <?php endif; ?>
 
     <?php 
+    // dump($errors['BarionCookieConsent']);
+    $szamlazzHuCookieConsentCardErrorClass = ' card-success';
+    if ($errors['SzamlazzHuCookieConsent']['summary']['errorsCount'] > 0) {
+        $szamlazzHuCookieConsentCardErrorClass = ' card-error';
+    }
+    if ($errors['SzamlazzHuCookieConsent']['messages']['barionCookieConsentMessage']) {
+        // $paymentMethodFieldErrorClass = ' is-invalid';
+    }
+    ?>
+    <?php if ($errors['SzamlazzHuCookieConsent']['summary']['errorsCount'] > 0 && in_array($shipmentStatus, Shipment::STATUS_COLLECTION_USER_ALLOWED_TO_EDIT)): ?>
+    <div class="card<?php echo $szamlazzHuCookieConsentCardErrorClass; ?>">
+        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+            <div class="card-header-textContainer">
+                <h6 class="mb-0 text-white"><?php echo trans('szamlazz.hu.cookie.consents'); ?></h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <?php echo $errors['SzamlazzHuCookieConsent']['messages']['szamlazzHuCookieConsentMessage']; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <?php 
     // dump($errors['Summary']['errorsCount']);
     // dump(App::getContainer()->getUser());
     // dump($paymentParams);

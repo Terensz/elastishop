@@ -62,6 +62,7 @@ class Translation_en
             'user.type.guest' => 'Guest',
             'permitted.user.type' => 'Permitted user type',
             'barion.cookie.consents' => 'Barion cookie consents',
+            'szamlazz.hu.cookie.consents' => 'Szamlazz.hu cookie consents',
             'resetting.cookie.consents' => 'Resetting cookie consents',
             'unfinished.order' => 'Unfinished order',
             'selecting.payment.method' => 'Selecting payment method',
