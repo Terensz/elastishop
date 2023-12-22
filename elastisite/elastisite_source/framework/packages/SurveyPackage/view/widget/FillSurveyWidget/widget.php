@@ -33,6 +33,12 @@
                 </span>
             </div>
             <form name="SurveyCreator_answerForm" id="SurveyCreator_answerForm" action="" method="POST">
+                <?php  
+                // dump($surveyFormViewName);
+                // surveyFilled_75002
+                App::getContainer()->getSession()->unset('surveyFilled_75002');
+                // dump(App::getContainer()->getSession()->getAll());
+                ?>
                 <?php include($surveyFormViewName.'.php'); ?>
             </form>
         </div>

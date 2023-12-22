@@ -181,6 +181,15 @@ class Session extends Kernel
         }
     }
 
+    public function unset($name)
+    {
+        if (isset($_SESSION[$this->getGlobal('server.webProjectName').'Session-'.$this->serverUniqueSessionSalt.'-'.$name])) {
+            unset($_SESSION[$this->getGlobal('server.webProjectName').'Session-'.$this->serverUniqueSessionSalt.'-'.$name]);
+        } else {
+            return null;
+        }
+    }
+
     public function adjustSessionCookie() {
         if (isset($_COOKIE['PHPSESSID'])) {
             // $cookie = getLocale 
