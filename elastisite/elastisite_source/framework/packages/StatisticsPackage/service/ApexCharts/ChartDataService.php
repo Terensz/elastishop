@@ -14,7 +14,7 @@ class ChartDataService extends Kernel
 
     public static function createData(array $rawData, array $valueAxisFieldNames, string $categoryAxisFieldName = 'created_at', array $seriesTitles = [], $startDate = null, $endDate = null)
     {
-        // dump($rawData);
+        // dump($rawData);exit;
         // if (empty($rawData)) {
         //     return;
         // }

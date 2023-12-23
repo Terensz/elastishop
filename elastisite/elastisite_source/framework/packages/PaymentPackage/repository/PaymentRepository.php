@@ -26,24 +26,29 @@ class PaymentRepository extends DbRepository
     {
         $this->getContainer()->wireService('PaymentPackage/entity/Payment');
         $periodDates = DateUtils::getPeriodDates($periodStartIndex, $periodType, $periods, $format);
+        $periodEndDateObject = new \DateTime($periodDates['end']);
+        $periodEndDateObject->modify('+1 day');
+        $periodEndDate = $periodEndDateObject->format('Y-m-d');
         // dump($periodStartIndex);
         //dump($periodDates);//exit;
         $stm = "SELECT count(DISTINCT id) as total_payment_occasions, sum(total_gross_value) as gross_income, DATE_FORMAT(created_at, \"%Y-%m-%d\") as create_day
         FROM payment a
         WHERE status = :status_succeeded AND (created_at BETWEEN :periodStartDate AND :periodEndDate)
-        GROUP BY create_day ";
+        GROUP BY create_day 
+        ORDER BY create_day ASC ";
         $dbm = $this->getDbManager();
-// dump($periodDates);
+// dump($periodDates);exit;
         $stats = [
             'result' => $dbm->findAll($stm, [
                 ':status_succeeded' => Payment::PAYMENT_STATUS_SUCCEEDED,
                 ':periodStartDate' => $periodDates['start'],
-                ':periodEndDate' => $periodDates['end']
+                ':periodEndDate' => $periodEndDate
             ]),
             'currentMonthName' => DateUtils::getMonthName((new \DateTime($periodDates['start']))->format('m')),
             'periodStartDate' => $periodDates['start'],
-            'periodEndDate' => $periodDates['end']
+            'periodEndDate' => $periodEndDate
         ];
+        // dump($stats);exit;
 
         return $stats;
     }
