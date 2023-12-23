@@ -167,7 +167,7 @@ class WebshopRequestService extends Service
             'currentPage' => $currentPage
         );
 
-        // dump($return);
+        // dump($return);exit;
 
         return $return;
     }
@@ -205,6 +205,7 @@ class WebshopRequestService extends Service
 
     public static function findSpecialCategorySlugKey($categorySlug)
     {
+        // dump($categorySlug);
         foreach (WebshopService::SLUGS as $slugKey => $slugConfig) {
             // $slugTranslations = $slugConfig['slugTranslations'];
             foreach ($slugConfig['slugTranslations'] as $locale => $slugTranslation) {

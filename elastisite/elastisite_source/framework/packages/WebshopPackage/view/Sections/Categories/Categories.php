@@ -55,6 +55,10 @@ $categoriesData = [
                     </ul>
                 </nav> -->
 
+                <?php  
+                // dump($specialCategorySlugKey);
+                ?>
+
                 <nav class="flex-content-sidebar pc-sidebar collapse show sideNavbar-container" style="box-shadow: none;">
                     <ul class="pc-navbar sideMenu-row-container">
                     <?php

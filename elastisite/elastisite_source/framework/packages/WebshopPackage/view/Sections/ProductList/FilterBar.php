@@ -24,7 +24,9 @@ App::getContainer()->wireService('WebshopPackage/service/WebshopService');
 <div style="display: none;">
     <a id="webshopSearchLink" class="ajaxCallerLink" href=""></a>
 </div>
-
+<?php  
+// dump($searchLinkData);
+?>
 <div class="card">
     <div class="card-body">
         <div class="input-group mb-0">
