@@ -5,10 +5,10 @@ use framework\component\helper\StringHelper;
 // dump($packDataSet);
 ?>
 <div class="card mb-3 card-noBorderRadius">
-    <div class="card-footer">
+    <div class="card-footer card-header-sideMenu justify-content-between align-items-center">
         <div class="col-md-12 sidebar-text-container d-flex align-items-center">
-            <img src="/public_folder/plugin/Bootstrap-icons/Dashkit-light/cart.svg" class="me-2 mb-3" alt="Cart Icon">
-            <h5 class="mb-2"><?php echo trans('cart'); ?></h5>
+            <!-- <img src="/public_folder/plugin/Bootstrap-icons/Dashkit-light/cart.svg" class="me-2 mb-3" alt="Cart Icon"> -->
+            <h5 class="p-0"><?php echo trans('cart'); ?></h5>
         </div>
     </div>
 <?php  

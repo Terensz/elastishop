@@ -157,7 +157,7 @@ var Structure = {
         LoadingHandler.start();
         url = (typeof url !== 'undefined') ? url : window.location;
 
-        console.log('url: ', url);
+        // console.log('url: ', url);
 
         if (pushUrlToHistory) {
             window.history.pushState("object or string", "Title", url);
@@ -281,7 +281,6 @@ var Structure = {
                 // 	CP.load();
                 // }
                 CP.load();
-
             },
             'error': function (request, error) {
                 ElastiTools.checkResponse(request.responseText);

@@ -112,6 +112,30 @@ Card colors
     height: 100%;
 }
 
-/* .sideMenu-active {
-    background-color: #57829a !important;
-} */
+.tinyImageList-container {
+    overflow: hidden; /* Törölje a lebegő elemeket a .history-container körül */
+    float: left;
+    margin-right: 20px; 
+}
+
+.tinyImageList-container::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.tinyImageList-image {
+    height: 66px; width: 66px; 
+    border-radius: 8px;
+    background-size: cover; /* A háttérkép a div-et kitölti */
+    background-position: center; /* Középen tartja a háttérképet */
+    background-repeat: no-repeat;
+}
+
+.tinyImageList-label {
+    clear: left; /* Elkerüli a history-alma elemet a history-image alá */
+}
+
+.card-header-sideMenu {
+    background-color: rgba(0, 0, 0, 0.03);
+}

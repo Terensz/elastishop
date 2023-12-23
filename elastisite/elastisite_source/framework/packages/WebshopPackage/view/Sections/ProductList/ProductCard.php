@@ -88,7 +88,7 @@
                     </span>
                 </a>
 
-                <a href="<?php echo $productInfoLink = '/'.$localizedProductInfoLinkBase.$productData['slug']; ?>" onclick="Webshop.showProductDetailsModalInit(event, '<?php echo $productData['id']; ?>');" class="pc-link" style="display: flex; gap: 0px; text-decoration: none; padding-left: 8px;">
+                <a href="<?php echo '/'.$localizedProductInfoLinkBase.$productData['slug']; ?>" onclick="Webshop.showProductDetailsModalInit(event, '<?php echo $productData['id']; ?>');" class="pc-link" style="display: flex; gap: 0px; text-decoration: none; padding-left: 8px;">
                     <span class="">
                         <img src="/public_folder/plugin/Bootstrap-icons/Dashkit-blue/info-circle.svg" style="width:16px; height: 16px;">
                     </span>

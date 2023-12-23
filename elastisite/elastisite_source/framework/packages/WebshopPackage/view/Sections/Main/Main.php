@@ -59,6 +59,16 @@ var Webshop = {
             },
         });
     },
+    refreshHistoryProductList: function(event) {
+        if (event) {
+            event.preventDefault();
+        }
+        Webshop.callAjax('refreshHistoryProductList', '/webshop/refreshHistoryProductList', {
+        }, 'refreshHistoryProductListCallback');
+    },
+    refreshHistoryProductListCallback: function(response) {
+        $('#viewSection-HistoryProductList').html(response.view);
+    },
     addToCartInit: function(event, offerId) {
         if (event) {
             event.preventDefault();
@@ -134,7 +144,8 @@ var Webshop = {
         }, 'showProductDetailsModalCallback');
     },
     showProductDetailsModalCallback: function(response) {
-        console.log(response);
+        // console.log(response);
+        Webshop.refreshHistoryProductList(null);
         $('#smallModalLabel').html('');
         $('#smallModalBody').html('');
         $('#editorModalBody').html(response.renderedSections.sectionsResponse['ProductDetailsModal']['view']);

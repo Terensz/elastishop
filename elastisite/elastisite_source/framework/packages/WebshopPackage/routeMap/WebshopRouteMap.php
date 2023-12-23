@@ -80,28 +80,6 @@ class WebshopRouteMap
                 'permission' => 'viewGuestContent'
             ),
 
-            // array(
-            //     'name' => 'webshop_sideCartWidget',
-            //     'paramChains' => array(
-            //         'webshop/sideCartWidget' => 'default'
-            //     ),
-            //     'controller' => 'framework/packages/WebshopPackage/controller/WebshopWidgetController',
-            //     'action' => 'webshopSideCartWidgetAction',
-            //     'permission' => 'viewGuestContent'
-            // ),
-
-
-
-            // array(
-            //     'name' => 'webshop_categoryWidget',
-            //     'paramChains' => array(
-            //         'webshop/categoryWidget' => 'default'
-            //     ),
-            //     'controller' => 'framework/packages/WebshopPackage/controller/WebshopWidgetController',
-            //     'action' => 'webshopCategoryWidgetAction',
-            //     'permission' => 'viewGuestContent'
-            // ),
-
             array(
                 'name' => 'webshop_addAddress',
                 'paramChains' => array(
@@ -127,6 +105,15 @@ class WebshopRouteMap
                 ),
                 'controller' => 'framework/packages/WebshopPackage/controller/WebshopWidgetController',
                 'action' => 'webshopSideOfferWidgetAction',
+                'permission' => 'viewGuestContent'
+            ),
+            array(
+                'name' => 'webshop_refreshHistoryProductList',
+                'paramChains' => array(
+                    'webshop/refreshHistoryProductList' => 'default'
+                ),
+                'controller' => 'framework/packages/WebshopPackage/controller/WebshopWidgetController',
+                'action' => 'webshopRefreshHistoryProductListAction',
                 'permission' => 'viewGuestContent'
             )
         );

@@ -7,6 +7,7 @@ use framework\packages\WebshopPackage\repository\ProductCategoryRepository;
 use framework\packages\WebshopPackage\responseAssembler\WebshopResponseAssembler;
 use framework\packages\WebshopPackage\service\WebshopService;
 use framework\packages\WebshopPackage\responseAssembler\WebshopResponseAssembler_Categories;
+use framework\packages\WebshopPackage\responseAssembler\WebshopResponseAssembler_HistoryProductList;
 use framework\packages\WebshopPackage\service\WebshopCartService;
 
 // use framework\packages\UserPackage\repositorx\TemporaryAccountRepository;
@@ -17,6 +18,22 @@ class WebshopWidgetController extends WidgetController
 {
     public function __construct()
     {
+    }
+
+    /**
+    * Route: [name: webshop_refreshHistoryProductList, paramChain: /webshop/refreshHistoryProductList]
+    */
+    public function webshopRefreshHistoryProductListAction()
+    {
+        // $webshopService = $this->getContainer()->getService('WebshopService');
+        App::getContainer()->wireService('WebshopPackage/responseAssembler/WebshopResponseAssembler_HistoryProductList');
+        $response = WebshopResponseAssembler_HistoryProductList::assembleResponse();
+        // $response = [
+        //     'view' => $response['view'],
+        //     'data' => []
+        // ];
+
+        return $this->widgetResponse($response);
     }
 
     /**

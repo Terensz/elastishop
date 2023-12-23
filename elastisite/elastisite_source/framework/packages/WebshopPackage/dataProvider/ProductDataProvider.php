@@ -37,7 +37,7 @@ class ProductDataProvider extends Service
         ];
     }
 
-    public static function assembleDataSet(Product $object, ProductPrice $actualProductPrice, int $quantity) : array
+    public static function assembleDataSet(Product $object, ProductPrice $actualProductPrice = null, int $quantity = null) : array
     {
         App::getContainer()->wireService('WebshopPackage/entity/Product');
         App::getContainer()->wireService('WebshopPackage/entity/ProductImage');
@@ -61,44 +61,46 @@ class ProductDataProvider extends Service
         $dataSet['SKU'] = $object->getCode() ? : $object->getId();
 
         // $activeProductPriceObject = $object->getProductPriceActive()->getProductPrice();
-        $productPriceRepository = new ProductPriceRepository();
-        $listProductPrice = $productPriceRepository->findOneBy(['conditions' => [
-            ['key' => 'product_id', 'value' => $object->getId()],
-            ['key' => 'price_type', 'value' => ProductPrice::PRICE_TYPE_LIST],
-        ]]);
-        $dataSet['listPrice'] = array_merge([
-            'id' => $listProductPrice->getId(),
-            'offerId' => null,
-            'currencyCode' => $listProductPrice->getCurrency()->getCode(),
-        ], PriceDataProvider::assembleDataSet([
-            'grossUnitPrice' => $listProductPrice->getGrossPrice(),
-            'vatPercent' => $listProductPrice->getVat(),
-            'quantity' => $quantity
-        ]));
-        $dataSet['actualPrice'] = array_merge([
-            'id' => $actualProductPrice->getId(),
-            'offerId' => null,
-            'currencyCode' => $actualProductPrice->getCurrency()->getCode(),
-        ], PriceDataProvider::assembleDataSet([
-            'grossUnitPrice' => $actualProductPrice->getGrossPrice(),
-            'vatPercent' => $actualProductPrice->getVat(),
-            'quantity' => $quantity
-        ]));
-        // dump($actualProductPrice->getProduct()->getProductPriceActive());exit;
-        $activeProductPrice = $actualProductPrice->getProduct()->getProductPriceActive()->getProductPrice();
-        $dataSet['activePrice'] = array_merge([
-            'id' => $activeProductPrice->getId(),
-            'offerId' => $actualProductPrice->getProduct()->getProductPriceActive()->getId(),
-            'currencyCode' => $activeProductPrice->getCurrency()->getCode(),
-        ], PriceDataProvider::assembleDataSet([
-            'grossUnitPrice' => $activeProductPrice->getGrossPrice(),
-            'vatPercent' => $activeProductPrice->getVat(),
-            'quantity' => $quantity
-        ]));
-
-        $discountData = DiscountHelper::calculateDiscount($dataSet['listPrice'], $dataSet['actualPrice']);
-        // dump($discountData);exit;
-        $dataSet['discountData'] = $discountData;
+        if ($actualProductPrice && $quantity) {
+            $productPriceRepository = new ProductPriceRepository();
+            $listProductPrice = $productPriceRepository->findOneBy(['conditions' => [
+                ['key' => 'product_id', 'value' => $object->getId()],
+                ['key' => 'price_type', 'value' => ProductPrice::PRICE_TYPE_LIST],
+            ]]);
+            $dataSet['listPrice'] = array_merge([
+                'id' => $listProductPrice->getId(),
+                'offerId' => null,
+                'currencyCode' => $listProductPrice->getCurrency()->getCode(),
+            ], PriceDataProvider::assembleDataSet([
+                'grossUnitPrice' => $listProductPrice->getGrossPrice(),
+                'vatPercent' => $listProductPrice->getVat(),
+                'quantity' => $quantity
+            ]));
+            $dataSet['actualPrice'] = array_merge([
+                'id' => $actualProductPrice->getId(),
+                'offerId' => null,
+                'currencyCode' => $actualProductPrice->getCurrency()->getCode(),
+            ], PriceDataProvider::assembleDataSet([
+                'grossUnitPrice' => $actualProductPrice->getGrossPrice(),
+                'vatPercent' => $actualProductPrice->getVat(),
+                'quantity' => $quantity
+            ]));
+            // dump($actualProductPrice->getProduct()->getProductPriceActive());exit;
+            $activeProductPrice = $actualProductPrice->getProduct()->getProductPriceActive()->getProductPrice();
+            $dataSet['activePrice'] = array_merge([
+                'id' => $activeProductPrice->getId(),
+                'offerId' => $actualProductPrice->getProduct()->getProductPriceActive()->getId(),
+                'currencyCode' => $activeProductPrice->getCurrency()->getCode(),
+            ], PriceDataProvider::assembleDataSet([
+                'grossUnitPrice' => $activeProductPrice->getGrossPrice(),
+                'vatPercent' => $activeProductPrice->getVat(),
+                'quantity' => $quantity
+            ]));
+    
+            $discountData = DiscountHelper::calculateDiscount($dataSet['listPrice'], $dataSet['actualPrice']);
+            // dump($discountData);exit;
+            $dataSet['discountData'] = $discountData;
+        }
 
         $productImages = [];
         $productImageObjects = $object->getProductImage();
