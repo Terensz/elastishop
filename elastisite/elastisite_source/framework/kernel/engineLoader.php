@@ -1,5 +1,5 @@
 <?php
-
+// var_dump('hello'); exit;
 // function startSession($destroyExisting = false)
 // {
 //     if ($destroyExisting) {

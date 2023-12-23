@@ -120,7 +120,7 @@ class Config
 		}
 
 		// var_dump($fullDomain);
-		// var_dump($fileName);
+		// var_dump($fileName);exit;
 
 		$pathToFile = App::getContainer()->getPathBase('config').'/sysadmin/' . $fileName;
 		$config = App::$configReader->read($pathToFile);

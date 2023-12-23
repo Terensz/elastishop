@@ -19,7 +19,7 @@ database.default.driver=mysql
 database.default.host=127.0.0.1
 database.default.port=3306
 database.default.socket=
-database.default.name=admin_scale_creator
+database.default.name=elastishop
 database.default.username=webserver
 database.default.password=a52TyyJk12
 
