@@ -135,23 +135,27 @@ class PackDataProvider extends Service
         foreach ($packItemCollection as $packItem) {
             if (empty($packItem->getProduct()->getSpecialPurpose()) || $packItem->getProduct()->getSpecialPurpose() == '') {
                 $packItemData = PackItemDataProvider::assembleDataSet($packItem);
-                if (empty($packItem->getProduct()->getSpecialPurpose())) {
+                if (empty($packItem->getProduct()->getSpecialPurpose()) && isset($packItemData['product']['activePrice'])) {
                     $sumGrossNonSpecialPriceAccurate += $packItemData['product']['activePrice']['grossItemPriceAccurate'];
                 }
                 $dataSet['pack']['packItems']['productId-'.$packItemData['product']['id']] = $packItemData;
-                $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
-                $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
+                if (isset($packItemData['product']['activePrice'])) {
+                    $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
+                    $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
+                }
             }
         }
         foreach ($packItemCollection as $packItem) {
             if (!empty($packItem->getProduct()->getSpecialPurpose()) && $packItem->getProduct()->getSpecialPurpose() != '') {
                 $packItemData = PackItemDataProvider::assembleDataSet($packItem);
-                if (empty($packItem->getProduct()->getSpecialPurpose())) {
+                if (empty($packItem->getProduct()->getSpecialPurpose()) && isset($packItemData['product']['activePrice'])) {
                     $sumGrossNonSpecialPriceAccurate += $packItemData['product']['activePrice']['grossItemPriceAccurate'];
                 }
                 $dataSet['pack']['packItems']['productId-'.$packItemData['product']['id']] = $packItemData;
-                $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
-                $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
+                if (isset($packItemData['product']['activePrice'])) {
+                    $currencyCode = $packItemData['product']['activePrice']['currencyCode'];
+                    $sumGrossItemPriceRounded2 += $packItemData['product']['activePrice']['grossItemPriceRounded2'];
+                }
             }
         }
         // dump('ennyikeh');exit;

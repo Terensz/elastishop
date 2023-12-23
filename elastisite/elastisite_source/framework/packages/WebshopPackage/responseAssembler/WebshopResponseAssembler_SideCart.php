@@ -37,6 +37,8 @@ class WebshopResponseAssembler_SideCart extends Service
 
         // dump($packDataSet); exit;
 
+        // dump($packDataSet);exit;
+
         $viewParams = [
             'packDataSet' => $packDataSet ? : [],
             'checkoutLink' => '/webshop/checkout'

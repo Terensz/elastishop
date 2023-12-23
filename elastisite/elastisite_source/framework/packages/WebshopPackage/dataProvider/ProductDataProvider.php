@@ -61,7 +61,7 @@ class ProductDataProvider extends Service
         $dataSet['SKU'] = $object->getCode() ? : $object->getId();
 
         // $activeProductPriceObject = $object->getProductPriceActive()->getProductPrice();
-        if ($actualProductPrice && $quantity) {
+        if ($actualProductPrice) {
             $productPriceRepository = new ProductPriceRepository();
             $listProductPrice = $productPriceRepository->findOneBy(['conditions' => [
                 ['key' => 'product_id', 'value' => $object->getId()],

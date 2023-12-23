@@ -36,6 +36,9 @@ $cartItemCounter = 0;
     // }
     $mainProductImageLink = $packItem['product']['mainProductImageLink'];
     $productName = $packItem['product']['name'];
+    // if (!$packItem['product']['actualPrice']) {
+    //     dump($packDataSet['pack']['packItems']);
+    // }
     $grossUnitPriceFormatted = $packItem['product']['actualPrice']['grossUnitPriceFormatted'];
     $quantity = $packItem['quantity'];
     $grossItemPriceFormatted = $packItem['quantity'] * $packItem['product']['actualPrice']['grossUnitPriceRounded2'];
