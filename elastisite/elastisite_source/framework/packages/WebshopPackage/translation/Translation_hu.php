@@ -170,7 +170,7 @@ class Translation_hu
             'payment.method' => 'Fizetési mód',
             'cash.on.delivery' => 'Utánvét',
             'delivery.address' => 'Postázási cím',
-            'recipient' => 'Címzett neve',
+            'recipient' => 'Az átvevő neve',
             'recipient.if.differs.from.order.maker' => 'Címzett neve (amennyiben eltér a megrendelőétől)',
             'recipient.or.customer' => 'Címzett / vásárló',
             'finish.checkout' => 'A megrendelés befejezése',

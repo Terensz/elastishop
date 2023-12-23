@@ -27,6 +27,8 @@ if ($errors['messages']['addressSelected']) {
             // dump($cartData);
             // dump('alma');
             // echo "&nbsp; (".App::getElapsedLoadingTime().")";
+            // dump($addressesData);
+            // dump($temporaryAccountData['temporaryPerson']['address']);
             ?>
         </div>
     </div>
@@ -51,7 +53,7 @@ if ($errors['messages']['addressSelected']) {
                         <?php 
                         $tdActiveClassStr = '';
                         $optionClassStringAdd = '';
-                        if ($addressData['addressId'] === $temporaryAccountData['temporaryPerson']['address']['id']) {
+                        if ($addressData['addressString'] === $temporaryAccountData['temporaryPerson']['address']['string']) {
                             $tdActiveClassStr = ' table-dark';
                             $optionClassStringAdd = '-triggerModal';
                         }

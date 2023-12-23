@@ -148,18 +148,41 @@ class WebshopCheckoutWidgetController extends WidgetController
         App::getContainer()->wireService('UserPackage/repository/AddressRepository');
         $repo = new AddressRepository();
         $addressId = (int)App::getContainer()->getRequest()->get('id');
-        $address = $repo->find($addressId);
-        WebshopTemporaryAccountService::setAddress($address);
+        $postedAddress = $repo->find($addressId);
+        if ($postedAddress) {
+            $temporaryAccount = WebshopTemporaryAccountService::getTemporaryAccount();
+            if ($temporaryAccount->getTemporaryPerson()) {
+                $tempAddress = null;
+                if ($temporaryAccount->getTemporaryPerson()->getAddress()) {
+                    $tempAddress = $temporaryAccount->getTemporaryPerson()->getAddress();
+                    $tempAddress->setCountry($postedAddress->getCountry());
+                    $tempAddress->setCity($postedAddress->getCity());
+                    $tempAddress->setZipCode($postedAddress->getZipCode());
+                    $tempAddress->setStreet($postedAddress->getStreet());
+                    $tempAddress->setStreetSuffix($postedAddress->getStreetSuffix());
+                    $tempAddress->setHouseNumber($postedAddress->getHouseNumber());
+                    $tempAddress->setStaircase($postedAddress->getStaircase());
+                    $tempAddress->setFloor($postedAddress->getFloor());
+                    $tempAddress->setDoor($postedAddress->getDoor());
+                } else {
+                    $temporaryAccount->getTemporaryPerson();
+                    $tempAddress = clone $postedAddress;
+                    $tempAddress->setId(null);
+                    $tempAddress->setPerson(null);
+                }
+                $tempAddress = $tempAddress->getRepository()->store($tempAddress);
+                WebshopTemporaryAccountService::setAddress($tempAddress);
+    
+                // $cart = WebshopCartService::getCart();
+                // $cart->setAddress($address);
+                // $cart = $cart->getRepository()->store($cart);
+            }
+        }
 
-        // $cart = WebshopCartService::getCart();
-        // $cart->setAddress($address);
-        // $cart = $cart->getRepository()->store($cart);
-
-        $addressId = (int)App::getContainer()->getRequest()->get('id');
         $response = [
             'view' => '',
             'data' => [
-                'addressId' => $addressId
+                // 'addressId' => $addressId
             ]
         ];
 
