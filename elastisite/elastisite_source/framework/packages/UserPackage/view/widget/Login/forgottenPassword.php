@@ -48,7 +48,7 @@ endif;
             <div id="userRegistrationSubmitContainer" style="display: inline;">
                 <div class="form-group">
                     <button name="UserPackage_forgottenPassword_submit" id="UserPackage_forgottenPassword_submit" type="button" class="btn btn-secondary btn-block" 
-                        onclick="ForgottenPassword.send();" value=""><?php echo trans('send'); ?></button>
+                        onclick="ForgottenPassword.sendInit();" value=""><?php echo trans('send'); ?></button>
                 </div>
             </div>
         </div>
@@ -58,25 +58,25 @@ endif;
 <div id="forgottenPasswordResponse"></div>
 
 <script>
-    var ForgottenPassword = {
-        send: function() {
-            // console.log('ForgottenPassword.send');
-            var ajaxData = {};
-            var form = $('#UserPackage_forgottenPassword_form');
-            ajaxData = form.serialize();
-            $.ajax({
-                'type' : 'POST',
-                'url' : '/ajax/forgottenPassword/send',
-                'data': ajaxData,
-                'async': true,
-                'success': function(response) {
-                    $('#editorModalBody').html(response.view);
-                },
-                'error': function(request, error) {
-                    console.log(request);
-                    console.log(" Can't do because: " + error);
-                },
-            });
-        }
-    };
+    // var ForgottenPassword = {
+    //     send: function() {
+    //         // console.log('ForgottenPassword.send');
+    //         var ajaxData = {};
+    //         var form = $('#UserPackage_forgottenPassword_form');
+    //         ajaxData = form.serialize();
+    //         $.ajax({
+    //             'type' : 'POST',
+    //             'url' : '/ajax/forgottenPassword/send',
+    //             'data': ajaxData,
+    //             'async': true,
+    //             'success': function(response) {
+    //                 $('#editorModalBody').html(response.view);
+    //             },
+    //             'error': function(request, error) {
+    //                 console.log(request);
+    //                 console.log(" Can't do because: " + error);
+    //             },
+    //         });
+    //     }
+    // };
 </script>

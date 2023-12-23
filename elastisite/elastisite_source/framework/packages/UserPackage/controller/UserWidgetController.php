@@ -201,7 +201,7 @@ class UserWidgetController extends WidgetController
             $mailer = new Mailer();
             $mailer->setSubject($this->getCompanyData('brand').' - '.trans('password.modify.request'));
             $mailer->textAssembler->setPackage('UserPackage');
-            $mailer->textAssembler->setReferenceKey('userRecoverPassword');
+            $mailer->textAssembler->setReferenceKey('recoverPassword');
             $mailer->textAssembler->setPlaceholdersAndValues([
                 'name' => $person->getFullName(),
                 'domain' => $this->getUrl()->getHttpDomain(),

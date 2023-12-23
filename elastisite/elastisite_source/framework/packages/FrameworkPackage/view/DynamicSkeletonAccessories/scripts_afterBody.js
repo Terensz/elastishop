@@ -691,6 +691,48 @@ var LoginHandler = {
     }
 };
 
+var ForgottenPassword = {
+    processResponse: function(response, onSuccessCallback) {
+        // console.log('ForgottenPassword.processResponse()');
+        dump(response);
+        if (typeof this[onSuccessCallback] === 'function') {
+            this[onSuccessCallback](response);
+        }
+    },
+    callAjax: function(calledBy, ajaxUrl, onSuccessCallback) {
+        // let baseData = {};
+        // let ajaxData = $.extend({}, baseData, additionalData);
+        LoadingHandler.start();
+        var ajaxData = {};
+        var form = $('#UserPackage_forgottenPassword_form');
+        ajaxData = form.serialize();
+        $.ajax({
+            'type' : 'POST',
+            'url' : ajaxUrl,
+            'data': ajaxData,
+            'async': true,
+            'success': function(response) {
+                ElastiTools.checkResponse(response);
+                ForgottenPassword.processResponse(response, onSuccessCallback);
+            },
+            'error': function(request, error) {
+                console.log(request);
+                console.log(" Can't do because: " + error);
+            },
+        });
+    },
+    sendInit: function(event) {
+        if (event) {
+            event.preventDefault();
+        }
+        ForgottenPassword.callAjax('sendInit', '/ajax/forgottenPassword/send', 'sendCallback');
+    },
+    sendCallback: function(response) {
+        $('#editorModalBody').html(response.view);
+        LoadingHandler.stop();
+    },
+};
+
 var CustomRegistration = {
     processResponse: function(response, calledBy) {
         if (response.data && typeof(response.data.modalLabel) != 'undefined') {

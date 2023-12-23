@@ -1,6 +1,6 @@
 var LoadingHandler = {
     start: function(target) {
-        // console.log('LoadingHandler started');
+        console.log('LoadingHandler started');
         if (typeof(target) == 'undefined') {
             target = 'body';
         }
