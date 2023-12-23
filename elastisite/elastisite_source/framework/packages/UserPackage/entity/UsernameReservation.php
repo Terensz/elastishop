@@ -8,7 +8,7 @@ class UsernameReservation extends DbEntity
 {
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `username_reservation` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
-        `visitor_code` varchar(30) DEFAULT NULL,
+        `visitor_code` varchar(100) DEFAULT NULL,
         `username` varchar(100) DEFAULT NULL,
         PRIMARY KEY (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci";

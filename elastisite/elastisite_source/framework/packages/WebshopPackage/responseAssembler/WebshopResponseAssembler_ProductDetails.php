@@ -9,6 +9,7 @@ use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
 use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
+use framework\packages\WebshopPackage\service\ProductVisitHistoryService;
 use framework\packages\WebshopPackage\service\WebshopRequestService;
 use framework\packages\WebshopPackage\service\WebshopService;
 
@@ -25,6 +26,7 @@ class WebshopResponseAssembler_ProductDetails extends Service
         App::getContainer()->wireService('WebshopPackage/service/WebshopService');
         App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
         $productRepository = new ProductRepository();
+        App::getContainer()->wireService('WebshopPackage/service/ProductVisitHistoryService');
 
         $productId = (int)App::getContainer()->getRequest()->get('productId');
 
@@ -33,10 +35,22 @@ class WebshopResponseAssembler_ProductDetails extends Service
             if ($pageRoute->getName() == 'webshop_showProduct') {
 
                 // $paramChainParts = explode('/', );
+                $productSlug = null;
                 $urlDetails = App::getContainer()->getUrl()->getDetails();
                 if (isset($urlDetails[0])) {
-                    $productId = (int)$urlDetails[0];
+                    $productSlug = $urlDetails[0];
                 }
+                if (!$productSlug) {
+                    return null;
+                }
+                $product = $productRepository->findOneBy(['conditions' => [
+                    ['key' => 'website', 'value' => App::getWebsite()],
+                    ['key' => 'slug'.(App::getContainer()->getSession()->getLocale() == 'en' ? '_en' : ''), 'value' => $productSlug]
+                ]]);
+                if (!$product) {
+                    return null;
+                }
+                $productId = $product->getId();
                 // dump($urlDetails);
             }
             // dump($pageRoute);
@@ -45,6 +59,8 @@ class WebshopResponseAssembler_ProductDetails extends Service
         if (!$productId) {
             return null;
         }
+
+        ProductVisitHistoryService::save($productId);
 
         App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
         $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());

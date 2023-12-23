@@ -1,3 +1,11 @@
+<?php 
+
+use framework\packages\WebshopPackage\service\WebshopService;
+
+App::getContainer()->wireService('WebshopPackage/service/WebshopService');
+
+?>
+
 <!-- <section class="w-100 p-4 pb-4 d-flex justify-content-center align-items-center flex-column">
     <div>
         <div class="input-group">
@@ -12,10 +20,6 @@
         </div>
     </div>
 </section> -->
-<?php 
-// echo $alma;
-// dump($searchLinkData);
-?>
 
 <div style="display: none;">
     <a id="webshopSearchLink" class="ajaxCallerLink" href=""></a>
@@ -26,7 +30,7 @@
         <div class="input-group mb-0">
             <button class="btn btn-primary" type="webshop_search_submit" id="webshop_search_submit" name="webshop_search_submit" onclick="Webshop.search(event);"><?php echo trans('search'); ?></button>
             <input id="webshop_search_term" name="webshop_search_term" type="text" class="form-control" placeholder="<?php echo trans('search.in.the.webshop'); ?>" value="<?php echo $searchTerm; ?>">
-            <?php if ($categorySlug): ?>
+            <?php if ($categorySlug && $categorySlug != WebshopService::TAG_ALL_PRODUCTS): ?>
             <select class="form-select" id="webshop_search_linkBase" name="webshop_search_linkBase">
                 <option value="<?php echo $searchLinkData['searchLinkBaseAll']; ?>"><?php echo trans('search.in.all.products'); ?></option>
                 <option <?php if ($isMixedSearch) { echo 'selected '; } ?>value="<?php echo $searchLinkData['searchLinkBaseCategory']; ?>"><?php echo trans('search.in.this.category'); ?></option>

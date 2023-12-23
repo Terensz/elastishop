@@ -12,7 +12,7 @@ class Visit extends DbEntity
 		`website` varchar(250) DEFAULT NULL,
         `route_param_chain` varchar(250) COLLATE utf8_hungarian_ci DEFAULT NULL,
 		`route_name` varchar(250) COLLATE utf8_hungarian_ci DEFAULT NULL,
-		`visitor_code` varchar(64) COLLATE utf8_hungarian_ci DEFAULT NULL,
+		`visitor_code` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
 		`number_of_visits` int(11) DEFAULT NULL,
         -- `user_account_id` int(11) DEFAULT NULL,
         `visited_at` datetime DEFAULT NULL,

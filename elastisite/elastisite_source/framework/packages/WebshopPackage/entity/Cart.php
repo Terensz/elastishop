@@ -16,6 +16,7 @@ class Cart extends DbEntity implements PackInterface
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `cart` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `website` varchar(250) DEFAULT NULL,
+        `is_test_record` smallint(1) DEFAULT 0,
         `user_account_id` int(11) DEFAULT NULL,
         `temporary_account_id` int(11) DEFAULT NULL,
         `shipment_id` int(11) DEFAULT NULL,
@@ -42,6 +43,7 @@ class Cart extends DbEntity implements PackInterface
 
     protected $id;
     protected $website;
+    protected $isTestRecord;
     protected $userAccount;
     protected $temporaryAccount;
     protected $shipment;
@@ -77,6 +79,29 @@ class Cart extends DbEntity implements PackInterface
     public function getWebsite()
     {
         return $this->website;
+    }
+
+    public function setIsTestRecord($isTestRecord)
+    {
+        if ($isTestRecord === true) {
+            $isTestRecord = 1;
+        }
+        if ($isTestRecord === false) {
+            $isTestRecord = 0;
+        }
+        $this->isTestRecord = $isTestRecord;
+    }
+
+    public function getIsTestRecord()
+    {
+        $isTestRecord = $this->isTestRecord;
+        if ((int)$isTestRecord === 1) {
+            $isTestRecord = true;
+        }
+        if ((int)$isTestRecord === 0) {
+            $isTestRecord = false;
+        }
+        return $isTestRecord;
     }
 
     public function setUserAccount(UserAccount $userAccount)

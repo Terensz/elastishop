@@ -14,7 +14,7 @@ class NewsSubscription extends DbEntity
 
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `news_subscription` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
-        `visitor_code` varchar(30) COLLATE utf8_hungarian_ci DEFAULT NULL,
+        `visitor_code` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `person_id` int(11) DEFAULT NULL,
         `created_at` datetime DEFAULT NULL,
         `status` smallint(2) DEFAULT 0,

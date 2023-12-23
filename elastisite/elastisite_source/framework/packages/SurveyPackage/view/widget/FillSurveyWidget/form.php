@@ -105,6 +105,11 @@ $isInvalidClassString = $andswerIsMissing ? ' is-invalid' : '';
                 </div>
             </div>
 <?php endforeach; ?>
+            <div class="card-footer">
+                <div class="mb-0">
+                    <button id="SurveyCreator_answerForm_submit" onclick="SurveyCreatorAnswerForm.submitForm(event);" style="width: 200px;" type="button" class="btn btn-secondary btn-block"><?php echo trans('submit'); ?></button>
+                </div>
+            </div>
             <!-- <div id="SurveyCreator_answerForm_submitContainer" class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12">
                     <div id="newsSubscriptionSubmitContainer" style="display: inline;">

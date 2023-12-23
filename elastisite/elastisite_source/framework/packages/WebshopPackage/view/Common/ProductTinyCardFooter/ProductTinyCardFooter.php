@@ -30,7 +30,10 @@
             <td class="table-m-1" style="text-align: right; width: 40px;">
                 <?php if (isset($editIconOnclick) && $editIconOnclick): ?>
                     <div>
-                        <a href="" onclick="<?php echo $editIconOnclick; ?>" style="color: #cecece;"><i class="fas fa-edit"></i></a>
+                        <!-- <a href="" onclick="<?php echo $editIconOnclick; ?>" style="color: #cecece;"><i class="fas fa-edit"></i></a> -->
+                        <a href="" onclick="<?php echo $editIconOnclick; ?>" style="color: #cecece;">
+                            <img src="/public_folder/plugin/Bootstrap-icons/Dashkit-blue/cart.svg" style="width:16px; height: 16px;">
+                        </a>
                     </div>
                 <?php endif; ?>
             </td>

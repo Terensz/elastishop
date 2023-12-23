@@ -31,6 +31,7 @@ class Product extends DbEntity
         return trans('undefined');
     }
 
+    // product_visit_history
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `product` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `website` varchar(250) DEFAULT NULL,
