@@ -7,6 +7,7 @@ use framework\component\parent\Service;
 use framework\packages\UserPackage\entity\Address;
 use framework\packages\UserPackage\entity\TemporaryAccount;
 use framework\packages\UserPackage\entity\TemporaryPerson;
+use framework\packages\UserPackage\entity\User;
 use framework\packages\WebshopPackage\entity\Cart;
 use framework\packages\WebshopPackage\entity\Shipment;
 use framework\packages\WebshopPackage\entity\ShipmentItem;
@@ -87,6 +88,17 @@ class WebshopTemporaryAccountService extends Service
         $temporaryPerson = new TemporaryPerson();
         $temporaryPerson->setTemporaryAccount($temporaryAccount);
         $temporaryPerson->setAddress($address);
+        if (App::getContainer()->getUser()->getType() == User::TYPE_USER) {
+            if (App::getContainer()->getUser()->getUserAccount()->getPerson()->getFullName()) {
+                $temporaryPerson->setName(App::getContainer()->getUser()->getUserAccount()->getPerson()->getFullName());
+            }
+            if (App::getContainer()->getUser()->getUserAccount()->getPerson()->getEmail()) {
+                $temporaryPerson->setEmail(App::getContainer()->getUser()->getUserAccount()->getPerson()->getEmail());
+            }
+            if (App::getContainer()->getUser()->getUserAccount()->getPerson()->getMobile()) {
+                $temporaryPerson->setMobile(App::getContainer()->getUser()->getUserAccount()->getPerson()->getMobile());
+            }
+        }
         $temporaryPerson = $temporaryPerson->getRepository()->store($temporaryPerson);
 
         return $temporaryPerson;

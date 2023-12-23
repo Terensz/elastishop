@@ -18,11 +18,20 @@ class WebshopResponseAssembler_ShipmentsInProgress extends Service
 {
     public static function assembleResponse($processedRequestData = null)
     {
+        App::getContainer()->wireService('UserPackage/entity/User');
         App::getContainer()->wireService('WebshopPackage/entity/Shipment');
         App::getContainer()->wireService('WebshopPackage/repository/ShipmentRepository');
         App::getContainer()->wireService('WebshopPackage/service/ShipmentService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopService');
-        $collection = ShipmentRepository::getShipmentCollectionWithSpecificStatuses(Shipment::STATUS_COLLECTION_SHIPMENTS_IN_PROGRESS, App::getContainer()->getSession()->get('visitorCode'));
+
+        $settings = [];
+        if (App::getContainer()->getUser()->getType() == User::TYPE_USER) {
+            $settings = ['userAccount' => App::getContainer()->getUser()->getUserAccount()];
+        } else {
+            $settings = ['visitorCode' => App::getContainer()->getSession()->get('visitorCode')];
+        }
+        $collection = ShipmentRepository::getShipmentCollectionWithSpecificStatuses(Shipment::STATUS_COLLECTION_SHIPMENTS_IN_PROGRESS, $settings);
+
         $packDataCollectionUnfiltered = ShipmentService::assembleShipmentDataCollection($collection);
 
         $packDataCollection = [];

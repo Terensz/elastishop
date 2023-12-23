@@ -211,14 +211,14 @@ class ShipmentRepository extends DbRepository
     //     return (int)$ret['total'] > 0 ? true : false;
     // }
 
-    public static function hasShipmentWithSpecificStatuses(array $statuses, $visitorCode = null)
+    public static function hasShipmentWithSpecificStatuses(array $statuses, $settings = [])
     {
-        return count(self::getShipmentIdsCollectionWithSpecificStatuses($statuses, $visitorCode)) > 0 ? true : false ;
+        return count(self::getShipmentIdsCollectionWithSpecificStatuses($statuses, $settings)) > 0 ? true : false ;
     }
 
-    public static function getShipmentCollectionWithSpecificStatuses(array $statuses, $visitorCode = null)
+    public static function getShipmentCollectionWithSpecificStatuses(array $statuses, $settings = [])
     {
-        $idsCollection = self::getShipmentIdsCollectionWithSpecificStatuses($statuses, $visitorCode);
+        $idsCollection = self::getShipmentIdsCollectionWithSpecificStatuses($statuses, $settings);
         return self::createShipmentCollection($idsCollection);
     }
 
@@ -251,9 +251,17 @@ class ShipmentRepository extends DbRepository
         return $result;
     }
 
-    public static function getShipmentIdsCollectionWithSpecificStatuses(array $statuses, $visitorCode = null)
+    public static function getShipmentIdsCollectionWithSpecificStatuses(array $statuses, $settings = [])
     {
         App::getContainer()->wireService('WebshopPackage/entity/Shipment');
+        $visitorCode = null;
+        $userAccount = null;
+        if (isset($settings['visitorCode'])) {
+            $visitorCode = $settings['visitorCode'];
+        }
+        if (isset($settings['userAccount'])) {
+            $userAccount = $settings['userAccount'];
+        }
     
         // Készít egy ":status_1, :status_2, ..." részt a lekérdezéshez
         $statusPlaceholders = implode(', ', array_map(function ($status, $index) {
@@ -267,6 +275,11 @@ class ShipmentRepository extends DbRepository
         if ($visitorCode !== null) {
             $stm .= " AND s.visitor_code = :visitor_code";
             $params = array_merge([':visitor_code' => $visitorCode], array_combine(array_map(function ($index) {
+                return ":status_" . $index;
+            }, array_keys($statuses)), $statuses));
+        } elseif ($userAccount !== null) {
+            $stm .= " AND s.user_account_id = :user_account_id";
+            $params = array_merge([':user_account_id' => $userAccount->getId()], array_combine(array_map(function ($index) {
                 return ":status_" . $index;
             }, array_keys($statuses)), $statuses));
         } else {

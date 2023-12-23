@@ -83,7 +83,7 @@ class Translation_en
             'missing.contact.mobile' => 'Missing contact mobile',
             'tax.id' => 'Tax ID',
             'search.has.no.results' => 'This search has no results',
-            'contact.data' => 'Contact data',
+            'contact.data' => 'Recipient\'s data',
             'contact.email' => 'Contact e-mail address',
             'contact.mobile' => 'Contact cellphone number',
             'delivery.information' => 'Delivery information',

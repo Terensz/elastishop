@@ -83,7 +83,7 @@ class Translation_hu
             'missing.contact.mobile' => 'Kérem, töltse ki a "kapcsolattartó mobilszám" mezőt',
             'tax.id' => 'Adószám',
             'search.has.no.results' => 'Ennek a keresésnek nem lett eredménye',
-            'contact.data' => 'Kapcsolattartói adatok',
+            'contact.data' => 'Az átvevő adatai',
             'contact.email' => 'Kapcsolattartó e-mail cím',
             'contact.mobile' => 'Kapcsolattartó mobilszám',
             'delivery.information' => 'Kézbesítési információk',
