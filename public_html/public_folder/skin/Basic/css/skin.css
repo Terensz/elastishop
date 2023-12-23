@@ -163,6 +163,7 @@ a:hover {
 .sideNavbar-container {
     display: block;
 }
+
 @media (min-width: 992px) {
     .sideNavbar-hamburger-container {
         /* display: none; */

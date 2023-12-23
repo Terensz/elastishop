@@ -88,11 +88,11 @@ $adminMenuItems[] = [
         //     'paramChain' => 'admin/videos',
         //     'title' => 'admin.videos'
         // ],
-        [
-            'routeName' => 'admin_backgrounds',
-            'paramChain' => 'admin/backgrounds',
-            'title' => 'admin.list.backgrounds'
-        ],
+        // [
+        //     'routeName' => 'admin_backgrounds',
+        //     'paramChain' => 'admin/backgrounds',
+        //     'title' => 'admin.list.backgrounds'
+        // ],
         [
             'routeName' => 'admin_footer',
             'paramChain' => 'admin/footer',
@@ -291,7 +291,7 @@ foreach ($adminMenuSections as $adminMenuSection) {
 //     ]
 // ];
 ?>
-<ul class="pc-navbar">
+<ul class="pc-navbar sideBar-container">
             <!--
                             
                 <li class="pc-item pc-caption">
@@ -374,4 +374,15 @@ for ($i=0; $i < count($adminMenuItems); $i++) {
             </ul>
 <?php 
 // dump($adminMenuItems);//exit;
+// dump('helo');
 ?>
+<style>
+/* .admin-sideNavbar-container {
+    overflow-y: auto;
+} */
+.admin-sideNavbar-scroll {
+    height: 90vh;
+    overflow-y: scroll;
+    background: linear-gradient(180deg, transparent, #fff 60%, #fff);
+}
+</style>

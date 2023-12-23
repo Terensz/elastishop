@@ -34,7 +34,7 @@ $sheetMaxWidth = App::getContainer()->getPageProperty('sheetMaxWidth');
 $widthStyleStr = (empty($sheetWidthPercent) ? '' : 'width: '.$sheetWidthPercent.'%;').(empty($sheetMaxWidth) ? '' : 'max-width: '.$sheetMaxWidth.'px;');
 ?>
 <div class="banner-container" style="height: 140px; text-align: left !important;">
-    <img src="/image/Lamparella_logo.png" style="height: 140px;">
+    <!-- <img src="/image/Lamparella_logo.png" style="height: 140px;"> -->
 </div>
 
     <!-- <div class="banner-text-container" style="<?php echo $widthStyleStr; ?>">
