@@ -8,6 +8,7 @@ use framework\packages\UserPackage\entity\User;
 use framework\packages\UserPackage\repository\UserAccountRepository;
 use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\entity\Cart;
+use framework\packages\WebshopPackage\entity\CartItem;
 use framework\packages\WebshopPackage\entity\CartTrigger;
 use framework\packages\WebshopPackage\entity\ProductPriceActive;
 use framework\packages\WebshopPackage\repository\CartItemRepository;
@@ -213,20 +214,21 @@ class WebshopCartService extends Service
                 }
                 $q = $cartItem->getQuantity() - $quantity;
                 if ($q <= 0) {
+                    $cartItem = self::removeItem($cartItem);
                     // dump($cartItem->getId());exit;
-                    $cartItemRepo->removeBy(['id' => $cartItem->getId()]);
-                    // dump($cartItem->getId());exit;
-                    $cartRepo->find($cartId);
-                    if ($cart) {
-                        $cartItems = $cartItemRepo->findBy(['conditions' => [['key' => 'cart_id', 'value' => $cart->getId()]]]);
-                        if (!$cartItems || ($cartItems && count($cartItems) == 0)) {
-                            // dump($cartItems);exit;
-                            $cartRepo::removeObsolete(
-                                [['refKey' => 'c.id', 'paramKey' => 'cart_id_to_remove', 'operator' => '=', 'value' => $cart->getId()]],
-                                false
-                            );
-                        }
-                    }
+                    // $cartItemRepo->removeBy(['id' => $cartItem->getId()]);
+                    // // dump($cartItem->getId());exit;
+                    // $cartRepo->find($cartId);
+                    // if ($cart) {
+                    //     $cartItems = $cartItemRepo->findBy(['conditions' => [['key' => 'cart_id', 'value' => $cart->getId()]]]);
+                    //     if (!$cartItems || ($cartItems && count($cartItems) == 0)) {
+                    //         // dump($cartItems);exit;
+                    //         $cartRepo::removeObsolete(
+                    //             [['refKey' => 'c.id', 'paramKey' => 'cart_id_to_remove', 'operator' => '=', 'value' => $cart->getId()]],
+                    //             false
+                    //         );
+                    //     }
+                    // }
                 } else {
                     $cartItem->setQuantity($q);
                     $cartItem->setProduct($productPriceActive->getProduct());
@@ -239,6 +241,26 @@ class WebshopCartService extends Service
         } else {
             return false;
         }
+    }
+
+    public static function removeItem(CartItem $cartItem)
+    {
+        App::getContainer()->wireService('WebshopPackage/entity/CartItem');
+        App::getContainer()->wireService('WebshopPackage/repository/CartItemRepository');
+        $cartItemRepository = new CartItemRepository();
+        $cartItemRepository->removeBy(['id' => $cartItem->getId()]);
+        if ($cartItem->getCart()) {
+            $cartItems = $cartItemRepository->findBy(['conditions' => [['key' => 'cart_id', 'value' => $cartItem->getCart()->getId()]]]);
+            if (!$cartItems || ($cartItems && count($cartItems) == 0)) {
+                // dump($cartItems);exit;
+                $cartItem->getCart()->getRepository()::removeObsolete(
+                    [['refKey' => 'c.id', 'paramKey' => 'cart_id_to_remove', 'operator' => '=', 'value' => $cartItem->getCart()->getId()]],
+                    false
+                );
+            }
+        }
+
+        return null;
     }
 
     public static function removeObsoleteCarts($sessionCartIdIsUnremovable = false)

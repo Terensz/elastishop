@@ -6,4 +6,5 @@ interface PackInterface
     public function getId();
     public function getUserAccount();
     public function getTemporaryAccount();
+    // public function getStatus();
 }

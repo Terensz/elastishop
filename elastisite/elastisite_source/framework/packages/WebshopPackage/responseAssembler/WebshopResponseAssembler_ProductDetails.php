@@ -100,11 +100,15 @@ class WebshopResponseAssembler_ProductDetails extends Service
         $offeredQuantity = $oldQuantity ? : 1;
 
         // dump($productData);//exit;
-        $openGraphData = App::getContainer()->getOpenGraphData(true);
-        $openGraphData['title'] = $productData['name'];
-        $openGraphData['description'] = $productData['shortInfo'];
-        $openGraphData['image'] = $productData['mainProductImageLink'];
-        App::getContainer()->setOpenGraphData($openGraphData);
+        if ($productData) {
+            // header('Location: '.$_SERVER['REQUEST_URI']);
+            // dump($productData);//exit;
+            $openGraphData = App::getContainer()->getOpenGraphData(true);
+            $openGraphData['title'] = $productData['name'];
+            $openGraphData['description'] = $productData['shortInfo'];
+            $openGraphData['image'] = $productData['mainProductImageLink'];
+            App::getContainer()->setOpenGraphData($openGraphData);
+        }
         // dump(App::getContainer()->getOpenGraphData());exit;
 
         $viewParams = [
@@ -120,7 +124,7 @@ class WebshopResponseAssembler_ProductDetails extends Service
 
         // dump($productData);exit;
         // $productData['productName']
-        $productName = $productData['name'];
+        $productName = $productData ? $productData['name'] : null;
 
         return [
             'view' => $view,

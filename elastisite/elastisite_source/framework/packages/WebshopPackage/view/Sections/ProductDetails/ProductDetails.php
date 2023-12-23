@@ -12,6 +12,7 @@
         }
     }
 </style>
+<?php if (!empty($packDataSet) && isset($productData['id'])): ?>
 <div class="productInfoModal-flex-container">
     <div class="productInfoModal-productCard" style="flex: 0 0 300px;">
         <?php 
@@ -47,7 +48,7 @@
         </div>
     </div>
 </div>
-<?php if (count($productData['productImages']) > 0): ?>
+    <?php if (count($productData['productImages']) > 0): ?>
 <div class="card">
     <div class="card-body">
     <?php
@@ -55,4 +56,9 @@
     ?>
     </div>
 </div>
+    <?php endif; ?>
+<?php else: ?>
+<script>
+    location.reload();
+</script>
 <?php endif; ?>
