@@ -149,10 +149,6 @@ class WebshopCartService extends Service
                 return self::removeFromCart($productPriceActiveId, ($originalQuantity - $quantity));
             }
 
-            if (!$addedQuantity && $newQuantity === 0) {
-                return self::removeFromCart($productPriceActiveId, $originalQuantity);
-            }
-
             $cartItem->setQuantity($quantity);
 
             // dump($addedQuantity);
