@@ -163,7 +163,7 @@ var Structure = {
             window.history.pushState("object or string", "Title", url);
         }
 
-        forceReload = (typeof forceReload !== 'undefined') ? forceReload : false;
+        // forceReload = (typeof forceReload !== 'undefined') ? forceReload : false;
         Structure.removeBackgroundTheme();
 
         $.ajax({

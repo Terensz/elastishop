@@ -51,12 +51,12 @@ if ($customPageId) {
                 <?php echo trans('keywords'); ?>
             </a>
         </li>
-        <!-- <li class="nav-item">
+        <li class="nav-item">
             <a class="navLink-priorized nav-link customPageTab customPageTab-background doNotTriggerHref" 
                 id="tab1-tab" data-toggle="tab" href="" onclick="CustomPageEdit.switchTab(event, 'background');" role="tab" aria-controls="tab1" aria-selected="true">
                 <?php echo trans('background.settings'); ?>
             </a>
-        </li> -->
+        </li>
 
 
         
@@ -161,7 +161,7 @@ var CustomPageEdit = {
                 // LoadingHandler.stop();
                 // console.log('stop!');
                 ElastiTools.checkResponse(response);
-                // console.log(response);
+                console.log(response);
                 $('#customPage-tabContent-container').html(response.view);
             },
             'error': function(request, error) {

@@ -694,6 +694,9 @@ class FileBasedStorageRepository extends Repository
         foreach ($indexes as $index) {
             unset($arrayCollection[$index]);
         }
+        if (empty($arrayCollection)) {
+            return false;
+        }
         $arrayCollection = array_values($arrayCollection);
         $data = serialize($arrayCollection);
         // dump($this->filePath);

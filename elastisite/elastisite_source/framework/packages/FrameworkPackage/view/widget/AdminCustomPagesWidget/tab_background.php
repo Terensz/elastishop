@@ -21,7 +21,7 @@
 
             $.ajax({
                 'type' : 'POST',
-                'url' : '<?php echo $container->getUrl()->getHttpDomain(); ?>/admin/customPage/background/editForm',
+                'url' : '/admin/customPage/background/editForm',
                 'data': {
                     'customPageId': $('#customPageId').html(),
                     'backgroundColor': $('#FrameworkPackage_customPageBackground_backgroundColor').val(),
@@ -29,6 +29,7 @@
                 },
                 'async': false,
                 'success': function(response) {
+                    console.log(response);
                     LoadingHandler.stop();
                     $('#customPageEdit_background_formContainer').html(response.view);
                 }

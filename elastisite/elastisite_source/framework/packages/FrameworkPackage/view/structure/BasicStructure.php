@@ -15,6 +15,7 @@ $widthStyleStr = (empty($sheetWidthPercent) ? '' : 'width: '.$sheetWidthPercent.
 </style>
 
         <div class="widgetContainer banner-frame" data-structurename="BasicStructure" id="widgetContainer-BannerWidget">{{ BannerWidget }}</div>
+        <div class="widgetContainer banner-frame" data-structurename="BasicStructure" id="widgetContainer-SplashWidget">{{ SplashWidget }}</div>
 
         <div class="widgetContainer" id="widgetContainer-MenuWidget">{{ MenuWidget }}</div>
 
