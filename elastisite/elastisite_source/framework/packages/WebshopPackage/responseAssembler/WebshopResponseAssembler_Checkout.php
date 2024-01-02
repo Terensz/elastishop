@@ -144,7 +144,7 @@ class WebshopResponseAssembler_Checkout extends Service
         /**
          * Than we arrange our data.
         */
-        $productListDataSet = ProductListDataProvider::arrangeProductsData($rawProductsData);
+        $productListDataSet = ProductListDataProvider::arrangeProductsData($rawProductsData['productData']);
 
         /**
          * Assembling customer data

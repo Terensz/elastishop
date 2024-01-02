@@ -59,7 +59,7 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
                 $rawProductsData = $productPriceActive->getProduct()->getRepository()->getProductsData(App::getContainer()->getSession()->getLocale(), [
                     'productId' => $productPriceActive->getProduct()->getId(),
                 ], []);
-                $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData);
+                $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData['productData']);
                 $productData = isset($productsData[0]) ? $productsData[0] : null;
             }
 

@@ -124,7 +124,10 @@ class ProductRepository extends DbRepository
         $showAnomalous =  isset($options['showAnomalous']) ? $options['showAnomalous'] : false;
         $showInactive = isset($options['showInactive']) ? $options['showInactive'] : false;
         $offset = ($page - 1) * $maxItemsOnPage;
-        
+        $limitString = "LIMIT ".$offset.", ".$maxItemsOnPage;
+
+        $countStmWrapper = "SELECT COUNT(*) as rows_count FROM ([stm]) count_wrapper";
+
         $stm = "
         SELECT 
             *
@@ -135,7 +138,7 @@ class ProductRepository extends DbRepository
             (product_condition = '".self::PRODUCT_CONDITION_OFFERABLE."'".($showAnomalous ? " OR product_condition = '".self::PRODUCT_CONDITION_ANOMALOUS."'" : "").")
             AND (product_status = '".Product::STATUS_ACTIVE."'".($showInactive ? " OR product_status = '".Product::STATUS_INACTIVE."'" : "").")
             [categoryOuterFilter]
-        LIMIT ".$offset.", ".$maxItemsOnPage."
+            [limitString]
         ";
         // if (isset(['specialCategorySlugKey']) {
         // }
@@ -159,18 +162,34 @@ class ProductRepository extends DbRepository
         // dump(nl2br($stm));
         // dump($params);
 
-        $result = $dbm->findAll($stm, $params);
+        $countStm = str_replace('[stm]', str_replace('[limitString]', '', $stm), $countStmWrapper);
+        $countResult = $dbm->findOne($countStm, $params);
+
+        // dump($countResult);exit;
+
+        $rowsStm = str_replace('[limitString]', $limitString, $stm);
+        $result = $dbm->findAll($rowsStm, $params);
 
         // dump($query['params']);
         // dump($result);exit;
 
         if (empty($result)) {
-            $query = $this->innerQueryConditionsAssembler($locale, $filter, $stm, self::SEARCH_ACCURACY_INACCURATE);   
-            $result = $dbm->findAll($stm, $params);
+            $query = $this->innerQueryConditionsAssembler($locale, $filter, $stm, self::SEARCH_ACCURACY_INACCURATE);
+            $stm = $query['statement'];
+            $params = $query['params'];
+            $countStm = str_replace('[stm]', str_replace('[limitString]', '', $stm), $countStmWrapper);
+            $countResult = $dbm->findOne($countStm, $params);
+            $rowsStm = str_replace('[limitString]', $limitString, $stm);
+            $result = $dbm->findAll($rowsStm, $params);
         }
 
         // dump($result);exit;
-        return $result;
+        return [
+            'pagerData' => [
+                'totalListedItemsCount' => $countResult['rows_count']
+            ],
+            'productData' => $result
+        ];
     }
 
     public static function getProductsDataQueryBase(string $locale, bool $getDescription) : string

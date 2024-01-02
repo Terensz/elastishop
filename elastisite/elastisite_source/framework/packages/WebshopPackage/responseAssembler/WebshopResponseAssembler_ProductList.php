@@ -45,8 +45,6 @@ class WebshopResponseAssembler_ProductList extends Service
         // $this->setService('WebshopPackage/repository/ProductCategoryRepository');
         // $productCategoryRepo = $this->getContainer()->getService('ProductCategoryRepository');
         $processedRequestData = $processedRequestData ? : WebshopRequestService::getProcessedRequestData();
-        
-        // dump($processedRequestData);exit;
 
         // $productCategory = $processedRequestData['categoryObject'] ? : null;
         // $english = $processedRequestData['localeRequest'] == 'en' ? true : false;
@@ -58,9 +56,9 @@ class WebshopResponseAssembler_ProductList extends Service
             'page' => $processedRequestData['currentPage']
         ]);
 
-        // dump($rawProductsData);
+        // dump($rawProductsData);exit;
 
-        $productListDataSet = ProductListDataProvider::arrangeProductsData($rawProductsData);
+        $productListDataSet = ProductListDataProvider::arrangeProductsData($rawProductsData['productData']);
 
         /**
          * @todo ra kene jonni, hogy ezt miert csinaltam 
@@ -73,12 +71,37 @@ class WebshopResponseAssembler_ProductList extends Service
         // }
 
         // $listedProducts = $products ? $this->getListedProducts($products, $productCategory, $listParams) : null;
-        $totalListedProductsCount = count($productListDataSet);
+        // $totalListedProductsCount = count($productListDataSet);
+        $totalListedProductsCount = $rawProductsData['pagerData']['totalListedItemsCount'];
+        // dump($totalListedProductsCount);
         $maxProductsOnPage = WebshopService::getSetting('WebshopPackage_maxProductsOnPage');
         $totalPages = ceil($totalListedProductsCount / $maxProductsOnPage);
         $listAllLink = WebshopRequestService::getListAllLink();
         // $locale = App::getContainer()->getSession()->getLocale();
         $locale = App::getContainer()->getSession()->getLocale();
+
+        $prevPageLink = null;
+        if ($processedRequestData['currentPage'] > 1) {
+            $linkData = $processedRequestData;
+            $linkData['pagerRequest'] = true;
+            $linkData['currentPage'] = $processedRequestData['currentPage'] - 1;
+            $prevPageLink = '/'.WebshopRequestService::assembleLink($linkData);
+        }
+        $nextPageLink = null;
+        if ($processedRequestData['currentPage'] < $totalPages) {
+            $linkData = $processedRequestData;
+            $linkData['pagerRequest'] = true;
+            $linkData['currentPage'] = $processedRequestData['currentPage'] + 1;
+            $nextPageLink = '/'.WebshopRequestService::assembleLink($linkData);
+        }
+        $variablePageLink = null;
+        $linkData = $processedRequestData;
+        $linkData['pagerRequest'] = true;
+        $linkData['currentPage'] = '[page]';
+        $variablePageLink = '/'.WebshopRequestService::assembleLink($linkData);
+        // dump(WebshopRequestService::getSlugTransRef(WebshopService::TAG_ALL_PRODUCTS, 'hu'));
+        // dump($variablePageLink);
+        // dump($processedRequestData);exit;
 
         /**
          * Putting together the search links.
@@ -105,7 +128,10 @@ class WebshopResponseAssembler_ProductList extends Service
                 'currentPage' => $processedRequestData['currentPage'],
                 'maxItemsOnPage' => $maxProductsOnPage,
                 'totalPages' => $totalPages,
-                'totalListedItemsCount' => $totalListedProductsCount
+                'totalListedItemsCount' => $totalListedProductsCount,
+                'prevPageLink' => $prevPageLink,
+                'nextPageLink' => $nextPageLink,
+                'variablePageLink' => $variablePageLink
             ],
             // 'searchLinkData' => [
             //     'searchLinkBase' => $searchLinkBase,

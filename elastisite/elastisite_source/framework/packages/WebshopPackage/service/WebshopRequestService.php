@@ -301,21 +301,27 @@ class WebshopRequestService extends Service
         }
 
         $params['categorySlug'] = isset($params['categorySlug']) && $params['categorySlug'] ? $params['categorySlug'] : null;
+        $categorySlug = '';
+        if ($params['categorySlug']) {
+            $categorySlug = isset($params['categorySlugRequest']) && !empty($params['categorySlugRequest']) ? $params['categorySlugRequest'] : $params['categorySlug'];
+        }
         if ($params['categorySlug'] && $params['searchTerm']) {
-            $linkString .= (self::getSlugTransRef(WebshopService::TAG_CATEGORY, $locale).'/').$params['categorySlug'].'/';
+            $linkString .= (self::getSlugTransRef(WebshopService::TAG_CATEGORY, $locale).'/').$categorySlug.'/';
             $linkString .= (self::getSlugTransRef(WebshopService::TAG_SEARCH, $locale).'/').$params['searchTerm'].'/';
         } else {
             if ($params['categorySlug']) {
-                $linkString .= (self::getSlugTransRef(WebshopService::TAG_CATEGORY, $locale).'/').$params['categorySlug'].'/';
+                $linkString .= (self::getSlugTransRef(WebshopService::TAG_CATEGORY, $locale).'/').$categorySlug.'/';
             }
             if ($params['searchTerm']) {
                 $linkString .= (self::getSlugTransRef(WebshopService::TAG_SEARCH, $locale).'/').$params['searchTerm'].'/';
             }
         }
 
-        if ($params['currentPage'] && $params['currentPage'] > 1) {
+        if ((isset($params['pagerRequest']) && $params['pagerRequest']) || ($params['currentPage'] && $params['currentPage'] > 1)) {
             $linkString .= (self::getSlugTransRef(WebshopService::TAG_PAGE, $locale).'/').$params['currentPage'].'/';
         }
+
+        // dump($linkString);
 
         return $linkString;
     }

@@ -21,6 +21,11 @@ class ProductListDataProvider extends Service
         $productsData = [];
         $index = 0;
         foreach ($rawProductsData as $rawProductsDataRow) {
+
+            if (!isset($rawProductsDataRow['ppl_currency_code'])) {
+                dump($rawProductsDataRow);
+            }
+
             $productImages = [];
             $productImageSlugs = [];
             if (!empty($rawProductsDataRow['product_image_slugs'])) {
