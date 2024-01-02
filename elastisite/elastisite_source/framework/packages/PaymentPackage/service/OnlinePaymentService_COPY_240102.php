@@ -32,12 +32,6 @@ class OnlinePaymentService extends Service
 
     public $paymentEntity;
 
-    // public PaymentTransaction $paymentTransaction;
-
-    // public PaymentRepository $paymentRepository;
-
-    // public ?Payment $paymentEntity;
-
     public $communication;
 
     public $gatewayOperator;
