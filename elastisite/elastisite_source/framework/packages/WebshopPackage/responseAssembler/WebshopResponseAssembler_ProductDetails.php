@@ -99,7 +99,7 @@ class WebshopResponseAssembler_ProductDetails extends Service
 
         $offeredQuantity = $oldQuantity ? : 1;
 
-        // dump($productData);//exit;
+        // dump($productData);exit;
         if ($productData) {
             // header('Location: '.$_SERVER['REQUEST_URI']);
             // dump($productData);//exit;

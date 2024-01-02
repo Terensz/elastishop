@@ -35,13 +35,14 @@
         <div class="card">
             <div class="card-body">
             <?php 
+            // dump($productData);
             // $offeredQuantity = 12;
             $options = [
                 'displaySaveButton' => true
             ];
             $closeModalAfterSubmit = false;
             include('framework/packages/WebshopPackage/view/Sections/SideCart/SetCartItemQuantityModal.php');
-            $productDescription = $productData['description']; 
+            $productDescription = empty($productData['description']) ? $productData['shortInfo'] : $productData['description']; 
             include('ProductDescription.php');
             ?>
             </div>
