@@ -28,7 +28,7 @@ $categoriesData = [
     ]
 ];
 */
-dump($categoriesData);
+// dump($categoriesData);
 // dump($localizedWebshopUrlKey);
 ?>
 <div class="card mb-3 card-noBorderRadius">
