@@ -242,6 +242,10 @@ class PackDataProvider extends Service
         //     }
         // }
 
+        if (!isset($dataSet['pack']['currencyCode'])) {
+            dump($dataSet);
+        }
+
         $dataSet['pack']['currencyCode'] = $currencyCode;
         $dataSet['summary']['sumGrossPriceRounded2'] = $sumGrossPriceRounded2;
         $dataSet['summary']['sumGrossPriceFormatted'] = StringHelper::formatNumber($sumGrossPriceRounded2, 2, ',', '.');
