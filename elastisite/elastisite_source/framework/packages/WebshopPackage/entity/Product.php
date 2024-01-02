@@ -45,7 +45,7 @@ class Product extends DbEntity
         `description_en` text COLLATE utf8_hungarian_ci DEFAULT NULL,
         `code` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `product_category_id` int(11) DEFAULT NULL,
-        `special_purpose` varchar(100) NOT NULL,
+        `special_purpose` varchar(100) DEFAULT NULL,
         `is_recommended` varchar(3) DEFAULT '".self::IS_RECOMMENDED_NO."',
         `created_at` datetime DEFAULT NULL,
         `status` int(2) NOT NULL DEFAULT '1',
