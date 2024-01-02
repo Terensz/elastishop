@@ -28,7 +28,7 @@ $categoriesData = [
     ]
 ];
 */
-// dump($categoriesData);
+dump($categoriesData);
 // dump($localizedWebshopUrlKey);
 ?>
 <div class="card mb-3 card-noBorderRadius">
@@ -41,19 +41,6 @@ $categoriesData = [
     <section class="w-100">
         <div class="row">
             <div class="col">
-
-                <!-- <nav class="flex-content-sidebar pc-sidebar collapse show sideNavbar-container webshop-sidebar-widget">
-                    <ul class="pc-navbar">
-                        <li class="pc-item pc-caption webshop-sidebar-caption">
-                            <label><?php echo trans('product.categories'); ?></label>
-                        </li>
-                        <?php
-                        $loopIndex = 0;
-                        $data = $categoriesData['data'];
-                        include ('CategoryLooper.php');
-                        ?>
-                    </ul>
-                </nav> -->
 
                 <?php  
                 // dump($specialCategorySlugKey);
