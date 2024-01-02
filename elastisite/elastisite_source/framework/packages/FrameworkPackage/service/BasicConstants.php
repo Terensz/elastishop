@@ -21,6 +21,29 @@ class BasicConstants
         'optionKey' => 'false'
     ];
 
+    const OPTIONS_10_20_50_100 = [
+        '10' => [
+            'rawValue' => '10',
+            'translateDisplayedValue' => false,
+            'optionKey'=> '10'
+        ],
+        '20' => [
+            'rawValue' => '20',
+            'translateDisplayedValue' => false,
+            'optionKey'=> '20'
+        ],
+        '50' => [
+            'rawValue' => '50',
+            'translateDisplayedValue' => false,
+            'optionKey'=> '50'
+        ],
+        '100' => [
+            'rawValue' => '100',
+            'translateDisplayedValue' => false,
+            'optionKey'=> '100'
+        ]
+    ];
+
     const OPTIONS_20_50_100 = [
         '20' => [
             'rawValue' => '20',
