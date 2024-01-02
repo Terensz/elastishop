@@ -22,6 +22,12 @@ class PageController extends RouteRendering
         $allowedPageProtocols = App::getContainer()->getProjectData('allowedPageProtocols');
         if (is_array($allowedPageProtocols) && count($allowedPageProtocols) == 1 && !in_array($currentProtocol, $allowedPageProtocols)) {
             $oppositeProtocol = $allowedPageProtocols[0] == 'https://' ? 'http://' : 'https://';
+            dump('$currentProtocol:');
+            dump($currentProtocol);
+            dump('$allowedPageProtocols:');
+            dump($allowedPageProtocols);
+            dump('$oppositeProtocol:');
+            dump($oppositeProtocol);
             PHPHelper::redirect(str_replace($currentProtocol, $oppositeProtocol, App::getContainer()->getUrl()->getFullUrl()), 'PageController/__construct()');
         }
     }
