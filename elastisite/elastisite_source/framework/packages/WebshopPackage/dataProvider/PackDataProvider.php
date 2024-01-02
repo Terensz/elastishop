@@ -143,6 +143,7 @@ class PackDataProvider extends Service
         $nonSpecialPurposeItems = [];
         $specialPurposeItems = [];
         $inactiveItemFound = false;
+        $currencyCode = null;
         foreach ($packItemCollection as $packItem) {
             $packItemIsActive = true;
             $packItemData = PackItemDataProvider::assembleDataSet($packItem);
@@ -242,9 +243,9 @@ class PackDataProvider extends Service
         //     }
         // }
 
-        if (!isset($dataSet['pack']['currencyCode'])) {
-            dump($dataSet);
-        }
+        // if (!isset($dataSet['pack']['currencyCode'])) {
+        //     dump($dataSet);
+        // }
 
         $dataSet['pack']['currencyCode'] = $currencyCode;
         $dataSet['summary']['sumGrossPriceRounded2'] = $sumGrossPriceRounded2;
