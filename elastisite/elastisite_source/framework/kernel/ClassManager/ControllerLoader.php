@@ -17,7 +17,6 @@ class ControllerLoader extends PageController
         // dump($this->getContainer()->isAjax());exit;
         if (BasicUtils::explodeAndGetElement(get_parent_class($controller['object']), '\\', 'last') == 'WidgetController' 
             && !$this->getContainer()->isAjax()) {
-            // header('Location: '.$this->getContainer()->getUrl()->getHttpDomain());exit;
         }
 
         // var_dump($controller);exit;

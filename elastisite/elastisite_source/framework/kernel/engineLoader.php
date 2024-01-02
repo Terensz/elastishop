@@ -12,6 +12,9 @@
 // exit;
 include($sourceRelPath.'framework/kernel/utility/FileHandler.php');
 include($sourceRelPath.'framework/component/exception/ElastiException.php');
+
+include($sourceRelPath.'framework/component/helper/PHPHelper.php');
+
 include($sourceRelPath.'framework/component/helper/MathHelper.php');
 include($sourceRelPath.'framework/component/helper/StringHelper.php');
 include($sourceRelPath.'framework/component/helper/DateUtils.php');

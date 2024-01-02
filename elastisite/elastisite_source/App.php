@@ -170,10 +170,4 @@ class App
     {
         include_once(self::$sourceRelativePath . $pathPartToFile);
     }
-
-    public static function redirect($path)
-    {
-        header('Location: ' . $path, false);
-        exit;
-    }
 }

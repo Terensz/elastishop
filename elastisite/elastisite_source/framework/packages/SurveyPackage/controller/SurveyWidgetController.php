@@ -2,6 +2,7 @@
 namespace framework\packages\SurveyPackage\controller;
 
 use App;
+use framework\component\helper\PHPHelper;
 use framework\component\parent\WidgetController;
 use framework\packages\DataGridPackage\service\DataGridBuilder;
 use framework\packages\FormPackage\service\FormBuilder;
@@ -33,7 +34,7 @@ class SurveyWidgetController extends WidgetController
 
         // dump($survey); exit;
         if (!$survey || $survey->getStatus() != Survey::STATUS_ACTIVE) {
-            App::redirect('/404');
+            PHPHelper::redirect('/404', 'SurveyWidgetController/surveyAnswerFormAction()');
         }
 
         $processedSurveyAndwers = SurveyService::processSurveyCompletion($survey);
@@ -71,7 +72,7 @@ class SurveyWidgetController extends WidgetController
 
         // dump($survey); exit;
         if (!$survey || $survey->getStatus() != Survey::STATUS_ACTIVE) {
-            App::redirect('/404');
+            PHPHelper::redirect('/404', 'SurveyWidgetController/fillSurveyWidgetAction()');
         }
         
         $surveyFormViewName = $this->getSurveyFormViewName($survey->getId());
@@ -158,7 +159,7 @@ class SurveyWidgetController extends WidgetController
 
         // dump($survey); exit;
         if (!$survey) {
-            App::redirect('/404');
+            PHPHelper::redirect('/404', 'SurveyWidgetController/adminSurveyGetAnswersViewAction()');
         }
 
         $this->setService('SurveyPackage/repository/SurveyCompletionRepository');

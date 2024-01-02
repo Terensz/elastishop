@@ -2,6 +2,7 @@
 namespace framework\packages\PaymentPackage\gatewayProviders\Barion\controller;
 
 use App;
+use framework\component\helper\PHPHelper;
 use framework\component\parent\PageController;
 use framework\packages\PaymentPackage\entity\Payment;
 // use framework\packages\PaymentPackage\repository\PaymentRepository;
@@ -58,14 +59,14 @@ class PaymentRedirectController extends PageController
 
 
                     # Ezt vissza kell kapcsolni!
-                    App::redirect('/webshop/paymentSuccessful/' . $paymentCode);
+                    PHPHelper::redirect('/webshop/paymentSuccessful/'.$paymentCode, 'PaymentRedirectController/redirectAction()');
 
 
 
 
                 }
             } else {
-                App::redirect('/webshop/paymentFailed/' . $paymentCode);
+                PHPHelper::redirect('/webshop/paymentFailed/'.$paymentCode, 'PaymentRedirectController/redirectAction()');
             }
 
 
@@ -73,7 +74,7 @@ class PaymentRedirectController extends PageController
             
         }
 
-        App::redirect('/webshop');
+        PHPHelper::redirect('/webshop', 'PaymentRedirectController/redirectAction()');
 
         // dump('paymentCode: ' . $paymentCode);
         // exit;

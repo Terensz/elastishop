@@ -331,10 +331,6 @@ class CookieConsentWidgetController extends WidgetController
             );
         }
 
-        // dump($success);exit;
-
-        // App::redirect('/webshop');
-
         $response = [
             'view' => null,
             'data' => [
@@ -344,32 +340,4 @@ class CookieConsentWidgetController extends WidgetController
 
         return $this->widgetResponse($response);
     }
-
-    /**
-    * Route: [name: widget_CookieConsentWidget_removeRefusedConsent, paramChain: /widget/CookieConsentWidget_removeRefusedConsent]
-    */
-    // public function removeRefusedConsentAction()
-    // {
-    //     $subscriber = $this->getRequest()->get('subscriber');
-    //     $repo = new VisitorConsentRepository();
-    //     $success = $repo->removeAcceptance(
-    //         $this->getContainer()->getUser()->getId(),
-    //         $this->getSession()->get('visitorCode'),
-    //         VisitorConsentAcceptance::REQUESTED_FOR_ACCEPTING_3RD_PARTY_COOKIES,
-    //         $subscriber
-    //     );
-
-    //     // dump($success);exit;
-
-    //     // App::redirect('/webshop');
-
-    //     $response = [
-    //         'view' => null,
-    //         'data' => [
-    //             'success' => $success
-    //         ]
-    //     ];
-
-    //     return $this->widgetResponse($response);
-    // }
 }

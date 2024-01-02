@@ -7,6 +7,7 @@ use App;
 use framework\kernel\utility\BasicUtils;
 use framework\component\parent\Response;
 use framework\component\exception\ElastiException;
+use framework\component\helper\PHPHelper;
 
 class PageController extends RouteRendering
 {
@@ -21,7 +22,7 @@ class PageController extends RouteRendering
         $allowedPageProtocols = App::getContainer()->getProjectData('allowedPageProtocols');
         if (is_array($allowedPageProtocols) && count($allowedPageProtocols) == 1 && !in_array($currentProtocol, $allowedPageProtocols)) {
             $oppositeProtocol = $allowedPageProtocols[0] == 'https://' ? 'http://' : 'https://';
-            header('Location: '.str_replace($currentProtocol, $oppositeProtocol, App::getContainer()->getUrl()->getFullUrl()));
+            PHPHelper::redirect(str_replace($currentProtocol, $oppositeProtocol, App::getContainer()->getUrl()->getFullUrl()), 'PageController/__construct()');
         }
     }
     

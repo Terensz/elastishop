@@ -2,6 +2,7 @@
 namespace framework\packages\WebshopPackage\dataProvider;
 
 use App;
+use framework\component\helper\PHPHelper;
 use framework\component\helper\StringHelper;
 use framework\component\parent\Service;
 use framework\packages\PaymentPackage\entity\Payment;
@@ -183,7 +184,7 @@ class PackDataProvider extends Service
         }
 
         if ($inactiveItemFound) {
-            header('Location: '.$_SERVER['REQUEST_URI']);
+            PHPHelper::redirect($_SERVER['REQUEST_URI'], 'PackDataProvider/assembleDataSet()');
         }
 
         // dump('ennyikeh');exit;
