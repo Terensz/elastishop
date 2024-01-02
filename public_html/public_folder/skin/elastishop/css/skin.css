@@ -1,12 +1,6 @@
 .card-image-container {
     height: 120px !important;
 }
-.card-image {
-    object-fit: cover;
-    overflow: hidden;
-    height: 120px;
-    width: 100%;
-}
 .card-noBorderRadius {
     border-radius: 0;
 }
