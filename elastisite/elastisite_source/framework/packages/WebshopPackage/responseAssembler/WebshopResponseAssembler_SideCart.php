@@ -22,7 +22,9 @@ class WebshopResponseAssembler_SideCart extends Service
         $cart = WebshopCartService::getCart();
         App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
         $packDataSet = PackDataProvider::assembleDataSet($cart);
-        // dump($packDataSet);exit;
+
+        dump($cart);
+        dump($packDataSet);exit;
         
         // $shipmentRepo = new ShipmentRepository();
         // $shipment = $shipmentRepo->find(1319);
