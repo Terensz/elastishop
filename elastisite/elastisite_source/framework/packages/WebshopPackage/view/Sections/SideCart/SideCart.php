@@ -2,7 +2,6 @@
 
 use framework\component\helper\StringHelper;
 
-// dump($packDataSet);
 ?>
 <div class="card mb-3 card-noBorderRadius">
     <div class="card-footer card-header-sideMenu justify-content-between align-items-center">
@@ -88,5 +87,7 @@ $cartItemCounter = 0;
         </div>
     </div>
 <?php endif; ?>
-
+<?php  
+dump($packDataSet);
+?>
 </div>
