@@ -22,6 +22,10 @@ class PageController extends RouteRendering
         $allowedPageProtocols = App::getContainer()->getProjectData('allowedPageProtocols');
         if (is_array($allowedPageProtocols) && count($allowedPageProtocols) == 1 && !in_array($currentProtocol, $allowedPageProtocols)) {
             $oppositeProtocol = $allowedPageProtocols[0] == 'https://' ? 'http://' : 'https://';
+            dump('Site');
+            dump(App::getWebsite());
+            dump('Project');
+            dump(App::getWebProject());
             dump('$currentProtocol:');
             dump($currentProtocol);
             dump('$allowedPageProtocols:');
