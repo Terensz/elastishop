@@ -174,13 +174,15 @@ class ProductRepository extends DbRepository
         // dump($result);exit;
 
         if (empty($result)) {
-            $query = $this->innerQueryConditionsAssembler($locale, $filter, $stm, self::SEARCH_ACCURACY_INACCURATE);
-            $stm = $query['statement'];
-            $params = $query['params'];
-            $countStm = str_replace('[stm]', str_replace('[limitString]', '', $stm), $countStmWrapper);
-            $countResult = $dbm->findOne($countStm, $params);
-            $rowsStm = str_replace('[limitString]', $limitString, $stm);
-            $result = $dbm->findAll($rowsStm, $params);
+            // $query = $this->innerQueryConditionsAssembler($locale, $filter, $stm, self::SEARCH_ACCURACY_INACCURATE);
+            // $stm = $query['statement'];
+            // $params = $query['params'];
+            // $countStm = str_replace('[stm]', str_replace('[limitString]', '', $stm), $countStmWrapper);
+            // $countResult = $dbm->findOne($countStm, $params);
+            // $rowsStm = str_replace('[limitString]', $limitString, $stm);
+            // dump(nl2br($rowsStm));
+            // dump($params);
+            // $result = $dbm->findAll($rowsStm, $params);
         }
 
         // dump($result);exit;
