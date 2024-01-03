@@ -56,7 +56,7 @@ class ProductDataProvider extends Service
         $dataSet['shortInfo'] = $object->getShortInfo();
         $dataSet['description'] = $object->getDescription();
         $dataSet['slug'] = App::getContainer()->getSession()->getLocale() == 'en' ? $object->getSlugEn() : $object->getSlug();
-        $dataSet['status'] = $object->getStatus();
+        $dataSet['status'] = $object->getStatus() === null ? null : (int)$object->getStatus();
         $dataSet['statusText'] = $object::getStatusText($object->getStatus());
         $dataSet['SKU'] = $object->getCode() ? : $object->getId();
 
