@@ -62,6 +62,8 @@ class WebshopResponseAssembler_Categories extends Service
         // $openGraphData = App::getContainer()->getOpenGraphData();
         // dump($openGraphData);exit;
 
+        // dump($categoriesData);exit;
+
         $viewParams = [
             'categoriesData' => $categoriesData,
             'specialCategorySlugKey' => $processedRequestData['specialCategorySlugKey'],

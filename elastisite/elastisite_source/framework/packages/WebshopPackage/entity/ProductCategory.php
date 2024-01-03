@@ -167,15 +167,11 @@ class ProductCategory extends DbEntity
 
     public function setStatus($status)
     {
-        return $this->status === null ? null : (int)$this->status;
+        $this->status = $status;
     }
 
     public function getStatus()
-    {
-        if ($this->status === null) {
-            $this->status = 0;
-        }
-        
-        return $this->status;
+    {        
+        return $this->status === null ? 0 : (int)$this->status;
     }
 }

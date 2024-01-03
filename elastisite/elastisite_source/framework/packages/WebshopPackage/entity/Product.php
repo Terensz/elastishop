@@ -320,7 +320,8 @@ class Product extends DbEntity
 
     public function getStatus()
     {
-        return $this->status === null ? null : (int)$this->status;
+        return $this->status === null ? 0 : (int)$this->status;
+        //  === null ? null : (int)$this->status;
     }
 
     public function getSKU()
