@@ -1,7 +1,7 @@
 <?php 
 
 use framework\component\helper\StringHelper;
-
+dump(App::getContainer()->getSession()->get('visitorCode'));
 ?>
 <div class="card mb-3 card-noBorderRadius">
     <div class="card-footer card-header-sideMenu justify-content-between align-items-center">

@@ -53,13 +53,13 @@ class WebshopCartService extends Service
     //     $cartRepo->removeObsolete();
     // }
 
-    public static function removeUnboundCartItems()
-    {
-        App::getContainer()->wireService('WebshopPackage/repository/CartItemRepository');
+    // public static function removeUnboundCartItems()
+    // {
+    //     App::getContainer()->wireService('WebshopPackage/repository/CartItemRepository');
 
-        $cartItemRepo = new CartItemRepository();
-        $cartItemRepo->removeUnbound();
-    }
+    //     $cartItemRepo = new CartItemRepository();
+    //     $cartItemRepo->removeUnbound();
+    // }
     
     public static function addToCart($productPriceActiveId, $newQuantity = null, $addedQuantity = null, $skipCheckTriggers = false, $appliedBy = null)
     {
