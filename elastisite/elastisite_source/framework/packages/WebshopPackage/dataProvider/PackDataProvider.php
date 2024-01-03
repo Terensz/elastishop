@@ -163,6 +163,10 @@ class PackDataProvider extends Service
                 // dump($packItemData);exit;
 
 
+dump($packItem->getProduct()->getStatus() !== Product::STATUS_ACTIVE);
+dump(!$packItemData['product']['actualPrice']);
+dump(!$packItemData['product']['activePrice']);
+dump($packItemData['product']['actualPrice']['id'] != $packItemData['product']['activePrice']['id']);
 dump($packItemData);exit;
                 WebshopCartService::removeItem($packItem);
             }
