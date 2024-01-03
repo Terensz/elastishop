@@ -161,6 +161,9 @@ class PackDataProvider extends Service
                 $inactiveItemFound = true;
                 $packItemIsActive = false;
                 // dump($packItemData);exit;
+
+
+dump($packItemData);exit;
                 WebshopCartService::removeItem($packItem);
             }
             
