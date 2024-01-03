@@ -88,6 +88,6 @@ $cartItemCounter = 0;
     </div>
 <?php endif; ?>
 <?php  
-dump($packDataSet);
+// dump($packDataSet);
 ?>
 </div>
