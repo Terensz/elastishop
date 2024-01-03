@@ -275,7 +275,7 @@ class WebshopCartService extends Service
     public static function removeObsoleteCarts($sessionCartIdIsUnremovable = false)
     {
         // self::checkAndExecuteTriggers();
-        // dump('removeOldCart');exit;
+        dump('removeOldCart');exit;
         App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
         // $cartRepo = new CartRepository();
         CartRepository::removeObsolete(
