@@ -146,10 +146,12 @@ class WebshopCartService extends Service
             }
 
             if ($originalQuantity > $quantity) {
+                dump('$originalQuantity > $quantity');exit;
                 return self::removeFromCart($productPriceActiveId, ($originalQuantity - $quantity));
             }
 
             if (!$addedQuantity && $newQuantity === 0) {
+                dump('!$addedQuantity && $newQuantity === 0');exit;
                 return self::removeFromCart($productPriceActiveId, $originalQuantity);
             }
 
@@ -275,7 +277,7 @@ class WebshopCartService extends Service
     public static function removeObsoleteCarts($sessionCartIdIsUnremovable = false)
     {
         // self::checkAndExecuteTriggers();
-        dump('removeOldCart');exit;
+        dump('removeObsoleteCarts');exit;
         App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
         // $cartRepo = new CartRepository();
         CartRepository::removeObsolete(
