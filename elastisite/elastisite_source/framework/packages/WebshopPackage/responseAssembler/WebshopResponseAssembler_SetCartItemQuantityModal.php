@@ -52,6 +52,7 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
         $productPriceActive = $productPriceActiveRepository->find($offerId);
         // dump($productPriceActive);exit;
 
+        $addedToCart = null;
         if ($productPriceActive) {
             if (!$productData) {
                 App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
@@ -80,6 +81,11 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
             }
         }
 
+        if (!$addedToCart) {
+            dump('!$addedToCart');
+            dump($submitted);exit;
+        }
+
         $offeredQuantity = $newQuantity ? : ($oldQuantity ? : 1);
 
         $viewParams = [
@@ -100,6 +106,7 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
         return [
             'view' => $view,
             'data' => [
+                'addedToCart' => $addedToCart->getId(),
                 'toastTitle' => trans('system.message'),
                 'toastBody' => trans('cart.updated'),
                 'offerId' => $offerId
