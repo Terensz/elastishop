@@ -67,7 +67,7 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
                 $newQuantity = (int)App::getContainer()->getRequest()->get('newQuantity');
                 $addedToCart = WebshopCartService::addToCart($offerId, $newQuantity);
 
-                dump($addedToCart);exit;
+                // dump($addedToCart);exit;
                 // if (!$actualCartItemData) {
                 //     if ($newQuantity) {
                 //         WebshopCartService::addToCart($offerId, $newQuantity);
