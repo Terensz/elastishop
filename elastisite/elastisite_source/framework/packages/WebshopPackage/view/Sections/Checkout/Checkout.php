@@ -1,7 +1,7 @@
 <?php
 
 use framework\packages\UserPackage\entity\User;
-
+// dump($pagerData);
 ?>
 <?php if (App::getContainer()->getUser()->getType() != User::TYPE_ADMINISTRATOR): ?>
     <div class="row">
@@ -12,7 +12,6 @@ use framework\packages\UserPackage\entity\User;
 
     <?php 
     // $options['skipFooter'] = true;
-    // dump($productsData);
     include('framework/packages/WebshopPackage/view/Sections/ProductList/ProductList.php');
     ?>
 

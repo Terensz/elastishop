@@ -180,8 +180,19 @@ class WebshopResponseAssembler_Checkout extends Service
             'invoiceData' => $invoiceData,
             'localizedProductInfoLinkBase' => WebshopRequestService::getSlugTransRef(WebshopService::TAG_WEBSHOP, $locale).'/'.WebshopRequestService::getSlugTransRef(WebshopService::TAG_SHOW_PRODUCT, $locale).'/',
             'userType' => App::getContainer()->getUser()->getType(),
-            'errors' => WebshopFinishCheckoutService::assembleCartErrors($cart)
+            'errors' => WebshopFinishCheckoutService::assembleCartErrors($cart),
+            'pagerData' => [
+                'currentPage' => 1,
+                'maxItemsOnPage' => null,
+                'totalPages' => 1,
+                'totalListedItemsCount' => null,
+                'prevPageLink' => null,
+                'nextPageLink' => null,
+                'variablePageLink' => null
+            ]
         ];
+
+        // dump($viewParams);exit;
 
         $viewPath = 'framework/packages/WebshopPackage/view/Sections/Checkout/Checkout.php';
         $view = ViewRenderer::renderWidget('WebshopPackage_Checkout', $viewPath, $viewParams);
