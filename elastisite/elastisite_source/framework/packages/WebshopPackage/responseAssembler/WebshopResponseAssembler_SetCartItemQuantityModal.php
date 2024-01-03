@@ -81,9 +81,9 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
             }
         }
 
-        if (!$addedToCart) {
-            dump('!$addedToCart');
-            dump($submitted);exit;
+        if (!$addedToCart && $submitted) {
+            dump('!$addedToCart');exit;
+            // dump($submitted);exit;
         }
 
         $offeredQuantity = $newQuantity ? : ($oldQuantity ? : 1);
