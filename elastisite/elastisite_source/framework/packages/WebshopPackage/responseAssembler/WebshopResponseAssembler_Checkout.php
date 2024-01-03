@@ -70,7 +70,7 @@ class WebshopResponseAssembler_Checkout extends Service
 
         // dump($removeCartOnLogin);
         // dump($user);exit;
-        if ($onlyRegistratedUsersCanCheckout && !$user->getUserAccount()->getId()) {
+        if (($onlyRegistratedUsersCanCheckout && !$user->getUserAccount()->getId()) || $user->getType() == User::TYPE_ADMINISTRATOR) {
             if ($user->getType() == User::TYPE_ADMINISTRATOR) {
                 $viewPath = 'framework/packages/WebshopPackage/view/Sections/Checkout/Error/AdminSession.php';
                 return WebshopResponseAssembler::returnAlternativeView('WebshopPackage_Checkout', $viewPath, []);
