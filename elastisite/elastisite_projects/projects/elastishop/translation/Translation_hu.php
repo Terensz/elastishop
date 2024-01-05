@@ -8,10 +8,9 @@ class Translation_hu
     {
         return array(
             'homepage.title' => 'Ez az igaz út',
-            'a.wandering.beekeeper' => 'Egy vándorméhész',
-            'a.story.of.a.wandering.beekeeper' => 'Egy vándorméhész története',
             'pick.up.point' => 'Átvételi pont',
-            'missing.pick.up.point' => 'Hiányzó átvételi pont'
+            'missing.pick.up.point' => 'Hiányzó átvételi pont',
+            'there.could.be.your.shops.logo' => 'Itt akár az Ön boltjának a bannere is lehetne'
         );
     }
 }
