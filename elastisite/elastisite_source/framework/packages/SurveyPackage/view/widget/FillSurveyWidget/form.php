@@ -19,7 +19,7 @@ $value = '';
 $andswerIsMissing = in_array($surveyQuestion->getId(), $missingAnswers);
 $errorMessage = $andswerIsMissing ? ($surveyQuestion->getInputType() == $surveyQuestion::INPUT_TYPE_CHECKER 
                                     ? trans('required.to.check.at.least.one') 
-                                    : trans('required.field')) 
+                                    : trans('required.to.fill')) 
                                 : '';
 $isInvalidClassString = $andswerIsMissing ? ' is-invalid' : '';
 ?>

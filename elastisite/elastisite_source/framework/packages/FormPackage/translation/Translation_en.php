@@ -9,6 +9,7 @@ class Translation_en
             'required.field' => 'This field is required',
             'required.to.check' => 'Required to check',
             'required.to.check.at.least.one' => 'Required to check at least one',
+            'required.to.fill' => 'Required to fill',
             'create.new' => 'Create new',
             'integer.required' => 'Please enter integer value',
             'new.custom.page' => 'New custom page',
