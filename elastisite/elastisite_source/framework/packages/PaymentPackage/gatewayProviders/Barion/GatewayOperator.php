@@ -87,7 +87,7 @@ class GatewayOperator extends OnlineGatewayOperator
         'Expired' => Payment::PAYMENT_STATUS_EXPIRED,
     ];
 
-    public OnlinePaymentService $onlinePaymentService;
+    public $onlinePaymentService;
 
     // public $payment;
 
