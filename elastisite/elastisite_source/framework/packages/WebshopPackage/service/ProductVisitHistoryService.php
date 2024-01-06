@@ -29,19 +29,23 @@ class ProductVisitHistoryService extends Service
         $productVisitHistoryRepository = new ProductVisitHistoryRepository();
         $productRepository = new ProductRepository();
 
-        $productVisitHistory = $productVisitHistoryRepository->findOneBy(['conditions' => [
-            ['key' => 'website', 'value' => App::getWebsite()],
-            ['key' => 'product_id', 'value' => $productId],
-            ['key' => 'visitor_code', 'value' => App::getContainer()->getSession()->get('visitorCode')]
-        ]]);
+        $productVisitHistory = $productVisitHistoryRepository->findOneBy([
+            'conditions' => [
+                ['key' => 'website', 'value' => App::getWebsite()],
+                ['key' => 'product_id', 'value' => $productId],
+                ['key' => 'visitor_code', 'value' => App::getContainer()->getSession()->get('visitorCode')]
+            ]
+        ]);
 
         if ($productVisitHistory) {
             $numberOfVisits = $productVisitHistory->getNumberOfVisits();
             $numberOfVisits++;
             $productVisitHistory->setNumberOfVisits($numberOfVisits);
+            // dump($productVisitHistory);exit;
         } else {
             $product = $productRepository->find($productId);
-            if (!$product) {
+            if (!$product || ($product && !empty($product->getSpecialPurpose()))) {
+                // dump($product);exit;
                 return false;
             }
             $productVisitHistory = new ProductVisitHistory();
@@ -51,6 +55,8 @@ class ProductVisitHistoryService extends Service
         }
         $productVisitHistory->setUpdatedAt(App::getContainer()->getCurrentTimestamp());
         $productVisitHistory = $productVisitHistoryRepository->store($productVisitHistory);
+
+        // dump($productVisitHistory);exit;
 
         return $productVisitHistory;
     }
@@ -63,7 +69,8 @@ class ProductVisitHistoryService extends Service
         $productVisitHistoryCollection = $productVisitHistoryRepository->findBy([
             'conditions' => [
                 ['key' => 'website', 'value' => App::getWebsite()],
-                ['key' => 'visitor_code', 'value' => App::getContainer()->getSession()->get('visitorCode')]
+                ['key' => 'visitor_code', 'value' => App::getContainer()->getSession()->get('visitorCode')],
+                // ['key' => 'special_purpose', 'operator' => 'NOT NULL'],
             ],
             'orderBy' => [['field' => 'updated_at', 'direction' => 'DESC']],
             'maxResults' => self::SEARCH_LIMIT

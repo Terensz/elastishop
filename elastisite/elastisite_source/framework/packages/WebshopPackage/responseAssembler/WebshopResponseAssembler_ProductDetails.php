@@ -98,6 +98,7 @@ class WebshopResponseAssembler_ProductDetails extends Service
             ]);
             $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData['productData']);
             $productData = isset($productsData[0]) ? $productsData[0] : null;
+            // dump($productData);exit;
         }
 
         $locale = App::getContainer()->getSession()->getLocale();
