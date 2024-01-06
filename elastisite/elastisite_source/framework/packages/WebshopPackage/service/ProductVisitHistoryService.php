@@ -14,7 +14,7 @@ class ProductVisitHistoryService extends Service
 {
     const SEARCH_LIMIT = 10;
 
-    public static function save(int $productId) : ProductVisitHistory
+    public static function save(int $productId)
     {
         App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
         App::getContainer()->wireService('WebshopPackage/entity/Product');
