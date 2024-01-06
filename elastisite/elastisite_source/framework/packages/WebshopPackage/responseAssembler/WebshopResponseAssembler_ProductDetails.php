@@ -83,18 +83,23 @@ class WebshopResponseAssembler_ProductDetails extends Service
             }
         }
 
+        // dump($productData);exit;
         // dump($oldQuantity);exit;
         // dump($packDataSet);
         // exit;
 
         // dump($productPriceActive);exit;
-        $rawProductsData = $productRepository->getProductsData(App::getContainer()->getSession()->getLocale(), [
-            'productId' => $productId,
-        ], [
-            'getDescription' => true
-        ]);
-        $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData['productData']);
-        $productData = isset($productsData[0]) ? $productsData[0] : null;
+
+        if (!$productData) {
+            $rawProductsData = $productRepository->getProductsData(App::getContainer()->getSession()->getLocale(), [
+                'productId' => $productId,
+            ], [
+                'getDescription' => true
+            ]);
+            $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData['productData']);
+            $productData = isset($productsData[0]) ? $productsData[0] : null;
+        }
+
         $locale = App::getContainer()->getSession()->getLocale();
 
         $offeredQuantity = $oldQuantity ? : 1;

@@ -45,6 +45,7 @@
                 if (isset($packDataSet['pack']['packItems']['productId-'.$productData['id']])) {
                     $cartItemData = $packDataSet['pack']['packItems']['productId-'.$productData['id']];
                 }
+                $productImageOnClickDetails = true;
                 include('ProductCard.php');
                 ?>
             <?php endforeach; ?>

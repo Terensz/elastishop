@@ -1,6 +1,9 @@
 <?php 
 // dump($offeredQuantity);
-// dump($packDataSet);
+// dump($productData);
+// dump(!empty($packDataSet));
+// dump(isset($productData['id']));
+// dump(!empty($packDataSet) && isset($productData['id']));
 ?>
 <style>
     .productInfoModal-flex-container {
@@ -60,6 +63,6 @@
     <?php endif; ?>
 <?php else: ?>
 <script>
-    location.reload();
+    // location.reload();
 </script>
 <?php endif; ?>

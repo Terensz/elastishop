@@ -193,6 +193,7 @@ class PackDataProvider extends Service
         }
 
         if ($inactiveItemFound) {
+            // dump('alma');exit;
             PHPHelper::redirect($_SERVER['REQUEST_URI'], 'PackDataProvider/assembleDataSet()');
         }
 

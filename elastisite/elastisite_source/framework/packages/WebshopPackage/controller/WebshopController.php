@@ -181,6 +181,7 @@ class WebshopController extends PageController
         // dump(WebshopService::getSetting('WebshopPackage_webshopIsActive'));exit;
 
         if (!WebshopService::getSetting('WebshopPackage_webshopIsActive')) {
+            // dump('alma');exit;
             PHPHelper::redirect('/webshop/inactive', 'WebshopController/generalAction()');
         }
 

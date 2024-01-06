@@ -108,12 +108,13 @@ var Webshop = {
             'newQuantity': $('#WebshopPackage_SetCartItemQuantity_newQuantity').val(),
             'submitted': true
         };
-        // console.log('setCartItemQuantitySubmit data:');
-        // console.log(data);
         if (closeModal) {
             $('#editorModal').modal('hide');
         }
         Webshop.callAjax('setCartItemQuantitySubmit', '/webshop/setCartItemQuantity', data, (closeModal ? 'setCartItemQuantitySubmitCallback' : 'setProductDetailsCartItemQuantitySubmitCallback'));
+        // if (productId) {
+        //     Webshop.showProductDetailsModalInit(event, productId);
+        // }
     },
     /*
     It's called by the product info modal
@@ -123,6 +124,11 @@ var Webshop = {
         let responseData = response.renderedSections.sectionsResponse['SetCartItemQuantityModal']['data'];
         Structure.throwToast(responseData.toastTitle, responseData.toastBody);
         Structure.call(window.location.href, false, true, false);
+        console.log('responseData:');
+        console.log(responseData);
+        if (responseData.productId) {
+            Webshop.showProductDetailsModalInit(null, responseData.productId);
+        }
     },
     /*
     It's called by the standalone quantity modal
@@ -151,10 +157,7 @@ var Webshop = {
         $('#editorModalBody').html(response.renderedSections.sectionsResponse['ProductDetailsModal']['view']);
         let responseData = response.renderedSections.sectionsResponse['ProductDetailsModal']['data'];
         $('#editorModalLabel').html(responseData.modalLabel);
-        // let responseData = response.renderedSections.sectionsResponse['ProductDetailsModal']['data'];
-        // $('#editorModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ");");
         $('#editorModal').modal('show');
-        // Structure.call(window.location.href);
     },
     search: function(event) {
         if (event) {
@@ -211,8 +214,6 @@ var Webshop = {
         $('#editorModalBody').html(response.renderedSections.sectionsResponse['EditOrganizationModal']['view']);
         let responseData = response.renderedSections.sectionsResponse['EditOrganizationModal']['data'];
         $('#editorModalLabel').html(responseData.modalLabel);
-        // let responseData = response.renderedSections.sectionsResponse['ProductDetailsModal']['data'];
-        // $('#editorModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ");");
         $('#editorModal').modal('show');
     },
     editOrganizationSubmit: function(event, id) {
@@ -280,8 +281,6 @@ var Webshop = {
         let responseData = response.renderedSections.sectionsResponse['EditAddressModal']['data'];
         console.log(responseData);
         $('#editorModalLabel').html(responseData.modalLabel);
-        // let responseData = response.renderedSections.sectionsResponse['ProductDetailsModal']['data'];
-        // $('#editorModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ");");
         $('#editorModal').modal('show');
     },
     editAddressSubmit: function(event, id) {

@@ -48,6 +48,7 @@ $cartItemCounter = 0;
      * Notice that we use actual price wherever we can. But we only store offerId at the activePrice set.
     */
     $editIconOnclick = $specialPurpose ? null : "Webshop.setCartItemQuantityInit(event, '".$packItem['product']['activePrice']['offerId']."');";
+    $productId = $packItem['product']['id'];
     include('framework/packages/WebshopPackage/view/Common/ProductTinyCardFooter/ProductTinyCardFooter.php');
     $cartItemCounter++;
     ?>

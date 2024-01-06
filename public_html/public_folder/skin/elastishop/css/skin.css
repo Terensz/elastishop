@@ -1,5 +1,6 @@
 .card-image-container {
     height: 160px !important;
+    border: 0px !important;
 }
 .card-noBorderRadius {
     border-radius: 0;

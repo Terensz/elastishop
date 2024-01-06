@@ -20,7 +20,13 @@
             </td>
             <td class="table-m-1" style="width: 10px;"></td>
             <td class="table-m-1" style="width: auto;">
-                <div>
+            <?php
+            $productNameDivAdditionalProps = '';
+            if (isset($productId)) {
+                $productNameDivAdditionalProps = ' class="linkText" onclick="Webshop.showProductDetailsModalInit(event, \''.$productId.'\');" style="cursor: pointer;"';
+            }
+            ?>
+                <div<?php echo $productNameDivAdditionalProps; ?>>
                     <?php echo $productName; ?> (<b><?php echo $quantity; ?></b>)
                 </div>
                 <div>

@@ -41,8 +41,8 @@
             <?php endif; ?>
             </div>
         </div>
-        <?php if (!empty($productData['mainProductImageLink'])): ?>
-        <div class="card-image-container m-0 p-0">
+        <?php if (!empty($productData['mainProductImageLink']) && isset($productImageOnClickDetails) && $productImageOnClickDetails == true): ?>
+        <div class="card-image-container m-0 p-0" onclick="Webshop.showProductDetailsModalInit(event, '<?php echo $productData['id']; ?>');" style="cursor: pointer;">
             <img class="card-image" src="<?php echo $productData['mainProductImageLink']; ?>">
         </div>
         <?php else: ?>

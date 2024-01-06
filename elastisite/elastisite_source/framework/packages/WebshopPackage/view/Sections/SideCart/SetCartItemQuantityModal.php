@@ -10,6 +10,8 @@
     </h4>
 </div>
 
+    <?php if (empty($productData['specialPurpose'])): ?>
+
 <!-- <form name="WebshopPackage_SetCartItemQuantity_form">
     <div class="mb-3">
         <label for="WebshopPackage_SetCartItemQuantity_newQuantity" class="form-label"><?php echo trans('quantity'); ?></label>
@@ -82,4 +84,5 @@ $(document).ready(function() {
     });
 });
 </script>
+    <?php endif; ?>
 <?php endif; ?>

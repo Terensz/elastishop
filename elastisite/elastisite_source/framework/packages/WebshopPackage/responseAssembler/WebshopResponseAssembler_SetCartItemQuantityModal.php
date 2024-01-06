@@ -109,7 +109,8 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
                 'addedToCart' => $addedToCart ? $addedToCart->getId() : null,
                 'toastTitle' => trans('system.message'),
                 'toastBody' => trans('cart.updated'),
-                'offerId' => $offerId
+                'offerId' => $offerId,
+                'productId' => (isset($productData) && $productData && isset($productData['id']) && $productData['id']) ? $productData['id'] : null
             ]
         ];
 
