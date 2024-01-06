@@ -59,9 +59,21 @@ linkText
 /*
 Card colors
 */
+.productCard:hover {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+.productTinyCard:hover {
+    background-color: #fbfbfb;
+    /* box-shadow: inset rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, inset rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; */
+    /* box-shadow: inset rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, inset rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, inset rgba(255, 255, 255, 0.08) 0px 1px 0px; */
+    /* box-shadow: inset rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+    box-shadow: inset rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
 .card-highlighted {
-    box-shadow: 0 0 10px -1px rgba(52, 104, 141, 0.5) !important;
-    border: 1px solid #709ab9;
+    /* box-shadow: 0 0 10px -1px rgba(52, 104, 141, 0.5) !important; */
+    /* box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; */
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset !important;
+    /* border: 1px solid #709ab9; */
 }
 .card-inactive {
     box-shadow: 0 0 10px -1px #502e2e !important;
@@ -132,4 +144,24 @@ Card colors
 
 .card-header-sideMenu {
     background-color: rgba(0, 0, 0, 0.03);
+}
+
+.btn-primary {
+    background-color: #438aa7 !important;
+    border-color: #38748c !important;
+}
+  
+.btn-primary:hover {
+    background-color: #2e6a82 !important;
+    border-color: #38748c !important;
+}
+
+.page-item.active .page-link {
+    background-color: #438aa7 !important;
+    border-color: #38748c !important;
+}
+
+.page-item.active .page-link:hover {
+    background-color: #2e6a82 !important;
+    border-color: #38748c !important;
 }

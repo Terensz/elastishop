@@ -31,7 +31,7 @@
 ?>
 
 <div class="col">
-    <div class="card<?php if ($cartItemData) { echo ' card-highlighted'; } ?>"<?php if (isset($maxWidthPixels)) { echo ' style="max-width: '.$maxWidthPixels.'px;"'; } ?>>
+    <div class="productCard card<?php if ($cartItemData) { echo ' card-highlighted'; } ?>"<?php if (isset($maxWidthPixels)) { echo ' style="max-width: '.$maxWidthPixels.'px;"'; } ?>>
         <div class="card-header p-2 d-flex justify-content-between align-items-center">
             <div class="card-header-textContainer ellipsis-container" style="width: 100%;">
             <?php if ($cartItemData): ?>

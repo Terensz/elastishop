@@ -10,7 +10,7 @@
 
 ?>
 <!-- Common/ProductTinyCardFooter -->
-<div class="card-footer">
+<div class="card-footer productTinyCard">
     <table style="width: 100%;">
         <tr>
             <td class="table-m-1" style="text-align: right; width: 66px;">
