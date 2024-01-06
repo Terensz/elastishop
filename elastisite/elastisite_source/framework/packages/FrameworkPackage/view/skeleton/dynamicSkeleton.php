@@ -247,14 +247,14 @@ foreach ($container->getSystemTranslations() as $systemTranslationKey => $system
 		<div id="toast-body" class="toast-body"></div>
 	</div>
 
-	<div style="position: absolute; top: 20px; left: 20px;">
+	<!-- <div style="position: absolute; top: 20px; left: 20px;">
 		<div style="padding-bottom: 4px;" onclick="LocaleHandler.switchInit(event, 'en');">
 			<image src="/public_folder/icon/EnglishFlag.svg" style="width: 50px;">
 		</div>
 		<div style="padding-bottom: 4px;" onclick="LocaleHandler.switchInit(event, 'hu');">
 			<image src="/public_folder/icon/HungarianFlag.svg" style="width: 50px;">
 		</div>
-	</div>
+	</div> -->
 
 	<!-- /EditorModal -->
 
