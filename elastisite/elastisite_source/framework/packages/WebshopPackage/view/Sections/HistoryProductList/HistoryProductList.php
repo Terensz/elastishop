@@ -5,14 +5,9 @@ use framework\component\helper\StringHelper;
 ?>
 <?php if (count($last10) > 0): ?>
 <div class="card">
-    <!-- <div class="card-header p-2 d-flex justify-content-between align-items-center">
-        <div class="card-header-textContainer ellipsis-container" style="width: 100%;">
-            <h6 class="mb-0 ellipsis-text">Utoljára megnézett termékek</h6>
-        </div>
-    </div> -->
     <div class="card-header d-flex justify-content-between align-items-center">
         <div class="card-header-textContainer">
-            <h6 class="mb-0">Utoljára megnézett termékek</h6>
+            <h6 class="mb-0"><?php echo trans('last.viewed.products'); ?></h6>
         </div>
     </div>
     <div class="card-footer">

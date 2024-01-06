@@ -40,23 +40,23 @@ class ProjectWidgetController extends WidgetController
     /**
     * Route: [name: elastisite_ESMenuWidget, paramChain: /elastisite/ESMenuWidget]
     */
-    public function beekeeperStoryWidgetAction()
-    {
-        $viewPath = 'framework/packages/ElastiSitePackage/view/widget/BeekeeperStoryWidget/widget.php';
+    // public function beekeeperStoryWidgetAction()
+    // {
+    //     $viewPath = 'framework/packages/ElastiSitePackage/view/widget/BeekeeperStoryWidget/widget.php';
 
-        $response = [
-            'view' => $this->renderWidget('BeekeeperStoryWidget', $viewPath, [
-                // 'container' => $this->getContainer(),
-                'documentTitle' => '',
-                'message' => ''
-            ]),
-            'data' => []
-        ];
+    //     $response = [
+    //         'view' => $this->renderWidget('BeekeeperStoryWidget', $viewPath, [
+    //             // 'container' => $this->getContainer(),
+    //             'documentTitle' => '',
+    //             'message' => ''
+    //         ]),
+    //         'data' => []
+    //     ];
 
-        // dump($response);exit;
+    //     // dump($response);exit;
 
-        return $this->widgetResponse($response);
-    }
+    //     return $this->widgetResponse($response);
+    // }
 
     /**
     * Route: [name: elastisite_ESMenuWidget, paramChain: /elastisite/ESMenuWidget]

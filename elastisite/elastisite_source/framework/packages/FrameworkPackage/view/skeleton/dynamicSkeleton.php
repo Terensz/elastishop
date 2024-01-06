@@ -247,6 +247,15 @@ foreach ($container->getSystemTranslations() as $systemTranslationKey => $system
 		<div id="toast-body" class="toast-body"></div>
 	</div>
 
+	<div style="position: absolute; top: 20px; left: 20px;">
+		<div style="padding-bottom: 4px;" onclick="LocaleHandler.switchInit(event, 'en');">
+			<image src="/public_folder/icon/EnglishFlag.svg" style="width: 50px;">
+		</div>
+		<div style="padding-bottom: 4px;" onclick="LocaleHandler.switchInit(event, 'hu');">
+			<image src="/public_folder/icon/HungarianFlag.svg" style="width: 50px;">
+		</div>
+	</div>
+
 	<!-- /EditorModal -->
 
 	<script src="/public_folder/plugin/Dashkit/assets/js/vendor-all.js"></script>
@@ -258,6 +267,48 @@ foreach ($container->getSystemTranslations() as $systemTranslationKey => $system
 </body>
 <script src="/dynamicSkeleton/scripts/afterBody?v=<?php echo rand(1000000, 999999999); ?>"></script>
 <script>
+var LocaleHandler = {
+	processResponse: function(response, calledBy, onSuccessCallback) {
+        // console.log('LocaleHandler.processResponses()');
+		// console.log(onSuccessCallback);
+        // console.log(response);
+        if (typeof this[onSuccessCallback] === 'function') {
+            this[onSuccessCallback](response);
+        }
+        LoadingHandler.stop();
+    },
+	callAjax: function(calledBy, ajaxUrl, additionalData, onSuccessCallback) {
+        let baseData = {};
+        let ajaxData = $.extend({}, baseData, additionalData);
+        LoadingHandler.start();
+        $.ajax({
+            'type' : 'POST',
+            'url' : ajaxUrl,
+            'data': ajaxData,
+            'async': true,
+            'success': function(response) {
+                ElastiTools.checkResponse(response);
+                LocaleHandler.processResponse(response, calledBy, onSuccessCallback);
+            },
+            'error': function(request, error) {
+                console.log(request);
+                console.log(" Can't do because: " + error);
+            },
+        });
+	},
+	switchInit: function(event, locale) {
+		if (event) {
+            event.preventDefault();
+        }
+        LocaleHandler.callAjax('switchInit', '/localeHandler/switch/' + locale, {
+        }, 'switchCallback');
+	},
+	switchCallback: function(response) {
+		dump('switchCallback');
+		location.reload();
+	}
+};
+
 
 function checkInternetConnection() {
 	var online = navigator.onLine;

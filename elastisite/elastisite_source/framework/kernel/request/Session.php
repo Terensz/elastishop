@@ -261,9 +261,22 @@ class Session extends Kernel
         // // dump($this->getContainer()->getRouting()->getPageRoute()->getName());exit;
         // $routeName = $this->getContainer()->getRouting()->getPageRoute()->getName();
         // $routeNameParts = explode('_', $routeName);
-        $locale = $this->getContainer()->getUrl()->getMainRouteRequest() == 'admin' ? $this->getContainer()->getConfig()->getGlobal('website.adminLocale') : $this->getContainer()->getDefaultLocale();
+        // $locale = $this->getContainer()->getUrl()->getMainRouteRequest() == 'admin' ? $this->getContainer()->getConfig()->getGlobal('website.adminLocale') : $this->getContainer()->getDefaultLocale();
+
+        if ($this->getContainer()->getUrl()->getMainRouteRequest() == 'admin') {
+            $this->set('locale', $this->getContainer()->getConfig()->getGlobal('website.adminLocale'));
+        } else {
+            if (!$this->get('public_locale')) {
+                $this->set('public_locale', $this->getContainer()->getDefaultLocale());
+            }
+            $this->set('locale', $this->get('public_locale'));
+        }
+
+        // dump($this->getAll());
+        // trans('there.could.be.your.shops.logo');
+        // dump('alma');exit;
+
         // dump($locale);exit;
-        $this->set('locale', $locale);
         // if (!$this->get('locale')) {
         //     $this->set('locale', 'en');
         // }
