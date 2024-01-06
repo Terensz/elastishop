@@ -17,7 +17,7 @@ $dataGridId = 'Alma';
                 // $disabledString = '';
             ?>
             <li class="page-item<?php echo $disabledString; ?>">
-                <a class="page-link" href="<?php echo $pagerData['prevPageLink']; ?>" onclick="" aria-label="<?php echo trans('previous'); ?>">
+                <a class="page-link ajaxCallerLink" href="<?php echo $pagerData['prevPageLink']; ?>" onclick="" aria-label="<?php echo trans('previous'); ?>">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -37,7 +37,7 @@ $dataGridId = 'Alma';
                 // $disabledString = '';
             ?>
             <li class="page-item<?php echo $disabledString; ?>">
-                <a class="page-link" href="<?php echo $pagerData['nextPageLink']; ?>" onclick="" aria-label="Next">
+                <a class="page-link ajaxCallerLink" href="<?php echo $pagerData['nextPageLink']; ?>" onclick="" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
