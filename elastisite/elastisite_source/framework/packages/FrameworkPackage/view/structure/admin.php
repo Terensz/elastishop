@@ -77,7 +77,7 @@ $widthStyleStr = (empty($sheetWidthPercent) ? '' : 'width: '.$sheetWidthPercent.
                     </nav>
                 </div>
 
-                <div class="pc-container">
+                <div class="mainContent-container pc-container">
                     <div class="pcoded-content">
                         <div class="widgetWrapper-off">
                             <div class="widgetContainer" id="widgetContainer-mainContent">{{ mainContent }}</div>

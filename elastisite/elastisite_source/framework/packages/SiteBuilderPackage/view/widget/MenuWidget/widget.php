@@ -27,6 +27,12 @@ $actualRouteName = App::getContainer()->getRouting()->getPageRoute()->getName();
 // dump($actualRouteName);
 ?>
 <style>
+.sticky-content {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  width: 100%;
+}
 .banner-and-navbar {
     display: flex;
     justify-content: space-between;
