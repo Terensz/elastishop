@@ -24,7 +24,7 @@
         <div class="card">
             <div class="bg-primary text-white card-header d-flex justify-content-between align-items-center">
                 <div class="card-header-textContainer">
-                    <h6 class="mb-0 text-white"><?php echo trans('survey') . ': ' . $survey->getTitle(); ?></h6>
+                    <h6 class="mb-0 text-white"><?php echo $survey->getTitle(); ?></h6>
                 </div>
             </div>
             <div class="card-body">

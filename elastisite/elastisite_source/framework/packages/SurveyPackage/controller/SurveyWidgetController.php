@@ -250,7 +250,7 @@ class SurveyWidgetController extends WidgetController
             ]),
             'data' => [
                 'formIsValid' => $form->isValid(),
-                'label' => $id ? $form->getEntity()->getTitle().'' : trans('new.survey'),
+                'label' => $id ? trans('survey'). ': '.$form->getEntity()->getTitle().'' : trans('new.survey'),
                 'editedId' => $id,
                 'newSaved' => !$id && $form->getEntity()->getId() ? true : false,
                 'entityId' => $form->getEntity()->getId()
