@@ -39,7 +39,7 @@
                         Javascript, jQuery
                     </div>
                     <div class="card-footer">
-                        SEO, sütikezelés, GDPR
+                        SEO, sütikezelés, GDPR, Git, SVN
                     </div>
                     <div class="card-footer">
                         Linux szerver, MacOS fejlesztőkörnyezet
@@ -100,7 +100,7 @@
                 Kezdő Swift-fejlesztő vagyok, pár hónapot foglalkoztam iOS alkalmazás-fejlesztéssel.
             </div>
             <div class="card-footer">
-                Ismerem és rendszeresen használom a GiT-et, és használtam már az SVN-t is.
+                Ismerem és rendszeresen használom a Git-et, és használtam már az SVN-t is.
             </div>
         </div>
 
