@@ -141,10 +141,10 @@
                 <b>Releváns szakmai tapasztalataim</b>
             </div>
             <div class="card-footer">
-            <b>2013 - 2017</b>: TMX Kft. Fejlesztéstámogató voltam 2 évig. Később én voltam az egyik legjobb SQL-es, én írtam az összes gyorsjavító lekérdezéseket a szoftverhibák által okozott adatbázis-hibák rendbehozásához, és az összetettebb kimutatásokat. Rendszeresen írtam migrációs lekérdezéseket a fejlesztők kérésére.
+            <b>2013 - 2017: TMX Kft.</b> Fejlesztéstámogató voltam 2 évig. Később én voltam az egyik legjobb SQL-es, én írtam az összes gyorsjavító lekérdezéseket a szoftverhibák által okozott adatbázis-hibák rendbehozásához, és az összetettebb kimutatásokat. Rendszeresen írtam migrációs lekérdezéseket a fejlesztők kérésére.
             </div>
             <div class="card-footer">
-            <b>2017 - 2021</b>: EJI Junior Symfony-fejlesztőként kerültem ide, és az itt töltött 3,5 év alatt tanultam meg az objektumorientált szemléletet és a keretrendszer használatát. Tanítómesterem Krucsó Attila vezetőfejlesztő volt.
+            <b>2017 - 2021: Előadóművészi Jogvédő Iroda Egyesület (EJI)</b> Junior Symfony-fejlesztőként kerültem ide, és az itt töltött 3,5 év alatt tanultam meg az objektumorientált szemléletet és a keretrendszer használatát. Tanítómesterem Krucsó Attila vezetőfejlesztő volt.
             </div>
             <div class="card-footer">
             <b>2018 - 2023</b>: <span style="font: 18px Neuropol-Regular; color: #000;">Elasti</span><span style="font: 18px Neuropol-Regular; color: #337389;">Site</span> project (saját fejlesztésű framework). Amikor elkezdtem, még nem voltak olyan keretrendszerek, 
