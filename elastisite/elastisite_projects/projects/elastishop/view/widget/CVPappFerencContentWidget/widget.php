@@ -147,7 +147,7 @@
             <b>2017 - 2021: Előadóművészi Jogvédő Iroda Egyesület (EJI)</b> - Junior Symfony-fejlesztőként kerültem ide, és az itt töltött 3,5 év alatt tanultam meg az objektumorientált szemléletet és a keretrendszer használatát. Tanítómesterem Krucsó Attila vezetőfejlesztő volt.
             </div>
             <div class="card-footer">
-            <b>2018 - 2023</b>: <span style="font: 18px Neuropol-Regular; color: #000;">Elasti</span><span style="font: 18px Neuropol-Regular; color: #337389;">Site</span> project (saját fejlesztésű framework). Amikor elkezdtem, még nem voltak olyan keretrendszerek, 
+            <b>2018 - 2023: <span style="font: 18px Neuropol-Regular; color: #000;">Elasti</span><span style="font: 18px Neuropol-Regular; color: #337389;">Site</span> project (saját fejlesztésű framework)</b> - Amikor elkezdtem, még nem voltak olyan keretrendszerek, 
                 amelyek támogatták a dinamikus tartalomfrissítést, vagy ha igen pl. az Angular és React korai verziói, az nem tett jót a Google helyezésnek, én pedig ezt megoldottam az ElastiSite-ban.
                 Mivel időközben ezt a kérdést már megoldották a keretrendszerekben (pl. a Laravel-hez készült Livewire), így a saját keretrendszerem továbbfejlesztését nem folytatom.
             </div>
