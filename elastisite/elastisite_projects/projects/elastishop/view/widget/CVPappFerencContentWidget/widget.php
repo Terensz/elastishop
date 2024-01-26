@@ -141,7 +141,7 @@
                 <b>Releváns szakmai tapasztalataim</b>
             </div>
             <div class="card-footer">
-            <b>2013 - 2017: TMX Kft.</b> - Fejlesztéstámogató voltam 2 évig. Később én voltam az egyik legjobb SQL-es, én írtam az összes gyorsjavító lekérdezéseket a szoftverhibák által okozott adatbázis-hibák rendbehozásához, és az összetettebb kimutatásokat. Rendszeresen írtam migrációs lekérdezéseket a fejlesztők kérésére.
+            <b>2013 - 2017: TMX Kft.</b> - Fejlesztéstámogató voltam 2 évig. Az én feladatom volt az összes gyorsjavító lekérdezés megírása a szoftverhibák által okozott adatbázis-hibák kijavításához, és az összetettebb kimutatások elkészítése. Rendszeresen írtam migrációs lekérdezéseket a fejlesztők kérésére.
             </div>
             <div class="card-footer">
             <b>2017 - 2021: Előadóművészi Jogvédő Iroda Egyesület (EJI)</b> - Junior Symfony-fejlesztőként kerültem ide, és az itt töltött 3,5 év alatt tanultam meg az objektumorientált szemléletet és a keretrendszer használatát. Tanítómesterem Krucsó Attila vezetőfejlesztő volt.
