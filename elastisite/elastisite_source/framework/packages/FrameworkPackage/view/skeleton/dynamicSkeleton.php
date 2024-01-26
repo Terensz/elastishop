@@ -239,7 +239,6 @@ foreach ($container->getSystemTranslations() as $systemTranslationKey => $system
 
 	<div id="toast" class="toast" role="alert" aria-live="off" aria-atomic="true" style="position: fixed; top: 0px; left: 0px; z-index: 30000;" data-bs-autohide="true">
 		<div class="toast-header">
-			<!-- <img src="..." class="rounded me-2" alt="..."> -->
 			<strong class="me-auto"><span id="toast-title"></span></strong>
 			<small class="toast-created"></small>
 			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
