@@ -11,7 +11,7 @@ class CvRouteMap
                 'paramChains' => array(
                     'cv/PappFerenc' => 'default'
                 ),
-                'controller' => 'projects/ElastiShop/controller/BasicController',
+                'controller' => 'projects/elastishop/controller/BasicController',
                 'action' => 'standardAction',
                 'permission' => 'viewGuestContent',
                 'inMenu' => 'main',
@@ -30,7 +30,7 @@ class CvRouteMap
                 'paramChains' => array(
                     'cv/PappFerencContentWidget' => 'default'
                 ),
-                'controller' => 'projects/ElastiShop/controller/CvWidgetController',
+                'controller' => 'projects/elastishop/controller/CvWidgetController',
                 'action' => 'cVPappFerencContentWidgetAction',
                 'permission' => 'viewGuestContent'
             ),
@@ -39,7 +39,7 @@ class CvRouteMap
                 'paramChains' => array(
                     'cv/PappFerencMenuWidget' => 'default'
                 ),
-                'controller' => 'projects/ElastiShop/controller/CvWidgetController',
+                'controller' => 'projects/elastishop/controller/CvWidgetController',
                 'action' => 'cVPappFerencMenuWidgetAction',
                 'permission' => 'viewGuestContent'
             ),
