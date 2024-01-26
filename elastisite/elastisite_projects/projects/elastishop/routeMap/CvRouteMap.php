@@ -1,5 +1,5 @@
 <?php
-namespace projects\ElastiShop\routeMap;
+namespace projects\elastishop\routeMap;
 
 class CvRouteMap
 {

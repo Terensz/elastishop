@@ -129,9 +129,7 @@ class App
     {
         // var_dump('App::getWebProject()!!!');
         // var_dump($debug);
-        return 'elastishop';
-
-
+        // return 'elastishop';
         if (!self::$webProject) {
             dump(App::get());
             throw new \Exception('WebProject is null');
@@ -151,8 +149,7 @@ class App
 
     public static function getWebsite() : string
     {
-        return 'elastishop';
-
+        // return 'elastishop';
         // dump('App::getWebsite()!!!');
         if (!self::$website) {
             dump(App::get());
