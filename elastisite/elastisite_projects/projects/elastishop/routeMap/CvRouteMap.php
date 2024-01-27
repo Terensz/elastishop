@@ -10,6 +10,7 @@ class CvRouteMap
                 'name' => 'cv_PappFerenc',
                 'paramChains' => array(
                     'cv/PappFerenc' => 'default',
+                    'cv/hu/PappFerenc' => 'hu',
                     'cv/en/PappFerenc' => 'en'
                 ),
                 'controller' => 'projects/elastishop/controller/BasicController',

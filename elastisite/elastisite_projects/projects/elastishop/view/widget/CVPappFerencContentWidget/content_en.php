@@ -49,16 +49,16 @@
                 <b>Web development abilities</b>
             </div>
             <div class="card-footer">
-                I'm learning web development since 2004, I know many old and many new technologies.
+                I have been learning web development since 2004, I know many old and new technologies.
             </div>
             <div class="card-footer">
-                I've already worked with Laravel, Yii and Symfony, so I can understand any further OOP frameworks in few hours.
+                I have already worked with Laravel, Yii and Symfony, so I usually have a basic understaanding of any other OOP frameworks in a few hours.
             </div>
             <div class="card-footer">
-                I've made many Javascript / jQuery helpers
+                I have made many Javascript / jQuery helpers
             </div>
             <div class="card-footer">
-                I'm using frequently Laravel Livewire
+                I frequently use Laravel Livewire
             </div>
         </div>
 
@@ -67,37 +67,28 @@
                 <b>Other IT abilities</b>
             </div>
             <div class="card-footer">
-                I have the knowledge of the GDPR, cookie handling and SEO.
+                I have knowledge of GDPR, cookie management and SEO.
             </div>
             <div class="card-footer">
                 I was a development supporter for several years, I can handle long and complex SQL queries.
             </div>
             <div class="card-footer">
-                I have medium level knowledge of managing Linux servers.
+                I have a medium level knowledge of managing Linux servers.
             </div>
             <div class="card-footer">
-                I'm a beginner developer of the Swift language, I spend several months to learn how to make iOS applications.
+                I have a novice knowledge in the language of Swift, I have already spent several months to learn how to make iOS applications.
             </div>
             <div class="card-footer">
-                I'm using Git frequently, also I know SVN.
+                I use Git frequently. Also I have knowledge about SVN.
             </div>
         </div>
-
-        <div class="card">
-            <div class="card-header">
-                <b>General abilities</b>
-            </div>
-            <div class="card-footer">
-                I have exceptional spelling and wording in Hungarian.
-            </div>
-        </div>
-
+        
         <div class="card">
             <div class="card-header">
                 <b>Achievements</b>
             </div>
             <div class="card-footer">
-                I have made an own framework in 5 years.
+                I made my own framework in 5 years.
             </div>
             <div class="card-footer">
                 I have made a webshop engine which is 100% GDPR compatible.
@@ -120,10 +111,11 @@
             <div class="card-footer">
             <b>2013 - 2017: TMX LTD.</b> - I was a development supporter for 2 years.<br>
             I was responsible for writing all the hotfix queries to fix database errors caused by software bugs and creating complex summary statements.<br>
-            I helped to developers to write them the data migration scrips.
+            I helped developers writing data migration scrips.
             </div>
             <div class="card-footer">
-            <b>2017 - 2021: Association for the Legal Protection of Performers (EJI)</b> - At first I was a junior Symfony developer. While spending 3.5 years here I learnt object oriented programming and working with frameworks. My techer was Attila Krucsó senior developer.
+            <b>2017 - 2021: Association for the Legal Protection of Performers (EJI)</b> - At first I was a junior Symfony developer. While spending 3.5 years here I learnt object oriented programming and working with frameworks. 
+                My teacher was Attila Krucsó senior developer.
             </div>
             <div class="card-footer">
             <b>2018 - 2023: <span style="font: 18px Neuropol-Regular; color: #000;">Elasti</span><span style="font: 18px Neuropol-Regular; color: #337389;">Site</span> project (my own framework)</b> - 
