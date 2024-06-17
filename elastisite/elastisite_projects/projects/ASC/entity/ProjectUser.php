@@ -2,10 +2,12 @@
 
 namespace projects\ASC\entity;
 
+use framework\component\parent\DbEntity;
 use framework\component\parent\ProjectUserBase;
 use framework\packages\UserPackage\entity\UserAccount;
 
-class ProjectUser extends ProjectUserBase
+// class ProjectUser extends ProjectUserBase
+class ProjectUser extends DbEntity
 {
 	const RANK_DATA = [
 		'Rookie' => [

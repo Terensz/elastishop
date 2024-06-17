@@ -12,7 +12,7 @@ use framework\packages\FormPackage\service\FormBuilder;
 use framework\packages\UserPackage\entity\Address;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 use framework\packages\WebshopPackage\service\WebshopRequestService;
 use framework\packages\WebshopPackage\service\WebshopService;
 use framework\packages\WebshopPackage\service\WebshopTemporaryAccountService;

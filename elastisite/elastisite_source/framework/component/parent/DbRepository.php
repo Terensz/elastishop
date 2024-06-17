@@ -430,6 +430,9 @@ class DbRepository extends Repository
         if ($filterConditions && is_array($filterConditions)) {
             $conditionCounter = 0;
             foreach ($filterConditions as $filterCondition) {
+                if (!isset($filterCondition['value'])) {
+                    $filterCondition['value'] = null;
+                }
                 $findProp = $filterCondition['key'];
                 $findValue = $filterCondition['value'];
                 $operator = isset($filterCondition['operator']) ? $filterCondition['operator'] : '=';

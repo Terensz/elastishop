@@ -55,6 +55,7 @@ abstract class DbEntity extends Kernel
 
     public function getIdValue()
     {
+        // dump($this->getIdFieldName());
         if (!$this->getIdFieldName()) {
             dump($this); exit;
         }

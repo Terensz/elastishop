@@ -7,6 +7,8 @@ class Translation_hu
     public function getTranslation()
     {
         return array(
+            'show' => 'Mutasd',
+            'hide' => 'Rejtsd el',
             'information' => 'Információ',
             'meaning.of.words' => 'Szavak, kifejezések jelentése',
             'add' => 'Hozzáad',
@@ -21,7 +23,7 @@ class Translation_hu
             'to.bottom' => 'Lentre',
             'none' => 'Nincs',
             'submit' => 'Elküldés',
-            'slug' => 'Slug (ékezet nélküli cím)',
+            'slug' => 'Keresőbarát azonosító (maradhat az alapértéken)',
             'address' => 'Cím',
             'download' => 'Letöltés',
             'e.g' => 'Pl.',

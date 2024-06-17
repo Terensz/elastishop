@@ -16,9 +16,9 @@ $formView->add('text')->setPropertyReference('password')->setLabel(trans('passwo
 $formView->add('text')->setPropertyReference('email')->setLabel(trans('email'));
 $formView->add('text')->setPropertyReference('mobile')->setLabel(trans('mobile'));
 $formView->add('select')->setPropertyReference('isTester')->setLabel(trans('is.tester'))
-    ->addOption('null', 'please.choose')
-    ->addOption('1', 'yes')
+    // ->addOption('null', 'please.choose')
     ->addOption('0', 'no')
+    ->addOption('1', 'yes')
     ;
 $formView->add('select')->setPropertyReference('status')->setLabel(trans('status'))
     ->addOption('1', 'active')

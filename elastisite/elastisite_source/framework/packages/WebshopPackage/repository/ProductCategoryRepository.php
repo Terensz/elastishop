@@ -47,7 +47,7 @@ class ProductCategoryRepository extends DbRepository
             LEFT JOIN product p ON p.product_category_id = pc.id 
             LEFT JOIN product_category pc_sub ON pc_sub.product_category_id = pc.id 
             LEFT JOIN product p_sub ON p_sub.product_category_id = pc_sub.id 
-        WHERE pc.status = :status AND pc.is_independent " . ($isIndependent === 1 ? '= 1' : '<> 1') . " 
+        WHERE pc.status = :status AND " . ($isIndependent === 1 ? 'pc.is_independent = 1' : '(pc.is_independent IS NULL OR pc.is_independent <> 1)') . " 
         GROUP BY pc.id
         ";
         // dump($isIndependent);

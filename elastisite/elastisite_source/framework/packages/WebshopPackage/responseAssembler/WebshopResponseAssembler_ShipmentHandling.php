@@ -9,6 +9,7 @@ use framework\packages\LegalPackage\entity\VisitorConsentAcceptance;
 use framework\packages\PaymentPackage\service\OnlinePaymentService;
 use framework\packages\ToolPackage\service\TextAssembler;
 use framework\packages\UserPackage\entity\User;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\entity\Shipment;
 use framework\packages\WebshopPackage\repository\ShipmentRepository;
 use framework\packages\WebshopPackage\service\ShipmentService;
@@ -26,6 +27,7 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
         // dump(trans('next.step'));
         // dump(trans('please.select.payment.method'));exit;
         $viewParams = self::getShipmentHandlingParams();
+        // dump($viewParams);exit;
 
         /**
          * Payment
@@ -35,16 +37,17 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
          * We will also check the payment status.
         */
         $shipmentClosed = false;
-        if ($viewParams['shipmentDataSet'] && $viewParams['errors']['Summary']['errorsCount'] == 0) {
+        // dump($viewParams);exit;
+        if ($viewParams['packDataCollection'] && $viewParams['errors']['Summary']['errorsCount'] == 0) {
 
             /**
              * We want to be sure. But it's already 99,99%.
             */
-            if (isset($viewParams['shipmentDataSet'][0])) {
+            if (isset($viewParams['packDataCollection'][0])) {
                 /**
                  * We need the entire service, because in a case we want to check and refresh status.
                 */
-                $paymentService = new OnlinePaymentService('Barion', $viewParams['shipmentDataSet'][0]);
+                $paymentService = new OnlinePaymentService('Barion', $viewParams['packDataCollection'][0]);
                 /**
                  * We also extract data, it goes to the view.
                 */
@@ -53,20 +56,20 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
                 /**
                  * Let's check the payment for this shipment.
                 */
-                $paymentData = $viewParams['shipmentDataSet'][0]['shipment']['payments'];
+                $paymentData = $viewParams['packDataCollection'][0]['pack']['payments'];
                 if ($paymentData['successful']) {
                     /**
                      * 
                     */
                 } elseif ($paymentData['active']) {
-                    $statusOld = $paymentData['active']['payment']['status'];
+                    $statusOld = $paymentData['active']['status'];
                     $paymentStatus = $paymentService->getAndSavePaymentStatus();
                     if (isset($paymentStatus['Status']) && $paymentStatus['Status'] != $statusOld) {
                         /**
                          * If meanwhile the status changed, than we should refresh the entire $viewParams.
                         */
                         $viewParams = self::getShipmentHandlingParams(true, null, true);
-                        $paymentData = $viewParams['shipmentDataSet'][0]['shipment']['payments'];
+                        $paymentData = $viewParams['packDataCollection'][0]['pack']['payments'];
                     }
                 }
 
@@ -80,7 +83,7 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
 
     
             // $paymentParams = OnlinePaymentService::getPaymentParams($shipment, 'Barion');
-            // $paymentService = new OnlinePaymentService('Barion', isset($viewParams['shipmentDataSet'][0]) ? $viewParams['shipmentDataSet'][0] : null);
+            // $paymentService = new OnlinePaymentService('Barion', isset($viewParams['packDataSet'][0]) ? $viewParams['packDataSet'][0] : null);
             // $paymentServiceData = self::extractPaymentServiceData($paymentService);
             // dump($paymentService);
             // dump($paymentServiceData);exit;
@@ -143,10 +146,25 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
         return true;
     }
 
-    public static function getPaymentServiceData($shipmentDataSet)
+    /**
+     * @var VisitorConsentAcceptance $barionThirdPartyCookieAcceptance = null
+    */
+    public static function getSzamlazzHuThirdPartyCookieAcceptance()
     {
-        // dump($shipmentDataSet);
-        $paymentService = new OnlinePaymentService('Barion', $shipmentDataSet);
+        App::getContainer()->wireService('LegalPackage/service/CookieConsentService');
+        App::getContainer()->wireService('LegalPackage/entity/VisitorConsentAcceptance');
+        $thirdPartyCookieAcceptance = CookieConsentService::findThirdPartyCookiesAcceptances(false, 'SzamlazzHu');
+        if (!$thirdPartyCookieAcceptance || ($thirdPartyCookieAcceptance && $thirdPartyCookieAcceptance->getAcceptance() == VisitorConsentAcceptance::ACCEPTANCE_REFUSED)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function getPaymentServiceData($packDataSet)
+    {
+        // dump($packDataSet);
+        $paymentService = new OnlinePaymentService('Barion', $packDataSet);
         $paymentServiceData = self::extractPaymentServiceData($paymentService);
 
         return $paymentServiceData;
@@ -175,6 +193,25 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
         $textAssembler->setDocumentType('entry');
         $textAssembler->setPackage('WebshopPackage');
         $textAssembler->setReferenceKey('BarionCookieWasRefused');
+        $textAssembler->setPlaceholdersAndValues([
+            'httpDomain' => App::getContainer()->getUrl()->getHttpDomain()
+        ]);
+        $textAssembler->create();
+        $textView = $textAssembler->getView();
+
+        return $textView;
+        // dump($textView);exit;
+    }
+
+    public static function assembleSzamlazzHuCookieRefusedText()
+    {
+        App::getContainer()->wireService('ToolPackage/service/TextAssembler');
+        $textAssembler = new TextAssembler();
+        // dump($this->getContentTextService($subscriber));
+        // $textAssembler->setContentTextService($this->getContentTextService());
+        $textAssembler->setDocumentType('entry');
+        $textAssembler->setPackage('WebshopPackage');
+        $textAssembler->setReferenceKey('SzamlazzHuCookieWasRefused');
         $textAssembler->setPlaceholdersAndValues([
             'httpDomain' => App::getContainer()->getUrl()->getHttpDomain()
         ]);
@@ -224,6 +261,14 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
                 ]
             ],
             'BarionCookieConsent' => [
+                'messages' => [
+                    'barionCookieConsentMessage' => null,
+                ],
+                'summary' => [
+                    'errorsCount' => 0,
+                ]
+            ],
+            'SzamlazzHuCookieConsent' => [
                 'messages' => [
                     'barionCookieConsentMessage' => null,
                 ],
@@ -299,17 +344,38 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
             $errors['BarionCookieConsent']['summary']['errorsCount']++;
             $errors['Summary']['errorsCount']++;
         }
+
+        /**
+         * Checking SzamlazzHu cookie consent.
+         * Without this the user cannot have the Barion pixel in their browser, which prevent them of paying for the shipment.
+        */
+        $szamlazzHuThirdPartyCookieAcceptance = WebshopResponseAssembler_ShipmentHandling::getSzamlazzHuThirdPartyCookieAcceptance();
+        // $barionCookieText = null;
+        if (!$szamlazzHuThirdPartyCookieAcceptance && $shipment) {
+            // $barionCookieText = WebshopResponseAssembler_ShipmentHandling::assembleBarionCookieRefusedText();
+            $errors['SzamlazzHuCookieConsent']['messages']['szamlazzHuCookieConsentMessage'] = WebshopResponseAssembler_ShipmentHandling::assembleSzamlazzHuCookieRefusedText();
+            $errors['SzamlazzHuCookieConsent']['summary']['errorsCount']++;
+            $errors['Summary']['errorsCount']++;
+        }
         // dump($barionCookieRefusedText);//exit;
         // dump($barionThirdPartyCookieAcceptance);exit;
 
         // dump(OnlinePaymentService::getAvailableGatewayProviders());exit;
-        $shipmentDataSet = null;
+        $packDataCollection = [];
         $selectedPaymentMethod = null;
         $paymentMethods = null;
         if ($shipment) {
             // dump($shipment);
             $collection = ShipmentRepository::getShipmentCollectionFromId($shipment->getId());
-            $shipmentDataSet = ShipmentService::assembleShipmentDataSet($collection);
+            foreach ($collection['objectCollection'] as $shipment) {
+                App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+                $packDataCollection[] = PackDataProvider::assembleDataSet($shipment);
+            }
+            // if (isset($collection['objectCollection'][0])) {
+            //     App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+            //     $shipment = $collection['objectCollection'][0];
+            //     $packDataSet = PackDataProvider::assembleDataSet($shipment);
+            // }
     
             /**
              * paymentMethod
@@ -326,17 +392,17 @@ class WebshopResponseAssembler_ShipmentHandling extends Service
             */
             $paymentMethods = OnlinePaymentService::getAvailableGatewayProviders();
     
-            // dump($shipmentDataSet);exit;
-            // dump($shipmentDataSet);exit;
+            // dump($packDataSet);exit;
+            // dump($packDataSet);exit;
             // dump($arrangedShipmentData);exit;
         }
-        // dump($shipmentDataSet);exit;
+        // dump($packDataSet);exit;
         // dump(WebshopRequestService::getBaseLink());
         // dump(WebshopRequestService::getSlugTransRef(WebshopService::TAG_WEBSHOP, App::getContainer()->getSession()->getLocale()));exit;
 
         $viewParams = [
             'webshopBaseLink' => '/'.WebshopRequestService::getBaseLink(),
-            'shipmentDataSet' => $shipmentDataSet,
+            'packDataCollection' => $packDataCollection,
             'selectedPaymentMethod' => $selectedPaymentMethod,
             'paymentMethods' => $paymentMethods,
             // 'paymentParams' => $paymentParams,

@@ -8,6 +8,7 @@ use framework\kernel\base\Container;
 use framework\kernel\utility\FileHandler;
 use framework\packages\PaymentPackage\entity\Payment;
 use framework\packages\PaymentPackage\repository\PaymentRepository;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 // use framework\packages\PaymentPackage\entity\OnlineGateway;
 use framework\packages\WebshopPackage\entity\Shipment;
 use framework\packages\WebshopPackage\repository\ShipmentRepository;
@@ -25,18 +26,23 @@ class OnlinePaymentService extends Service
 
     public $gatewayProviderName;
 
-    // public $gateway;
-    public PaymentTransaction $paymentTransaction;
+    public $paymentTransaction;
 
-    public PaymentRepository $paymentRepository;
+    public $paymentRepository;
 
-    public ?Payment $paymentEntity;
+    public $paymentEntity;
+
+    // public PaymentTransaction $paymentTransaction;
+
+    // public PaymentRepository $paymentRepository;
+
+    // public ?Payment $paymentEntity;
 
     public $communication;
 
     public $gatewayOperator;
 
-    public $shipmentDataSet;
+    public $packDataSet;
 
     public $providerApiResponse;
 
@@ -50,18 +56,23 @@ class OnlinePaymentService extends Service
      * Instance methods
     */
 
-    public function __construct(string $gatewayProviderName, array $shipmentDataSet)
+    public function __construct(string $gatewayProviderName, array $packDataSet, string $paymentCode = null)
     {
         App::getContainer()->wireService('PaymentPackage/repository/PaymentRepository');
 
-        $this->shipmentDataSet = $shipmentDataSet;
+        $this->packDataSet = $packDataSet;
+        if (isset($packDataSet[0])) {
+            dump('Nem jo!!!!!');
+            dump($packDataSet);exit;
+        }
+        // dump($packDataSet);exit;
         $this->paymentRepository = new PaymentRepository();
-        // dump($this->shipmentDataSet['shipment']['payments']);
+        // dump($this->packDataSet['pack']['payments']);
         // dump($this->paymentRepository);
-        $this->findOrCreateAndSetPayment();
+        $this->findOrCreateAndSetPayment($paymentCode);
         
         $this->gatewayProviderName = $gatewayProviderName;
-        // dump($this->shipmentDataSet);
+        // dump($this->packDataSet);
         // $this->wireService('PaymentPackage/entity/OnlineGateway');
         $this->wireService('PaymentPackage/service/PaymentTransaction');
         $this->wireService('PaymentPackage/service/parent/OnlineGatewayOperator');
@@ -73,17 +84,19 @@ class OnlinePaymentService extends Service
         // dump($this);exit;
     }
 
-    public function findOrCreateAndSetPayment()
+    public function findOrCreateAndSetPayment($paymentCode)
     {
+        // dump($this->packDataSet);exit;
         App::getContainer()->wireService('WebshopPackage/repository/ShipmentRepository');
-        $activePaymentData = $this->shipmentDataSet['shipment']['payments']['active'];
-        $activePaymentId = $activePaymentData ? $activePaymentData['payment']['id'] : null;
+        $activePaymentData = $this->packDataSet['pack']['payments']['active'];
+        $activePaymentId = $activePaymentData ? $activePaymentData['id'] : null;
 
         if (!$activePaymentId) {
             $this->paymentEntity = new Payment();
             $shipmentRepository = new ShipmentRepository();
-            $shipment = $shipmentRepository->find($this->shipmentDataSet['shipment']['id']);
+            $shipment = $shipmentRepository->find($this->packDataSet['pack']['id']);
             $this->paymentEntity->setShipment($shipment);
+            $this->paymentEntity->setPaymentCode($paymentCode);
             $this->paymentEntity->setStatus(Payment::PAYMENT_STATUS_CREATED);
         } else {
             $this->paymentEntity = $this->paymentRepository->find($activePaymentId);
@@ -95,17 +108,22 @@ class OnlinePaymentService extends Service
         $this->savePaymentEntity();
         App::getContainer()->wireService('WebshopPackage/service/ShipmentService');
         App::getContainer()->wireService('WebshopPackage/repository/ShipmentRepository');
-        $collection = ShipmentRepository::getShipmentCollectionFromId($this->shipmentDataSet['shipment']['id']);
-        $this->shipmentDataSet = ShipmentService::assembleShipmentDataSet($collection, true);
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        $collection = ShipmentRepository::getShipmentCollectionFromId($this->packDataSet['pack']['id']);
+        if (isset($collection['objectCollection'][0])) {
+            $shipment = $collection['objectCollection'][0];
+            $packDataSet = PackDataProvider::assembleDataSet($shipment);
+        }
+        $this->packDataSet = $packDataSet;
     }
 
     private function savePaymentEntity()
     {
         App::getContainer()->wireService('WebshopPackage/entity/Shipment');
         $this->paymentEntity = $this->paymentRepository->store($this->paymentEntity);
-        if (in_array($this->shipmentDataSet['shipment']['status'], Shipment::STATUS_COLLECTION_UNPAID_STATUSES) && $this->paymentEntity->getStatus() == Payment::PAYMENT_STATUS_SUCCEEDED) {
+        if (in_array($this->packDataSet['pack']['status'], Shipment::STATUS_COLLECTION_UNPAID_STATUSES) && $this->paymentEntity->getStatus() == Payment::PAYMENT_STATUS_SUCCEEDED) {
             $shipmentRepository = new ShipmentRepository();
-            $shipment = $shipmentRepository->find($this->shipmentDataSet['shipment']['id']);
+            $shipment = $shipmentRepository->find($this->packDataSet['pack']['id']);
             $shipment->setStatus(Shipment::SHIPMENT_STATUS_ORDER_PLACED);
             $shipmentRepository->store($shipment);
         }
@@ -171,7 +189,7 @@ class OnlinePaymentService extends Service
     {
         $this->setService('PaymentPackage/gatewayProviders/'.$this->gatewayProviderName.'/GatewayOperator');
         $this->gatewayOperator = $this->getService('GatewayOperator');
-        // $this->gatewayOperator->shipmentDataSet = $this->shipmentDataSet;
+        // $this->gatewayOperator->packDataSet = $this->packDataSet;
 
         $this->gatewayOperator->onlinePaymentService = $this;
         $this->gatewayOperator->init();
@@ -218,9 +236,9 @@ class OnlinePaymentService extends Service
     /**
      * This method calls the 
     */
-    // public function refreshPaymentStatus(array $shipmentDataSet, $paymentMethod = null)
+    // public function refreshPaymentStatus(array $packDataSet, $paymentMethod = null)
     // {
-    //     $paymentData = $shipmentDataSet
+    //     $paymentData = $packDataSet
     //     $payment = self::getPayment($shipment);
     //     if ($payment) {
     //         $gatewayProviderName = $payment->getGatewayProvider();

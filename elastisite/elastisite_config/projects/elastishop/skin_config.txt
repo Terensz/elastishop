@@ -1,5 +1,5 @@
 skinName=elastishop
-sheetMaxWidth=1600
+sheetMaxWidth=2000
 sheetHorizontalMargin=10
 sheetWidthPercent=98
 adminSheetWidthPercent=99

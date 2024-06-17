@@ -32,44 +32,46 @@ $categoriesData = [
 // dump($localizedWebshopUrlKey);
 ?>
 <div class="card mb-3 card-noBorderRadius">
-    <div class="card-footer">
+    <div class="card-footer card-header-sideMenu justify-content-between align-items-center">
         <div class="col-md-12 sidebar-text-container d-flex align-items-center">
             <!-- <img src="/public_folder/plugin/Bootstrap-icons/Dashkit-light/cart.svg" class="me-2 mb-1" alt="Cart Icon"> -->
-            <h5 class="mb-3"><?php echo trans('product.categories'); ?></h5>
+            <h5 class="p-0"><?php echo trans('product.categories'); ?></h5>
         </div>
     </div>
     <section class="w-100">
         <div class="row">
             <div class="col">
 
-                <!-- <nav class="flex-content-sidebar pc-sidebar collapse show sideNavbar-container webshop-sidebar-widget">
-                    <ul class="pc-navbar">
-                        <li class="pc-item pc-caption webshop-sidebar-caption">
-                            <label><?php echo trans('product.categories'); ?></label>
-                        </li>
-                        <?php
-                        $loopIndex = 0;
-                        $data = $categoriesData['data'];
-                        include ('CategoryLooper.php');
-                        ?>
-                    </ul>
-                </nav> -->
+                <?php  
+                // dump($specialCategorySlugKey);
+                ?>
 
                 <nav class="flex-content-sidebar pc-sidebar collapse show sideNavbar-container" style="box-shadow: none;">
+                    <ul class="pc-navbar sideMenu-row-container">
+                    <?php
+                        $customCategoryActiveStr = $specialCategorySlugKey == 'RecommendedProducts' ? ' active sideMenu-active' : '';
+                        $customCategoryLink = '/'.$localizedWebshopUrlKey.'/'.$localizedCategoryUrlKey.'/'.$localizedRecommendedProductsSlugKey;
+                        $customCategoryDisplayedName = $recommendedProductsTitle;
+                        include ('CustomCategory.php');
+                    ?>
+                    </ul>
+                    <ul class="pc-navbar sideMenu-row-container">
+                    <?php
+                        $customCategoryActiveStr = $specialCategorySlugKey == 'AllProducts' ? ' active sideMenu-active' : '';
+                        $customCategoryLink = '/'.$localizedWebshopUrlKey.'/'.$localizedCategoryUrlKey.'/'.$localizedAllProductsSlugKey;
+                        $customCategoryDisplayedName = $allProductsTitle;
+                        include ('CustomCategory.php');
+                    ?>
+                    </ul>
                     <ul class="pc-navbar sideMenu-row-container">
                         <!-- <li class="pc-item pc-caption webshop-sidebar-caption">
                             <label><?php echo trans('product.categories'); ?></label>
                         </li> -->
-                        <?php
-                        $customCategoryActiveStr = $specialCategorySlugKey == 'AllProducts' ? ' active sideMenu-active' : '';
-                        $customCategoryLink = '/'.$localizedWebshopUrlKey;
-                        $customCategoryDisplayedName = $allProductsTitle;
-                        include ('CustomCategory.php');
-
+                    <?php
                         $loopIndex = 0;
                         $data = $categoriesData['data'];
                         include ('CategoryLooper.php');
-                        ?>
+                    ?>
                     </ul>
                 </nav>
 

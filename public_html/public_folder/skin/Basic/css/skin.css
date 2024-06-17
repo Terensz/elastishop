@@ -5,6 +5,19 @@
 Note: ellipsis (...) only works on .ellipsis-text, which is inside .ellipsis-container .
 No other way for making ellipsis in dynamic width elements.
 */
+.card-image {
+    object-fit: cover;
+    overflow: hidden;
+    height: 160px;
+    width: 100%;
+}
+
+.card-image-background {
+    background-position: center top;
+    background-size: cover;
+    overflow: none;
+}
+
 .ellipsis-container {
     position: relative;
 }
@@ -163,6 +176,7 @@ a:hover {
 .sideNavbar-container {
     display: block;
 }
+
 @media (min-width: 992px) {
     .sideNavbar-hamburger-container {
         /* display: none; */

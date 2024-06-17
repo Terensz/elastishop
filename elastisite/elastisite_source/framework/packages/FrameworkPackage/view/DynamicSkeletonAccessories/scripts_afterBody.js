@@ -135,19 +135,35 @@ var Structure = {
             $('#' + id).html('<div style="width: ' + width + 'px; height: ' + height + 'px;"></div>');
         });
     },
-    call: function (url, forceReload, pushUrlToHistory) {
-        pushUrlToHistory = (typeof pushUrlToHistory === 'undefined') ? true : pushUrlToHistory;
-        $("#editorModal").unbind("hidden.bs.modal");
-        $('#editorModalLabel').html('');
-        $('#editorModalBody').html('');
+    call: function (url, forceReload, pushUrlToHistory, resetEditorModal) {
+        if (typeof forceReload == 'undefined') {
+            forceReload = false;
+        }
+        if (typeof pushUrlToHistory == 'undefined') {
+            pushUrlToHistory = true;
+        }
+        if (typeof resetEditorModal == 'undefined') {
+            resetEditorModal = true;
+        }
+        // console.log('resetEditorModal: ', resetEditorModal);
+        // pushUrlToHistory = (typeof pushUrlToHistory === 'undefined') ? true : pushUrlToHistory;
+        if (resetEditorModal) {
+            $("#editorModal").unbind("hidden.bs.modal");
+            $('#editorModalLabel').html('');
+            $('#editorModalBody').html('');
+            $('.daterangepicker').remove();
+        }
+
         LoadingHandler.start();
-        $('.daterangepicker').remove();
         url = (typeof url !== 'undefined') ? url : window.location;
+
+        // console.log('url: ', url);
+
         if (pushUrlToHistory) {
             window.history.pushState("object or string", "Title", url);
         }
 
-        forceReload = (typeof forceReload !== 'undefined') ? forceReload : false;
+        // forceReload = (typeof forceReload !== 'undefined') ? forceReload : false;
         Structure.removeBackgroundTheme();
 
         $.ajax({
@@ -168,6 +184,8 @@ var Structure = {
                 } else {
                     Structure.changed = true;
                 }
+
+                // console.log('Structure.changed: ', Structure.changed);
 
                 if (Structure.changed == false && response.data['structureName'] == 'basic2Panel') {
                     // $('#leftPanel-container').hide();
@@ -671,6 +689,48 @@ var LoginHandler = {
         });
         $('#editorModal').modal('show');
     }
+};
+
+var ForgottenPassword = {
+    processResponse: function(response, onSuccessCallback) {
+        // console.log('ForgottenPassword.processResponse()');
+        dump(response);
+        if (typeof this[onSuccessCallback] === 'function') {
+            this[onSuccessCallback](response);
+        }
+    },
+    callAjax: function(calledBy, ajaxUrl, onSuccessCallback) {
+        // let baseData = {};
+        // let ajaxData = $.extend({}, baseData, additionalData);
+        LoadingHandler.start();
+        var ajaxData = {};
+        var form = $('#UserPackage_forgottenPassword_form');
+        ajaxData = form.serialize();
+        $.ajax({
+            'type' : 'POST',
+            'url' : ajaxUrl,
+            'data': ajaxData,
+            'async': true,
+            'success': function(response) {
+                ElastiTools.checkResponse(response);
+                ForgottenPassword.processResponse(response, onSuccessCallback);
+            },
+            'error': function(request, error) {
+                console.log(request);
+                console.log(" Can't do because: " + error);
+            },
+        });
+    },
+    sendInit: function(event) {
+        if (event) {
+            event.preventDefault();
+        }
+        ForgottenPassword.callAjax('sendInit', '/ajax/forgottenPassword/send', 'sendCallback');
+    },
+    sendCallback: function(response) {
+        $('#editorModalBody').html(response.view);
+        LoadingHandler.stop();
+    },
 };
 
 var CustomRegistration = {

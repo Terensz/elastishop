@@ -27,22 +27,25 @@
     //     'productImages' => $productImages,
     // ];
     // dump($productsData);
-    // dump($cartDataSet);
+    // dump($packDataSet);
     // dump($productsData);
 ?>
 
 <!-- <div class="pc-container">
     <div class="pcoded-content card-container"> -->
-        <?php if (!empty($productsData)): ?>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-3 g-4">
+        <?php if (!empty($productListDataSet)): ?>
+        <!-- 
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-3 g-4"> -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-4 g-4">
         <!-- <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-4" style="width: 100%;"> -->
-            <?php foreach ($productsData as $productData): ?>
+            <?php foreach ($productListDataSet as $productData): ?>
                 <?php 
                 // dump($cartData);
                 $cartItemData = null;
-                if (isset($cartDataSet['cart']['cartItems']['productId-'.$productData['productId']]['cartItem'])) {
-                    $cartItemData = $cartDataSet['cart']['cartItems']['productId-'.$productData['productId']]['cartItem'];
+                if (isset($packDataSet['pack']['packItems']['productId-'.$productData['id']])) {
+                    $cartItemData = $packDataSet['pack']['packItems']['productId-'.$productData['id']];
                 }
+                $productImageOnClickDetails = true;
                 include('ProductCard.php');
                 ?>
             <?php endforeach; ?>
@@ -55,5 +58,78 @@
         </div>
         <?php endif; ?>
 
+        <?php if ($pagerData['totalPages'] > 1): ?>
+            <?php 
+            include('ProductListPager.php');    
+            ?>
+        <?php endif; ?>
+        
+
     <!-- </div>
 </div> -->
+
+<!-- <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-4">
+    <div class="col">
+        <div class="card">
+            <div class=" card-header d-flex justify-content-between align-items-center">
+                <div class="card-header-textContainer ellipsis-container" style="width: 100%">
+                    <h6 class="mb-0 ellipsis-text">Főcélok</h6>
+                </div>
+            </div>
+            <div class="card-body m-0 p-0">                                                    
+                <div class="columnView-cell">
+                    <a class="ajaxCallerLink link-underlined" href="/asc/scaleBuilder/columnView/scale/213000/child/215000">
+                        <p class="card-text">
+                            Alma
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class=" card-header d-flex justify-content-between align-items-center">
+                        <div class="card-header-textContainer ellipsis-container" style="width: 100%">
+                            <h6 class="mb-0 ellipsis-text">
+                                                                    Célok                                                            </h6>
+                        </div>
+                    </div>
+                                        <div class="card-body m-0 p-0">
+                                                                            
+                        <div class="columnView-cell">
+                            <a class="ajaxCallerLink link-underlined" href="/asc/scaleBuilder/columnView/scale/213000/child/215002">
+                                <p class="card-text">
+                                    Alma cél                                </p>
+                            </a>
+                        </div>
+                                                                            
+                        <div class="columnView-cell">
+                            <a class="ajaxCallerLink link-underlined" href="/asc/scaleBuilder/columnView/scale/213000/child/215003">
+                                <p class="card-text">
+                                    Alma 2 alcél                                </p>
+                            </a>
+                        </div>
+                                            </div>
+                </div>
+            </div>
+                                                        <div class="col">
+                <div class="card">
+                                                            <div class=" card-header d-flex justify-content-between align-items-center">
+                        <div class="card-header-textContainer ellipsis-container" style="width: 100%">
+                            <h6 class="mb-0 ellipsis-text">
+                                                                    Irányelvek                                                            </h6>
+                        </div>
+                    </div>
+                                        <div class="card-body m-0 p-0">
+                                                                            
+                        <div class="columnView-cell">
+                            <a class="ajaxCallerLink link-underlined" href="/asc/scaleBuilder/columnView/scale/213000/child/215001">
+                                <p class="card-text">
+                                    Alma irányelv                                </p>
+                            </a>
+                        </div>
+                                            </div>
+                </div>
+            </div>
+                                                                                                                                                                                                                                                            </div> -->

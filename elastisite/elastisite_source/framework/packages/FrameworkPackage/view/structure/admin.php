@@ -64,18 +64,20 @@ $widthStyleStr = (empty($sheetWidthPercent) ? '' : 'width: '.$sheetWidthPercent.
 
             <div id="menuAndContent-flexDiv">
 
-                <nav class="pc-sidebar collapse show sideNavbar-container" id="AscScaleBuilder_PrimarySubjectBar_container">
-                    <div class="navbar-wrapper">
-                        <div class="navbar-content ps">
-                        
-                            <div class="widgetContainer" id="widgetContainer-LoginWidget">{{ LoginWidget }}</div>
-                            <div class="widgetContainer" id="widgetContainer-AdminSideMenuWidget">{{ AdminSideMenuWidget }}</div>
+                <div class="sideNavbar-container admin-sideNavbar-container admin-sideNavbar-scroll">
+                    <nav class="pc-sidebar collapse show" id="AscScaleBuilder_PrimarySubjectBar_container">
+                        <div class="navbar-wrapper">
+                            <div class="navbar-content ps">
+                            
+                                <div class="widgetContainer" id="widgetContainer-LoginWidget">{{ LoginWidget }}</div>
+                                <div class="widgetContainer" id="widgetContainer-AdminSideMenuWidget">{{ AdminSideMenuWidget }}</div>
 
+                            </div>
                         </div>
-                    </div>
-                </nav>
+                    </nav>
+                </div>
 
-                <div class="pc-container">
+                <div class="mainContent-container pc-container">
                     <div class="pcoded-content">
                         <div class="widgetWrapper-off">
                             <div class="widgetContainer" id="widgetContainer-mainContent">{{ mainContent }}</div>

@@ -2,6 +2,7 @@
 namespace framework\packages\UserPackage\controller;
 
 use App;
+use framework\component\helper\PHPHelper;
 use framework\component\parent\JsonResponse;
 use framework\component\parent\PageController;
 use framework\packages\UserPackage\service\LogoutService;
@@ -23,7 +24,7 @@ class UserController extends PageController
             // ];    
             // return new JsonResponse($response);
         } else {
-            header('Location: /');
+            PHPHelper::redirect('/', 'UserController/logoutAction()');
         }
     }
 

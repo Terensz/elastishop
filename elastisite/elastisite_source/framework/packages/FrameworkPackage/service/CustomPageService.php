@@ -37,6 +37,11 @@ class CustomPageService extends Service
 
     public function getBackgroundParams($routeName)
     {   
+        /**
+         * Temporarily disabled
+        */
+        return null;
+
         $this->getContainer()->wireService('BackgroundPackage/entity/FBSPageBackground');
         $this->getContainer()->wireService('BackgroundPackage/repository/FBSPageBackgroundRepository');
         $pageBackgroundRepo = new FBSPageBackgroundRepository();

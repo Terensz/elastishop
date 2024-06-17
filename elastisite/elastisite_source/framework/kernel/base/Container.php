@@ -147,13 +147,25 @@ class Container
         return $this->controllerParent;
     }
 
-    public function getOpenGraphData()
+    public function setOpenGraphData($openGraphData = false)
+    {
+        $this->cache['openGraphData']['full'] = $openGraphData;
+    }
+
+    public function getOpenGraphData($clearCache = false)
     {
         // dump($this->getRouting()->getPageRoute()->getName());exit;
         $this->setService('FrameworkPackage/service/OpenGraphService');
 
-        $cached = $this->getFromCache('openGraphData', 'full');
-        // dump($cached);
+        // $this->getFromCache('openGraphData'
+
+        $cached = null;
+        if ($clearCache) {
+            $this->cache['openGraphData']['full'] = null;
+        } else {
+            $cached = $this->getFromCache('openGraphData', 'full');
+        }
+
         if ($cached) {
             return $cached;
         }

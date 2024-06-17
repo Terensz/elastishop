@@ -8,10 +8,9 @@ class Translation_en
     {
         return array(
             'homepage.title' => 'Few things about us',
-            'a.wandering.beekeeper' => 'A wandering beekeeper',
-            'a.story.of.a.wandering.beekeeper' => 'A story of a wandering beekeeper',
             'pick.up.point' => 'Pick-up point',
-            'missing.pick.up.point' => 'Missing pick-up point'
+            'missing.pick.up.point' => 'Missing pick-up point',
+            'there.could.be.your.shops.logo' => 'There could be your shop\'s logo'
         );
     }
 }

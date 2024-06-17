@@ -13,6 +13,9 @@ class Product extends DbEntity
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 
+    const IS_RECOMMENDED_YES = 'Yes';
+    const IS_RECOMMENDED_NO = 'No';
+
     const SPECIAL_PURPOSE_DELIVERY_FEE = 'DeliveryFee';
     const SPECIAL_PURPOSE_GIFT = 'Gift';
 
@@ -28,6 +31,7 @@ class Product extends DbEntity
         return trans('undefined');
     }
 
+    // product_visit_history
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `product` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `website` varchar(250) DEFAULT NULL,
@@ -41,7 +45,8 @@ class Product extends DbEntity
         `description_en` text COLLATE utf8_hungarian_ci DEFAULT NULL,
         `code` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `product_category_id` int(11) DEFAULT NULL,
-        `special_purpose` varchar(100) NOT NULL,
+        `special_purpose` varchar(100) DEFAULT NULL,
+        `is_recommended` varchar(3) DEFAULT '".self::IS_RECOMMENDED_NO."',
         `created_at` datetime DEFAULT NULL,
         `status` int(2) NOT NULL DEFAULT '1',
         PRIMARY KEY (`id`)
@@ -104,6 +109,7 @@ class Product extends DbEntity
     protected $code;
     protected $productCategory;
     protected $specialPurpose;
+    protected $isRecommended;
     protected $productPriceActive;
     protected $productImage = array();
     protected $createdAt;
@@ -257,6 +263,16 @@ class Product extends DbEntity
         return $this->specialPurpose;
     }
 
+    public function setIsRecommended($isRecommended)
+    {
+        $this->isRecommended = $isRecommended;
+    }
+
+    public function getIsRecommended()
+    {
+        return $this->isRecommended;
+    }
+
     // public function setActiveProductPrice2($activeProductPrice = null)
     // {
     //     $this->getContainer()->wireService('WebshopPackage/repository/ProductPriceRepository');
@@ -304,7 +320,8 @@ class Product extends DbEntity
 
     public function getStatus()
     {
-        return $this->status;
+        return $this->status === null ? 0 : (int)$this->status;
+        //  === null ? null : (int)$this->status;
     }
 
     public function getSKU()

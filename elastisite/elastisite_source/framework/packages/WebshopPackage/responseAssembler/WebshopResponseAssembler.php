@@ -27,6 +27,7 @@ class WebshopResponseAssembler extends Service
     // Primary
     const SECTION_SHIPMENTS_IN_PROGRESS = 'ShipmentsInProgress';
     const SECTION_PRODUCT_LIST = 'ProductList';
+    const SECTION_HISTORY_PRODUCT_LIST = 'HistoryProductList';
     const SECTION_PRODUCT_DETAILS = 'ProductDetails';
     const SECTION_CHECKOUT = 'Checkout';
     const SECTION_SHIPMENT_HANDLING = 'ShipmentHandling';
@@ -58,6 +59,10 @@ class WebshopResponseAssembler extends Service
             'location' => self::LOCATION_MAIN_CONTENT
         ],
         self::SECTION_PRODUCT_LIST => [
+            'type' => self::SECTION_TYPE_PRIMARY,
+            'location' => self::LOCATION_MAIN_CONTENT
+        ],
+        self::SECTION_HISTORY_PRODUCT_LIST => [
             'type' => self::SECTION_TYPE_PRIMARY,
             'location' => self::LOCATION_MAIN_CONTENT
         ],
@@ -130,6 +135,7 @@ class WebshopResponseAssembler extends Service
     const SECTION_LAYOUTS = [
         self::SECTION_PRODUCT_LIST => [
             // self::SECTION_SHIPMENTS_IN_PROGRESS,
+            self::SECTION_HISTORY_PRODUCT_LIST,
             self::SECTION_FILTER_BAR,
             self::SECTION_PRODUCT_LIST,
             self::SECTION_SIDE_CART,

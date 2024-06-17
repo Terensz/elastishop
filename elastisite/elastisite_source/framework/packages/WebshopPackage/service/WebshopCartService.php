@@ -6,7 +6,9 @@ use framework\component\helper\StringHelper;
 use framework\component\parent\Service;
 use framework\packages\UserPackage\entity\User;
 use framework\packages\UserPackage\repository\UserAccountRepository;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\entity\Cart;
+use framework\packages\WebshopPackage\entity\CartItem;
 use framework\packages\WebshopPackage\entity\CartTrigger;
 use framework\packages\WebshopPackage\entity\ProductPriceActive;
 use framework\packages\WebshopPackage\repository\CartItemRepository;
@@ -51,19 +53,24 @@ class WebshopCartService extends Service
     //     $cartRepo->removeObsolete();
     // }
 
-    public static function removeUnboundCartItems()
-    {
-        App::getContainer()->wireService('WebshopPackage/repository/CartItemRepository');
+    // public static function removeUnboundCartItems()
+    // {
+    //     App::getContainer()->wireService('WebshopPackage/repository/CartItemRepository');
 
-        $cartItemRepo = new CartItemRepository();
-        $cartItemRepo->removeUnbound();
-    }
+    //     $cartItemRepo = new CartItemRepository();
+    //     $cartItemRepo->removeUnbound();
+    // }
     
     public static function addToCart($productPriceActiveId, $newQuantity = null, $addedQuantity = null, $skipCheckTriggers = false, $appliedBy = null)
     {
         if (!$skipCheckTriggers) {
             // self::checkAndExecuteTriggers();
         }
+
+        // if (!$addedQuantity && $newQuantity === 0) {
+        //     return self::removeFromCart($productPriceActiveId, $quantity, $skipCheckTriggers = false, $removeIfAppliedBy = null);
+        // }
+
         self::$cachedCart = null;
         App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
         App::getContainer()->wireService('WebshopPackage/repository/CartItemRepository');
@@ -142,6 +149,10 @@ class WebshopCartService extends Service
                 return self::removeFromCart($productPriceActiveId, ($originalQuantity - $quantity));
             }
 
+            if (!$addedQuantity && $newQuantity === 0) {
+                return self::removeFromCart($productPriceActiveId, $originalQuantity);
+            }
+
             $cartItem->setQuantity($quantity);
 
             // dump($addedQuantity);
@@ -212,20 +223,21 @@ class WebshopCartService extends Service
                 }
                 $q = $cartItem->getQuantity() - $quantity;
                 if ($q <= 0) {
+                    $cartItem = self::removeItem($cartItem);
                     // dump($cartItem->getId());exit;
-                    $cartItemRepo->removeBy(['id' => $cartItem->getId()]);
-                    // dump($cartItem->getId());exit;
-                    $cartRepo->find($cartId);
-                    if ($cart) {
-                        $cartItems = $cartItemRepo->findBy(['conditions' => [['key' => 'cart_id', 'value' => $cart->getId()]]]);
-                        if (!$cartItems || ($cartItems && count($cartItems) == 0)) {
-                            // dump($cartItems);exit;
-                            $cartRepo::removeObsolete(
-                                [['refKey' => 'c.id', 'paramKey' => 'cart_id_to_remove', 'operator' => '=', 'value' => $cart->getId()]],
-                                false
-                            );
-                        }
-                    }
+                    // $cartItemRepo->removeBy(['id' => $cartItem->getId()]);
+                    // // dump($cartItem->getId());exit;
+                    // $cartRepo->find($cartId);
+                    // if ($cart) {
+                    //     $cartItems = $cartItemRepo->findBy(['conditions' => [['key' => 'cart_id', 'value' => $cart->getId()]]]);
+                    //     if (!$cartItems || ($cartItems && count($cartItems) == 0)) {
+                    //         // dump($cartItems);exit;
+                    //         $cartRepo::removeObsolete(
+                    //             [['refKey' => 'c.id', 'paramKey' => 'cart_id_to_remove', 'operator' => '=', 'value' => $cart->getId()]],
+                    //             false
+                    //         );
+                    //     }
+                    // }
                 } else {
                     $cartItem->setQuantity($q);
                     $cartItem->setProduct($productPriceActive->getProduct());
@@ -240,10 +252,29 @@ class WebshopCartService extends Service
         }
     }
 
+    public static function removeItem(CartItem $cartItem)
+    {
+        App::getContainer()->wireService('WebshopPackage/entity/CartItem');
+        App::getContainer()->wireService('WebshopPackage/repository/CartItemRepository');
+        $cartItemRepository = new CartItemRepository();
+        $cartItemRepository->removeBy(['id' => $cartItem->getId()]);
+        if ($cartItem->getCart()) {
+            $cartItems = $cartItemRepository->findBy(['conditions' => [['key' => 'cart_id', 'value' => $cartItem->getCart()->getId()]]]);
+            if (!$cartItems || ($cartItems && count($cartItems) == 0)) {
+                // dump($cartItems);exit;
+                $cartItem->getCart()->getRepository()::removeObsolete(
+                    [['refKey' => 'c.id', 'paramKey' => 'cart_id_to_remove', 'operator' => '=', 'value' => $cartItem->getCart()->getId()]],
+                    false
+                );
+            }
+        }
+
+        return null;
+    }
+
     public static function removeObsoleteCarts($sessionCartIdIsUnremovable = false)
     {
         // self::checkAndExecuteTriggers();
-        // dump('removeOldCart');exit;
         App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
         // $cartRepo = new CartRepository();
         CartRepository::removeObsolete(
@@ -315,7 +346,7 @@ class WebshopCartService extends Service
     //     // App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
     //     // $processedRequestData = WebshopRequestService::getProcessedRequestData();
 
-    //     App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
+    //     App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
 
     //     $cart = self::getCart();
     //     if ($cart && !$cart->getTemporaryAccount()) {
@@ -335,7 +366,7 @@ class WebshopCartService extends Service
     //                 $rawProductsData = $productRepo->getProductsData(App::getContainer()->getSession()->getLocale(), [
     //                     'productId' => $productId,
     //                 ], []);
-    //                 $productsData = WebshopProductService::arrangeProductsData($rawProductsData);
+    //                 $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData);
     //                 if (isset($productsData[0])) {
     //                     $productData = $productsData[0];
     //                 }
@@ -449,7 +480,9 @@ class WebshopCartService extends Service
         $productTriggerCollection = [];
         $cartTriggerCollection = [];
         $inactiveTriggers = [];
-        $cartDataSet = self::assembleCartDataSet($cart);
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        $packDataSet = PackDataProvider::assembleDataSet($cart);
+        // dump($packDataSet);exit;
         foreach ($cartTriggers as $cartTrigger) {
             if ($cartTrigger->getStatus() == CartTrigger::STATUS_DISABLED) {
                 $cartTriggerCollection = self::handleCartTriggerCollection($cartTriggerCollection, $cartTrigger, false, true);
@@ -463,9 +496,9 @@ class WebshopCartService extends Service
                  * This check runs in the beginning and at the checkout also, and ZipCode just comes to the database while the checkout process.
                 */
                 // $productId = $cartTrigger->getProduct()->getId();
-                $customerZipCode = $cartDataSet['customer']['address']['zipCode'];
-                $customerCountryAlpha2Code = $cartDataSet['customer']['address']['country']['alpha2Code'];
-                $sumGrossItemPriceRounded2 =  $cartDataSet['cart']['summary']['sumGrossItemPriceRounded2'];
+                $customerZipCode = $packDataSet['customer']['address']['zipCode'];
+                $customerCountryAlpha2Code = $packDataSet['customer']['address']['country']['alpha2Code'];
+                $sumGrossItemPriceRounded2 =  $packDataSet['summary']['sumGrossNonSpecialPriceAccurate'];
 
                 /**
                  * CountryAlpha2
@@ -538,12 +571,12 @@ class WebshopCartService extends Service
          * Step 2: Search for the trigger's product in the cart, and if we found one, than we deactivate it.
         */
         // $foundCartItemData = null;
-        foreach ($cartDataSet['cart']['cartItems'] as $cartItemData) {
+        foreach ($packDataSet['pack']['packItems'] as $cartItemData) {
             /**
              * Check cart items if we have a pre-registered trigger for any of those product
             */
-            if (isset($cartTriggerCollection[$cartItemData['cartItem']['product']['productId']])) {
-                $cartTriggerRow = $cartTriggerCollection[$cartItemData['cartItem']['product']['productId']];
+            if (isset($cartTriggerCollection[$cartItemData['product']['id']])) {
+                $cartTriggerRow = $cartTriggerCollection[$cartItemData['product']['id']];
                 /**
                  * At this point we ONLY handle the DISCARD request, we will handle the applies later, together with the new items.
                 */
@@ -573,10 +606,6 @@ class WebshopCartService extends Service
                 }
             }
         }
-
-        // dump($cartTriggerCollection);exit;
-
-        // dump($cartDataSet);exit;
     }
 
     public static function handleCartTriggerCollection($cartTriggerCollection, CartTrigger $cartTrigger, $triggered, $calledByInactive = false)
@@ -647,33 +676,8 @@ class WebshopCartService extends Service
 
         $cartTriggerCollection[$productId] = $cartTriggerCollectionRow;
 
-        // $cartTriggerCollection[$productId]['applyRequestedBy'] = $cartTrigger->getId();
-        // $cartTriggerCollection[$productId]['discardRequestedBy'] = $cartTrigger->getId();
-        // dump($productTriggerCollection);
-        // $productTriggerCollection
         return $cartTriggerCollection;
     }
-
-    // public static function handleProductTriggerCollection($productTriggerCollection, $productId, CartTrigger $cartTrigger)
-    // {
-    //     if (isset($productTriggerCollection[$productId])) {
-    //         /**
-    //          * I separated that if, because I just want the else branch for the existing product id.
-    //          * Here I do not make an else, so those triggers which would trigger the same product to the same direction will go to the soup.
-    //         */
-    //         if ($productTriggerCollection[$productId]['directionOfChange'] != $cartTrigger->getDirectionOfChange()) {
-    //             $productTriggerCollection[$productId]['deactivated'] = true;
-    //         }
-    //     } else {
-    //         $productTriggerCollection[$productId] = [
-    //             'directionOfChange' => $cartTrigger->getDirectionOfChange(),
-    //             'deactivated' => false,
-    //             'product' => $cartTrigger->getProduct()
-    //         ];
-    //     }
-
-    //     return $productTriggerCollection;
-    // }
 
     public static function checkZipCodeMask($zipCode, $zipCodeMask)
     {
@@ -690,209 +694,5 @@ class WebshopCartService extends Service
         }
     
         return true;
-    }
-
-    // public static function getCartTriggers()
-    // {
-
-    // }
-
-    // public static function checkTriggerConditions(CartTrigger $cartTrigger)
-    // {
-    //     App::getContainer()->wireService('WebshopPackage/entity/CartTrigger');
-
-    //     if ($cartTrigger->getEffectCausingStuff() == CartTrigger::EFFECT_CAUSING_STUFF_COUNTRY_ALPHA2) {
-    //         /**
-    //          * We are checking the country
-    //         */
-
-    //     }
-    //     if ($cartTrigger->getEffectCausingStuff() == CartTrigger::EFFECT_CAUSING_STUFF_ZIP_CODE_MASK) {
-    //         /**
-    //          * We are checking the zip code
-    //         */
-            
-    //     }
-
-    //     $zipCode = $this->getZipCodeFromCity($city); // Implementáld a város alapján az irányítószám kinyerését
-    
-    //     // Az EFFECT_OPERATOR_NOT_EQUALS esetén az ellenőrzés inverze
-    //     if ($cartTrigger->getEffectOperator() === $cartTrigger::EFFECT_OPERATOR_NOT_EQUALS) {
-    //         if (self::checkZipCodeMask($zipCode, $this->effectCausingValue)) {
-    //             return false; // Nem egyezik meg, triggerelődik
-    //         }
-    //     } else {
-    //         // Az egyéb esetek
-    //         if (!self::checkZipCodeMask($zipCode, $this->effectCausingValue)) {
-    //             return false;
-    //         }
-    //     }
-    
-    //     return true;
-    // }
-
-    // public static function checkTriggerConditions(CartTrigger $cartTrigger, $grossTotal, $country, $city)
-    // {
-    //     App::getContainer()->wireService('WebshopPackage/entity/CartTrigger');
-    //     // Egyéb feltételek ellenőrzése
-    
-    //     // Az irányítószám-maszk ellenőrzése
-    //     $zipCode = $this->getZipCodeFromCity($city); // Implementáld a város alapján az irányítószám kinyerését
-    
-    //     // Az EFFECT_OPERATOR_NOT_EQUALS esetén az ellenőrzés inverze
-    //     if ($cartTrigger->getEffectOperator() === $cartTrigger::EFFECT_OPERATOR_NOT_EQUALS) {
-    //         if (self::checkZipCodeMask($zipCode, $this->effectCausingValue)) {
-    //             return false; // Nem egyezik meg, triggerelődik
-    //         }
-    //     } else {
-    //         // Az egyéb esetek
-    //         if (!self::checkZipCodeMask($zipCode, $this->effectCausingValue)) {
-    //             return false;
-    //         }
-    //     }
-    
-    //     return true;
-    // }  
-
-    
-
-    public static function getCartProductData(int $cartId, $debug = false)
-    {
-        if (empty($cartId)) {
-            return null;
-        }
-        App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
-        App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
-        $rawCartProductData = CartRepository::getCartProductData(App::getContainer()->getSession()->getLocale(), false, [$cartId], $debug);
-        // dump($rawCartProductData);//exit;
-        $arrangedCartProductData = WebshopProductService::arrangeProductsData($rawCartProductData);
-        // dump($arrangedCartProductData);exit;
-        return $arrangedCartProductData;
-    }
-
-    public static function assembleCartDataSet(Cart $cart = null) : ? array
-    {
-        if (!$cart) {
-            $cart = self::getCart();
-        }
-        if (!$cart) {
-            return null;
-        }
-        App::getContainer()->wireService('WebshopPackage/repository/CartRepository');
-        App::getContainer()->wireService('WebshopPackage/service/WebshopInvoiceService');
-
-        $shipmentProductData = self::getCartProductData($cart->getId());
-
-        $shipmentItemPattern = [
-            'cartItem' => [
-                'id' => null,
-                'product' => [],
-                'quantity' => null
-            ]
-        ];
-        $shipmentPattern = [
-            'customer' => [
-                'name' => null,
-                'type' => null,
-                'note' => null,
-                'email' => null,
-                'address' => WebshopInvoiceService::getRawAddressPattern()
-            ],
-            'cart' => [
-                'id' => null,
-                'permittedUserType' => null,
-                'permittedForCurrentUser' => null,
-                'publicStatusText' => null,
-                'adminStatusText' => null,
-                'cartItems' => [],
-                'payments' => [
-                    'active' => null,
-                    'successful' => null,
-                    'failedForever' => []
-                ],
-                'currencyCode' => null,
-                'confirmationSentAt' => null,
-                'summary' => [
-                    'sumGrossItemPriceRounded2' => null,
-                    'sumGrossItemPriceFormatted' => null
-                ]
-            ]
-        ];
-
-        $currencyCode = null;
-        $shipmentData = $shipmentPattern;
-        $shipmentData['cart']['id'] = $cart->getId();
-
-        if ($cart->getTemporaryAccount() && $cart->getTemporaryAccount()->getTemporaryPerson()) {
-            $customerName = $cart->getTemporaryAccount()->getTemporaryPerson()->getName();
-            $recipientName = $cart->getTemporaryAccount()->getTemporaryPerson()->getRecipientName();
-            $customerType = $cart->getTemporaryAccount()->getTemporaryPerson()->getCustomerType();
-            $customerNote = $cart->getTemporaryAccount()->getTemporaryPerson()->getCustomerNote();
-            $customerEmail = $cart->getTemporaryAccount()->getTemporaryPerson()->getEmail();
-            $shipmentData['customer']['name'] = $recipientName ? : $customerName;
-            $shipmentData['customer']['type'] = $customerType;
-            $shipmentData['customer']['note'] = $customerNote;
-            $shipmentData['customer']['email'] = $customerEmail;
-            if ($cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()) {
-                if ($cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCountry()) {
-                    $shipmentData['customer']['address']['country']['alpha2Code'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCountry()->getAlphaTwo();
-                    $shipmentData['customer']['address']['country']['translatedName'] = trans($cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCountry()->getTranslationReference());
-                }
-                $shipmentData['customer']['address']['zipCode'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getZipCode();
-                $shipmentData['customer']['address']['city'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getCity();
-                $shipmentData['customer']['address']['street'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getStreet();
-                $shipmentData['customer']['address']['streetSuffix'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getStreetSuffix();
-                $shipmentData['customer']['address']['houseNumber'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getHouseNumber();
-                $shipmentData['customer']['address']['staircase'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getStaircase();
-                $shipmentData['customer']['address']['floor'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getFloor();
-                $shipmentData['customer']['address']['door'] = $cart->getTemporaryAccount()->getTemporaryPerson()->getAddress()->getDoor();
-            }
-        }
-
-        $currentUserType = App::getContainer()->getUser()->getType();
-        $permittedUserType = $cart->getUserAccount() ? self::PERMITTED_USER_TYPE_USER : self::PERMITTED_USER_TYPE_GUEST;
-        $shipmentData['cart']['permittedUserType'] = $permittedUserType;
-        $shipmentData['cart']['permittedForCurrentUser'] = $permittedUserType == self::PERMITTED_USER_TYPE_BOTH 
-            || (($permittedUserType == self::PERMITTED_USER_TYPE_GUEST && $currentUserType == User::TYPE_GUEST) 
-                || ($permittedUserType == self::PERMITTED_USER_TYPE_USER && $currentUserType == User::TYPE_USER));
-
-        $sumGrossItemPriceRounded2 = 0;
-
-        $orderedCartItems = [];
-        foreach ($cart->getCartItem() as $cartItem) {
-            if (!$cartItem->getProduct()->getSpecialPurpose()) {
-                $orderedCartItems[] = $cartItem;
-            }
-        }
-        foreach ($cart->getCartItem() as $cartItem) {
-            if ($cartItem->getProduct()->getSpecialPurpose()) {
-                $orderedCartItems[] = $cartItem;
-            }
-        }
-
-        foreach ($orderedCartItems as $shipmentItem) {
-            $shipmentItemData = $shipmentItemPattern;
-            $shipmentItemData['cartItem']['id'] = $shipmentItem->getId();
-            $shipmentItemData['cartItem']['product'] = isset($shipmentProductData[$shipmentItem->getId()]) ? $shipmentProductData[$shipmentItem->getId()] : null;
-            if (!isset($shipmentItemData['cartItem']['product']['activeProductPrice']['priceData']['quantity'])) {
-                // dump(self::getCartProductData($cart->getId(), true));
-                // self::getCartProductData($cart->getId(), true);
-                // dump($shipmentItemData);exit;
-            }
-            $shipmentItemData['cartItem']['quantity'] = $shipmentItemData['cartItem']['product']['activeProductPrice']['priceData']['quantity'];
-            $shipmentData['cart']['cartItems']['productId-'.$shipmentItemData['cartItem']['product']['productId']] = $shipmentItemData;
-            // if (!isset($shipmentItemData['cartItem']['product']['activeProductPrice']['currencyCode'])) {
-            //     dump($shipmentProductData);
-            //     dump($shipmentItemData);
-            // }
-            $currencyCode = $shipmentItemData['cartItem']['product']['activeProductPrice']['currencyCode'];
-            $sumGrossItemPriceRounded2 += $shipmentItemData['cartItem']['product']['activeProductPrice']['priceData']['grossItemPriceRounded2'];
-        }
-
-        $shipmentData['cart']['summary']['sumGrossItemPriceRounded2'] = $sumGrossItemPriceRounded2;
-        $shipmentData['cart']['summary']['sumGrossItemPriceFormatted'] = StringHelper::formatNumber($sumGrossItemPriceRounded2, 2, ',', '.');
-        $shipmentData['cart']['currencyCode'] = $currencyCode;
-
-        return $shipmentData;
     }
 }

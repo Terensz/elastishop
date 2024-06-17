@@ -7,7 +7,7 @@ use framework\component\parent\Service;
 use framework\kernel\view\ViewRenderer;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 use framework\packages\WebshopPackage\service\WebshopRequestService;
 use framework\packages\WebshopPackage\service\WebshopService;
 
@@ -55,7 +55,7 @@ class WebshopResponseAssembler_ProductDetailsModal extends Service
     //             'isIndependent' => $isIndependent,
     //             'defaultCurrency' => $isIndependent ? null : App::getContainer()->getConfig()->getProjectData('defaultCurrency'),
     //             'cartOfferIds' => $isIndependent ? null : $this->getService('WebshopService')->getCartActiveProductPriceIds(),
-    //             'priceData' => $isIndependent ? null : WebshopPriceService::getActivePriceData($product->getId()),
+    //              => $isIndependent ? null : WebshopPriceService::getActivePriceData($product->getId()),
     //             // 'webshopService' => $this->getContainer()->getService('WebshopService'),
     //             // 'webshopFinanceService' => $this->getContainer()->getService('WebshopPriceService'),
     //             'product' => $product,

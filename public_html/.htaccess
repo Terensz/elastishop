@@ -12,6 +12,9 @@ RewriteEngine On
 # Kihagyja a /public_folder/ mappát
 RewriteCond %{REQUEST_URI} !^/public_folder/ [NC]
 
+# Kihagyja a .well-known/acme-challenge/ mappát
+RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/ [NC]
+
 # Csak akkor alkalmazza a Rewrite-szabályt, ha nem egy létező file vagy mappa
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

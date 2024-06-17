@@ -99,15 +99,19 @@ class Config
 			$fileName = '.meheszellato_env';
 		}
 
+		// if (in_array($fullDomain, ['elastishop'])) {
+		// 	$fileName = '.elastishop_env';
+		// }
+
 		if (in_array($fullDomain, ['elastishop'])) {
-			$fileName = '.elastishop_env';
+			$fileName = '.asc_env_local';
 		}
 
 		if (in_array($fullDomain, ['asc'])) {
 			$fileName = '.asc_env_local';
 		}
 
-		if (in_array($fullDomain, ['axxxxsxxxxcxxxxxx.hu', 'axxxxsxxxxcxxxxxx.com', 'adminscalecreator.hu', 'adminscalecreator.com'])) {
+		if (in_array($fullDomain, ['axxxxsxxxxcxxxxxx.hu', 'axxxxsxxxxcxxxxxx.com', 'adminscalecreator.hu', 'adminscalecreator.com', 'ascsite.hu', 'ascsite.com'])) {
 			$fileName = '.asc_env_test';
 		}
 
@@ -120,7 +124,7 @@ class Config
 		}
 
 		// var_dump($fullDomain);
-		// var_dump($fileName);
+		// var_dump($fileName);exit;
 
 		$pathToFile = App::getContainer()->getPathBase('config').'/sysadmin/' . $fileName;
 		$config = App::$configReader->read($pathToFile);

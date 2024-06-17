@@ -3,6 +3,7 @@ namespace framework\packages\StaffPackage\controller;
 
 use App;
 use framework\component\helper\DateUtils;
+use framework\component\helper\PHPHelper;
 use framework\component\parent\WidgetController;
 use framework\packages\StaffPackage\entity\StaffMember;
 use framework\packages\StaffPackage\repository\StaffMemberRepository;
@@ -93,7 +94,7 @@ class StaffWidgetController extends WidgetController
 
         if ($user->getId() > 0 && $user->getType() == User::TYPE_USER) {
             App::getContainer()->getSession()->logout();
-            header('Location: /'.$urlParamChain);
+            PHPHelper::redirect('/'.$urlParamChain, 'StaffWidgetController/getStaffMember()');
             die;
         }
 

@@ -14,8 +14,9 @@
 				'async': true,
 				'success': function(response) {
 					$('#cp-container').html(response.view);
+					console.log('CP.viewStateChange', CP.viewStateChange);
 					if (CP.viewStateChange == true) {
-						Structure.call();
+						Structure.call(window.location.href, true, true, false);
 					}
 					CP.viewStateChange = false;
 				},

@@ -15,7 +15,7 @@ if ($errors['messages']['recipientNameFilled'] || $errors['messages']['mobileFil
 
     <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
         <div class="card-header-textContainer">
-            <h6 class="mb-0 text-white"><?php echo trans('delivery.information'); ?></h6>
+            <h6 class="mb-0 text-white"><?php echo trans('contact.data'); ?></h6>
         </div>
     </div>
 

@@ -24,7 +24,7 @@ foreach ($productImages as $productImage):
     <div class="card-footer">
         <div class="row">
             <div class="col-4">
-                <div style="width: 120px; min-height: 100px; margin-left: 0px; background-image: url('<?php echo $container->getUrl()->getHttpDomain(); ?>/webshop/image/thumbnail/<?php echo $productImage->getSlug(); ?>');" class="list-item-thumbnail webshopThumbnail">
+                <div class="card-image-background" style="width: 180px; height: 120px; margin-left: 0px; background-image: url('<?php echo $container->getUrl()->getHttpDomain(); ?>/webshop/image/thumbnail/<?php echo $productImage->getSlug(); ?>');" class="list-item-thumbnail webshopThumbnail">
                 </div>
             </div>
             <div class="col-4" style="text-align: center;">

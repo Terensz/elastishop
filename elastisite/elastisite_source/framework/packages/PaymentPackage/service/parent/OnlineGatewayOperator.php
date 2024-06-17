@@ -10,7 +10,7 @@ use framework\packages\WebshopPackage\entity\Shipment;
 
 abstract class OnlineGatewayOperator extends Service
 {
-    public OnlinePaymentService $onlinePaymentService;
+    public $onlinePaymentService;
 
     public $propertyToKeyConversionMap = [];
 

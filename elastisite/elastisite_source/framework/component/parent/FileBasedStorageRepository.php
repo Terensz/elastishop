@@ -694,6 +694,9 @@ class FileBasedStorageRepository extends Repository
         foreach ($indexes as $index) {
             unset($arrayCollection[$index]);
         }
+        if (empty($arrayCollection)) {
+            return false;
+        }
         $arrayCollection = array_values($arrayCollection);
         $data = serialize($arrayCollection);
         // dump($this->filePath);
@@ -736,20 +739,29 @@ class FileBasedStorageRepository extends Repository
 
         $array = [];
         try {
-            $array = unserialize($data);
-            // dump($array);
+            // $array = $data;
+            // $data = 'sdasdasd';
+            // dump($data);
+            $array = @unserialize($data);
+            // dump($array);exit;
+            // if (isset($array[0]) && is_object($array[0])) {
+            //     // dump($array);exit;
+            //     dump(get_class($array[0]));exit;
+            // }
         } catch (\Exception $e) {
             $data1 = $this->decrypt($rawData, true); // Decrypted with old method
-            // $encryptedData = $this->encrypt($data);
+            // $encryptedData = $this->encrypt($rawData);
             // $this->writeToFile($encryptedData);
             // dump($this->decrypt($rawData));
             // dump($rawData);
             // dump($data);
             // dump($encryptedData);exit;
             // if (!empty($data))
-            // dump($data1);
+            // dump($encryptedData);
+            // dump($rawData);// exit;
+            // dump($data1);exit;
             $array = unserialize($data1);
-            // dump($array); 
+            // dump($array);exit; 
             // dump(file_get_contents($this->filePath));
             // dump($this->decrypt(file_get_contents($this->filePath), false));
             // dump($this->decrypt(file_get_contents($this->filePath), true));
@@ -761,6 +773,10 @@ class FileBasedStorageRepository extends Repository
             // $decr = $this->decrypt($enc);
             // dump($decr);
             // dump($e); exit;
+        }
+
+        if (!is_array($array)) {
+            dump($array);exit;
         }
         
         return $array;

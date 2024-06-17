@@ -7,11 +7,12 @@ use framework\kernel\view\ViewRenderer;
 use framework\packages\BusinessPackage\repository\OrganizationRepository;
 use framework\packages\UserPackage\entity\User;
 use framework\packages\UserPackage\repository\AddressRepository;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
 use framework\packages\WebshopPackage\service\WebshopFinishCheckoutService;
 use framework\packages\WebshopPackage\service\WebshopInvoiceService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 use framework\packages\WebshopPackage\service\WebshopRequestService;
 use framework\packages\WebshopPackage\service\WebshopService;
 use framework\packages\WebshopPackage\service\WebshopTemporaryAccountService;
@@ -26,7 +27,8 @@ class WebshopResponseAssembler_Checkout extends Service
         App::getContainer()->wireService('WebshopPackage/service/WebshopInvoiceService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopCartService');
-        App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
         App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
         App::getContainer()->wireService('WebshopPackage/service/WebshopFinishCheckoutService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopTemporaryAccountService');
@@ -68,7 +70,7 @@ class WebshopResponseAssembler_Checkout extends Service
 
         // dump($removeCartOnLogin);
         // dump($user);exit;
-        if ($onlyRegistratedUsersCanCheckout && !$user->getUserAccount()->getId()) {
+        if (($onlyRegistratedUsersCanCheckout && !$user->getUserAccount()->getId()) || $user->getType() == User::TYPE_ADMINISTRATOR) {
             if ($user->getType() == User::TYPE_ADMINISTRATOR) {
                 $viewPath = 'framework/packages/WebshopPackage/view/Sections/Checkout/Error/AdminSession.php';
                 return WebshopResponseAssembler::returnAlternativeView('WebshopPackage_Checkout', $viewPath, []);
@@ -93,12 +95,12 @@ class WebshopResponseAssembler_Checkout extends Service
          * The most important data for this section.
          * We use it in the invoice, extracting used ids to get the products data.
         */
-        $cartDataSet = WebshopCartService::assembleCartDataSet();
-        // dump($cartDataSet);exit;
+        $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
+        // dump($packDataSet);exit;
         /**
          * Checking if cart is empty, and if yes, than we offer a fancy link to get back to the webshop.
         */
-        if (empty($cartDataSet['cart']['cartItems'])) {
+        if (empty($packDataSet['pack']['packItems'])) {
             // dsadasd
             $viewPath = 'framework/packages/WebshopPackage/view/Sections/Checkout/Error/EmptyCart.php';
             return WebshopResponseAssembler::returnAlternativeView('WebshopPackage_Checkout', $viewPath, []);
@@ -116,16 +118,15 @@ class WebshopResponseAssembler_Checkout extends Service
         /**
          * The proper format for the Invoice view.
         */
-        $invoiceData = WebshopInvoiceService::convertCartDataToInvoiceData($cartDataSet);
+        $invoiceData = WebshopInvoiceService::convertCartDataToInvoiceData($packDataSet);
 
         /**
          * We are now extracting product ids from the cart, to get the properly formatted product data.
         */
         $cartItemProductIds = [];
-        if (isset($cartDataSet['cart']['cartItems']) && !empty($cartDataSet['cart']['cartItems'])) {
-            foreach ($cartDataSet['cart']['cartItems'] as $cartDataSetRow) {
-                $cartItemData = $cartDataSetRow['cartItem'];
-                $cartItemProductIds[] = $cartItemData['product']['productId'];
+        if (isset($packDataSet['pack']['packItems']) && !empty($packDataSet['pack']['packItems'])) {
+            foreach ($packDataSet['pack']['packItems'] as $cartItemData) {
+                $cartItemProductIds[] = $cartItemData['product']['id'];
             }
         }
 
@@ -143,7 +144,7 @@ class WebshopResponseAssembler_Checkout extends Service
         /**
          * Than we arrange our data.
         */
-        $productsData = WebshopProductService::arrangeProductsData($rawProductsData);
+        $productListDataSet = ProductListDataProvider::arrangeProductsData($rawProductsData['productData']);
 
         /**
          * Assembling customer data
@@ -153,10 +154,10 @@ class WebshopResponseAssembler_Checkout extends Service
         /**
          * Assembling delivery data
         */
-        $addresses = [];
-        if ($user->getUserAccount() && $user->getUserAccount()->getPerson()) {
-            $addresses = $user->getUserAccount()->getPerson()->getAddress();
-        }
+        // $addresses = [];
+        // if ($user->getUserAccount() && $user->getUserAccount()->getPerson()) {
+        //     $addresses = $user->getUserAccount()->getPerson()->getAddress();
+        // }
         // dump($addresses);exit;
 
         // dump(self::collectAddressesData()); exit;
@@ -166,20 +167,32 @@ class WebshopResponseAssembler_Checkout extends Service
 
         // dump(self::collectOrganizationsData());
         // dump(WebshopFinishCheckoutService::assembleCartErrors($cart));exit;
+        // dump($packDataSet);exit;
 
         $viewParams = [
-            'productsData' => $productsData,
             // 'customerType' => $cart->getCustomerType(),
             'organizationsData' => self::collectOrganizationsData(),
             'addressesData' => self::collectAddressesData(),
-            'cartDataSet' => $cartDataSet,
+            'packDataSet' => $packDataSet,
+            'productListDataSet' => $productListDataSet,
             'temporaryAccountData' => $temporaryAccountData,
             // 'customerData' => $customerData,
             'invoiceData' => $invoiceData,
             'localizedProductInfoLinkBase' => WebshopRequestService::getSlugTransRef(WebshopService::TAG_WEBSHOP, $locale).'/'.WebshopRequestService::getSlugTransRef(WebshopService::TAG_SHOW_PRODUCT, $locale).'/',
             'userType' => App::getContainer()->getUser()->getType(),
-            'errors' => WebshopFinishCheckoutService::assembleCartErrors($cart)
+            'errors' => WebshopFinishCheckoutService::assembleCartErrors($cart),
+            'pagerData' => [
+                'currentPage' => 1,
+                'maxItemsOnPage' => null,
+                'totalPages' => 1,
+                'totalListedItemsCount' => null,
+                'prevPageLink' => null,
+                'nextPageLink' => null,
+                'variablePageLink' => null
+            ]
         ];
+
+        // dump($viewParams);exit;
 
         $viewPath = 'framework/packages/WebshopPackage/view/Sections/Checkout/Checkout.php';
         $view = ViewRenderer::renderWidget('WebshopPackage_Checkout', $viewPath, $viewParams);

@@ -4,6 +4,7 @@ namespace framework\kernel\routing;
 use framework\kernel\utility\BasicUtils;
 // use framework\kernel\routing\entity\Routing;
 use framework\component\entity\Route;
+use framework\component\helper\PHPHelper;
 use framework\component\parent\PageController;
 
 class Router extends PageController
@@ -68,7 +69,7 @@ class Router extends PageController
                 // dump($this->getContainer()->getRouting()->getPageRoute()->getName());exit;
 
                 // dump($this->getContainer()->getRouting());exit;
-                header('Location: '.$this->getContainer()->getUrl()->getHttpDomain().'/setup');
+                PHPHelper::redirect('/setup', 'Router/__construct()');
             }
         }
     }

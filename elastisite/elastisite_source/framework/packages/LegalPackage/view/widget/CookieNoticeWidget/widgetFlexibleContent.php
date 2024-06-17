@@ -33,6 +33,9 @@ use framework\packages\LegalPackage\entity\VisitorConsentAcceptance;
             <?php echo $generalTextView; ?>
         </div>
     </div>
+<?php 
+// dump($textViews);
+?>
 <?php foreach ($textViews as $subscriber => $textView): ?>
     <?php if (!in_array($subscriber, $subscribersFound)): ?>
 <?php

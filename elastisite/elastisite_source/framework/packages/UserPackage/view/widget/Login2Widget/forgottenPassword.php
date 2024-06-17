@@ -47,7 +47,7 @@ if (!$email) {
         </div>
         <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
             <div class="form-group">
-                <button name="UserPackage_forgottenPassword_submit" id="UserPackage_forgottenPassword_submit" type="button" class="btn btn-secondary btn-block" style="width: 200px;" onclick="ForgottenPassword.send();" value=""><?php echo trans('send'); ?></button>
+                <button name="UserPackage_forgottenPassword_submit" id="UserPackage_forgottenPassword_submit" type="button" class="btn btn-secondary btn-block" style="width: 200px;" onclick="ForgottenPassword.sendInit();" value=""><?php echo trans('send'); ?></button>
             </div>
         </div>
     </div>
@@ -55,26 +55,42 @@ if (!$email) {
 <div id="forgottenPasswordResponse"></div>
 
 <script>
-    var ForgottenPassword = {
-        send: function() {
-            console.log('ForgottenPassword.send');
-            var params = MenuWidget.getParameters();
-            var ajaxData = {};
-            var form = $('#UserPackage_forgottenPassword_form');
-            ajaxData = form.serialize();
-            $.ajax({
-                'type' : 'POST',
-                'url' : '<?php echo $container->getUrl()->getHttpDomain(); ?>/ajax/forgottenPassword/send',
-                'data': ajaxData,
-                'async': true,
-                'success': function(response) {
-                    $('#editorModalBody').html(response.view);
-                },
-                'error': function(request, error) {
-                    console.log(request);
-                    console.log(" Can't do because: " + error);
-                },
-            });
-        }
-    };
+// var ForgottenPassword = {
+//     processResponse: function(response, calledBy, onSuccessCallback) {
+//         // console.log('ForgottenPassword.processResponse()');
+//         dump(response);
+//         if (typeof this[onSuccessCallback] === 'function') {
+//             this[onSuccessCallback](response);
+//         }
+//     },
+//     callAjax: function(calledBy, ajaxUrl, additionalData, onSuccessCallback) {
+//         let baseData = {};
+//         let ajaxData = $.extend({}, baseData, additionalData);
+//         $.ajax({
+//             'type' : 'POST',
+//             'url' : ajaxUrl,
+//             'data': ajaxData,
+//             'async': true,
+//             'success': function(response) {
+//                 ElastiTools.checkResponse(response);
+//                 ForgottenPassword.processResponse(response, calledBy, onSuccessCallback);
+//             },
+//             'error': function(request, error) {
+//                 console.log(request);
+//                 console.log(" Can't do because: " + error);
+//             },
+//         });
+//     },
+//     sendInit: function(event) {
+//         if (event) {
+//             event.preventDefault();
+//         }
+//         ForgottenPassword.callAjax('sendInit', '/ajax/forgottenPassword/send', {
+//         }, 'sendCallback');
+//     },
+//     sendCallback: function(response) {
+//         $('#editorModalBody').html(response.view);
+//         LoadingHandler.stop();
+//     },
+// };
 </script>

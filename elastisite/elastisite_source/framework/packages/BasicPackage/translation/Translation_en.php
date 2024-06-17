@@ -7,6 +7,8 @@ class Translation_en
     public function getTranslation()
     {
         return array(
+            'show' => 'Show',
+            'hide' => 'Hide',
             'information' => 'Information',
             'meaning.of.words' => 'Meaning of words',
             'add' => 'Add',

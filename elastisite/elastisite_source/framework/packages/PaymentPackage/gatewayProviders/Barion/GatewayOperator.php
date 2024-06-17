@@ -87,11 +87,11 @@ class GatewayOperator extends OnlineGatewayOperator
         'Expired' => Payment::PAYMENT_STATUS_EXPIRED,
     ];
 
-    public OnlinePaymentService $onlinePaymentService;
+    public $onlinePaymentService;
 
     // public $payment;
 
-    // public $shipmentDataSet;
+    // public $packDataSet;
 
     public $errors = [];
 
@@ -116,13 +116,16 @@ class GatewayOperator extends OnlineGatewayOperator
     //     $this->onlinePaymentService->paymentEntity = $this->onlinePaymentService->paymentRepository->store($this->onlinePaymentService->paymentEntity);
     //     App::getContainer()->wireService('WebshopPackage/service/ShipmentService');
     //     App::getContainer()->wireService('WebshopPackage/repository/ShipmentRepository');
-    //     $collection = ShipmentRepository::getShipmentCollectionFromId($this->onlinePaymentService->shipmentDataSet['shipment']['id']);
-    //     $this->onlinePaymentService->shipmentDataSet = ShipmentService::assembleShipmentDataSet($collection, true);
+    //     $collection = ShipmentRepository::getShipmentCollectionFromId($this->onlinePaymentService->packDataSet['pack']['id']);
+    //     $this->onlinePaymentService->packDataSet = ShipmentService::assembleShipmentDataSet($collection, true);
     // }
 
     public function init()
     {
-        $this->onlinePaymentService->paymentTransaction->shipmentCode = $this->onlinePaymentService->shipmentDataSet['shipment']['code'];
+        // if (!isset($this->onlinePaymentService->packDataSet['pack'])) {
+        //     dump($this->onlinePaymentService->packDataSet);
+        // }
+        $this->onlinePaymentService->paymentTransaction->shipmentCode = $this->onlinePaymentService->packDataSet['pack']['code'];
         // $this->payment = $this->findPayment($this->shipment);
         // dump($this->onlinePaymentService);
         $this->onlinePaymentService->paymentEntity->setGatewayProvider(self::GATEWAY_PROVIDER);
@@ -137,6 +140,8 @@ class GatewayOperator extends OnlineGatewayOperator
         $paymentStatus = $this->getPaymentStatus();
 
         if ($forceSavePayment || ($paymentStatus && isset($paymentStatus['Status']) && !empty($paymentStatus['Status']))) {
+            // dump($paymentStatus);
+            // dump($this->onlinePaymentService->paymentEntity);
             $this->onlinePaymentService->paymentEntity->setStatus($paymentStatus['Status']);
             // if (in_array($paymentStatus->Status, Payment::CLOSABLE_PAYMENT_STATUSES) && !$this->payment->getClosedAt()) {
             //     $this->payment->setClosedAt(new \DateTime());
@@ -152,7 +157,9 @@ class GatewayOperator extends OnlineGatewayOperator
     public function getPaymentStatus()
     {
         if (!$this->onlinePaymentService->paymentEntity->getPaymentCode()) {
+            // dump($this->onlinePaymentService->paymentEntity);
             return false;
+            throw new \Exception('missing payment code');
         }
 
         $this->wireService('ToolPackage/service/CurlApiCaller');
@@ -267,6 +274,8 @@ class GatewayOperator extends OnlineGatewayOperator
         $this->onlinePaymentService->paymentEntity->setRedirectedAt(new \DateTime());
         $this->onlinePaymentService->saveAndRefreshPaymentEntity();
         $this->onlinePaymentService->providerApiResponse = $response;
+
+        // dump($this->onlinePaymentService->paymentEntity);exit;
         // dump($curlApiCaller);exit;
         return $curlApiCaller;
     }
@@ -306,23 +315,25 @@ class GatewayOperator extends OnlineGatewayOperator
         // dump($gatewayConfig);exit;
         $total = 0;
         $transactionItems = [];
-        foreach ($this->onlinePaymentService->shipmentDataSet['shipment']['shipmentItems'] as $shipmentItemDataRow) {
-            $shipmentItemData = $shipmentItemDataRow['shipmentItem'];
+        // if (!isset($this->onlinePaymentService->packDataSet['pack'])) {
+        //     dump($this->onlinePaymentService->packDataSet);
+        // }
+        foreach ($this->onlinePaymentService->packDataSet['pack']['packItems'] as $shipmentItemData) {
             // dump($shipmentItemData);
-            $itemTotal = $shipmentItemData['product']['activeProductPrice']['priceData']['grossItemPriceRounded2'];
+            $itemTotal = $shipmentItemData['product']['actualPrice']['grossItemPriceRounded2'];
             // $originalDescription = $shipmentItemData['product']['productDescription'];
             // $modifiedDescription = StringHelper::cutLongString(strip_tags($originalDescription), 49);
             // $modifiedDescription = empty($modifiedDescription) ? $shipmentItemData['product']['productName'] : $modifiedDescription;
-            $modifiedDescription = $shipmentItemData['product']['productShortInfo'] ? : $shipmentItemData['product']['productName'];
+            $modifiedDescription = $shipmentItemData['product']['shortInfo'] ? : $shipmentItemData['product']['name'];
             // dump('originalDescription: '.$originalDescription);
             // dump('modifiedDescription: '.$modifiedDescription);
             $transactionItems[] = [
-                "Name" => $shipmentItemData['product']['productName'],
+                "Name" => $shipmentItemData['product']['name'],
                 "Description" => $modifiedDescription,
-                "Quantity" => $shipmentItemData['product']['activeProductPrice']['priceData']['quantity'],
+                "Quantity" => $shipmentItemData['quantity'],
                 "Unit" => "piece",
-                "UnitPrice" => $shipmentItemData['product']['activeProductPrice']['priceData']['grossUnitPriceRounded2'],
-                "ItemTotal" => $shipmentItemData['product']['activeProductPrice']['priceData']['grossItemPriceRounded2'],
+                "UnitPrice" => $shipmentItemData['product']['actualPrice']['grossUnitPriceRounded2'],
+                "ItemTotal" => $shipmentItemData['product']['actualPrice']['grossItemPriceRounded2'],
                 "SKU" => $shipmentItemData['product']['SKU']
             ];
             $total += $itemTotal;

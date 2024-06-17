@@ -9,6 +9,7 @@ use framework\component\parent\Response;
 use framework\component\parent\JsonResponse;
 use framework\component\entity\Widget;
 use framework\component\exception\ElastiException;
+use framework\component\helper\PHPHelper;
 use framework\kernel\security\SecurityReporting;
 use framework\kernel\routing\MetaCollector;
 use framework\packages\UserPackage\service\Permission;
@@ -320,7 +321,7 @@ class RouteRendering extends Rendering
 
     public function redirectToParamChain($paramChain)
     {
-        header('Location: '.$this->getKernelObject('Url')->getHttpDomain().'/'.$paramChain);
+        PHPHelper::redirect('/'.$paramChain, 'RouteRendering/redirectToParamChain()');
     }
 
     public function getStructurePath()

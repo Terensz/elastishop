@@ -207,6 +207,28 @@ class CookieConsentWidgetController extends WidgetController
             ]);
         } 
 
+        $thirdPartyCookiesAcceptances = CookieConsentService::findThirdPartyCookiesAcceptances();
+        $subscribersFound = [];
+        foreach ($subscribers as $subscriber) {
+            foreach ($thirdPartyCookiesAcceptances as $thirdPartyCookiesAcceptance) {
+                // dump($thirdPartyCookiesAcceptance->getRequestSubscriber());
+                if ($thirdPartyCookiesAcceptance->getRequestSubscriber() == $subscriber) {
+                    $subscribersFound[] = $subscriber;
+                    // dump($thirdPartyCookiesAcceptance->getRequestSubscriber());
+                }
+            }
+        }
+
+        // dump($thirdPartyCookiesAcceptances);
+        // dump($subscribers);exit;
+
+        $subscribersNotFound = [];
+        foreach ($subscribers as $subscriber) {
+            if (!in_array($subscriber, $subscribersFound) && $subscriber != 'general') {
+                $subscribersNotFound[] = $subscriber;
+            }
+        }
+
         $textViews = [];
         // $icons = [];
         $generalTextView = null;
@@ -214,45 +236,35 @@ class CookieConsentWidgetController extends WidgetController
             $subscribers[] = self::GENERAL_SUBSCRIBER;
         }
         foreach ($subscribers as $subscriber) {
-            $this->wireService('ToolPackage/service/TextAssembler');
-            $textAssembler = new TextAssembler();
-            // dump($this->getContentTextService($subscriber));
-            $textAssembler->setContentTextService($this->getContentTextService());
-            $textAssembler->setDocumentType('entry');
-            $textAssembler->setPackage('LegalPackage');
-            $textAssembler->setReferenceKey($subscriber.'CookieConsentInfo');
-            $textAssembler->setPlaceholdersAndValues([
-                'httpDomain' => $this->getUrl()->getHttpDomain()
-            ]);
-            $textAssembler->create();
-            $textView = $textAssembler->getView();
-
-            if ($subscriber == self::GENERAL_SUBSCRIBER) {
-                $generalTextView = $textView;
-            } else {
-                $textViews[$subscriber] = $textView;
-            }
-
-            // dump($textView);exit;
-        }
-        
-        $thirdPartyCookiesAcceptances = CookieConsentService::findThirdPartyCookiesAcceptances();
-
-        // dump($thirdPartyCookiesAcceptances);
-
-        $subscribersFound = [];
-        foreach ($subscribers as $subscriber) {
-            foreach ($thirdPartyCookiesAcceptances as $thirdPartyCookiesAcceptance) {
-                if ($thirdPartyCookiesAcceptance->getRequestSubscriber() == $subscriber || $subscriber == self::GENERAL_SUBSCRIBER) {
-                    $subscribersFound[] = $subscriber;
+            if (!in_array($subscriber, $subscribersFound)) {
+                $this->wireService('ToolPackage/service/TextAssembler');
+                $textAssembler = new TextAssembler();
+                // dump($this->getContentTextService($subscriber));
+                $textAssembler->setContentTextService($this->getContentTextService());
+                $textAssembler->setDocumentType('entry');
+                $textAssembler->setPackage('LegalPackage');
+                $textAssembler->setReferenceKey($subscriber.'CookieConsentInfo');
+                $textAssembler->setPlaceholdersAndValues([
+                    'httpDomain' => $this->getUrl()->getHttpDomain()
+                ]);
+                $textAssembler->create();
+                $textView = $textAssembler->getView();
+    
+                if ($subscriber == self::GENERAL_SUBSCRIBER) {
+                    $generalTextView = $textView;
+                } else {
+                    $textViews[$subscriber] = $textView;
                 }
             }
         }
 
+        // dump($subscribersNotFound);exit;
+
         // dump($subscribers);
         // dump($subscribersFound);exit;
 
-        if (count($subscribersFound) < count($subscribers)) {
+        // if (count($subscribersFound) < count($subscribers)) {
+        if (count($subscribersNotFound) > 0) {
             // dump($subscribersFound);
             // dump($subscribers);
             $viewPath = 'framework/packages/LegalPackage/view/widget/CookieNoticeWidget/'.($renderFlexibleContent ? 'widgetFlexibleContent' : 'widget').'.php';
@@ -270,6 +282,7 @@ class CookieConsentWidgetController extends WidgetController
             $removeCookieNoticeReason = 'all.subscribers.handled';
         }
 
+        // dump($subscribers);exit;
         // dump($subscribers);
         // dump($thirdPartyCookiesAcceptances);
         // exit;
@@ -281,6 +294,7 @@ class CookieConsentWidgetController extends WidgetController
                 'removeCookieNoticeReason' => $removeCookieNoticeReason
             ]
         ];
+        // dump($response);exit;
 
         return $this->widgetResponse($response);
     }
@@ -317,10 +331,6 @@ class CookieConsentWidgetController extends WidgetController
             );
         }
 
-        // dump($success);exit;
-
-        // App::redirect('/webshop');
-
         $response = [
             'view' => null,
             'data' => [
@@ -330,32 +340,4 @@ class CookieConsentWidgetController extends WidgetController
 
         return $this->widgetResponse($response);
     }
-
-    /**
-    * Route: [name: widget_CookieConsentWidget_removeRefusedConsent, paramChain: /widget/CookieConsentWidget_removeRefusedConsent]
-    */
-    // public function removeRefusedConsentAction()
-    // {
-    //     $subscriber = $this->getRequest()->get('subscriber');
-    //     $repo = new VisitorConsentRepository();
-    //     $success = $repo->removeAcceptance(
-    //         $this->getContainer()->getUser()->getId(),
-    //         $this->getSession()->get('visitorCode'),
-    //         VisitorConsentAcceptance::REQUESTED_FOR_ACCEPTING_3RD_PARTY_COOKIES,
-    //         $subscriber
-    //     );
-
-    //     // dump($success);exit;
-
-    //     // App::redirect('/webshop');
-
-    //     $response = [
-    //         'view' => null,
-    //         'data' => [
-    //             'success' => $success
-    //         ]
-    //     ];
-
-    //     return $this->widgetResponse($response);
-    // }
 }

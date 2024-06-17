@@ -38,11 +38,6 @@ class BasicController extends PageController
 
         $webshopBase = WebshopRequestService::getSlugTransRef(WebshopService::TAG_WEBSHOP, App::getContainer()->getSession()->getLocale());
 
-        // dump($alma);exit;
-
-        // header('Location: /'.$webshopBase);
-        // exit;
-
         return $this->renderPage([
             'container' => $this->getContainer()
         ]);

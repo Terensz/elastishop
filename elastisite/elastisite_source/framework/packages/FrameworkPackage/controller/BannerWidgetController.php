@@ -10,6 +10,9 @@ class BannerWidgetController extends WidgetController
     */
     public function bannerWidgetAction()
     {
+        // dump(trans('there.could.be.your.shops.logo'));
+        // dump('alma');exit;
+
         $viewPath = 'framework/packages/FrameworkPackage/view/widget/BannerWidget/widget.php';
 
         $response = [

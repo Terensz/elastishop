@@ -17,10 +17,10 @@ class ProjectSurveyRouteMap
                 'permission' => 'viewGuestContent',
                 // 'title' => 'survey.answering',
                 'structure' => 'FrameworkPackage/view/structure/BasicStructure',
-                'skinName' => 'ElastiShop',
+                // 'skinName' => 'ElastiShop',
                 'widgetChanges' => array(
                     'mainContent' => 'FinancePackage/view/widget/FillSurveyWidget',
-                    'mainContent2' => 'SiteBuilderPackage/view/widget/SplashWidget'
+                    // 'mainContent2' => 'SiteBuilderPackage/view/widget/SplashWidget'
                     // 'left1' => 'projects/ElastiShop/view/widget/HomepageSideWidget'
                 )
             ),

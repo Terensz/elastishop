@@ -1,5 +1,6 @@
 <?php
 
+use framework\packages\UserPackage\entity\User;
 use framework\packages\UserPackage\service\Permission;
 
 $config = [];
@@ -26,6 +27,12 @@ $actualRouteName = App::getContainer()->getRouting()->getPageRoute()->getName();
 // dump($actualRouteName);
 ?>
 <style>
+.sticky-content {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  width: 100%;
+}
 .banner-and-navbar {
     display: flex;
     justify-content: space-between;
@@ -55,7 +62,6 @@ $actualRouteName = App::getContainer()->getRouting()->getPageRoute()->getName();
 <div class="banner-and-navbar">
 
   <div class="banner-container"></div>
-
   <div class="navbar-container">
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container-fluid">
@@ -86,7 +92,37 @@ $actualRouteName = App::getContainer()->getRouting()->getPageRoute()->getName();
     ?>
     <?php endforeach; ?>
 
+    <?php 
+    /**
+     * User
+    */
+    ?>
     <?php if (App::getContainer()->isGranted('viewOnlyUserNotAdminContent') && App::getContainer()->getUser()->getUserAccount()): ?>
+    <?php 
+    // dump($routeName);
+    $linkClass = $actualRouteName == 'user_handlePersonalData' ? ' nav-link active' : ' nav-link';
+    ?>
+            <?php if ($config['showHandlePersonalDataLink']): ?>
+            <li class="nav-item">
+              <a class="ajaxCallerLink <?php echo $linkClass; ?>" 
+                href="<?php echo App::getContainer()->getKernelObject('RoutingHelper')->getLink('user_handlePersonalData'); ?>"><?php echo trans('logged.in'); ?>: <?php echo App::getContainer()->getUser()->getUserAccount()->getPerson()->getUsername(); ?>
+              </a>
+            </li>
+            <?php endif; ?>
+            <li class="nav-item">
+              <a class="nav-link" 
+                href="/logout"><?php echo trans('logout'); ?>
+              </a>
+            </li>
+
+    <?php endif; ?>
+
+    <?php 
+    /**
+     * Admin
+    */
+    ?>
+    <?php if (App::getContainer()->getUser()->getType() == User::TYPE_ADMINISTRATOR): ?>
     <?php 
     // dump($routeName);
     $linkClass = $actualRouteName == 'user_handlePersonalData' ? ' nav-link active' : ' nav-link';

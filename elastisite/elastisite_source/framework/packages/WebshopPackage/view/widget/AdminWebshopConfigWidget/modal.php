@@ -73,7 +73,7 @@ $configItems = [
     'WebshopPackage_maxProductsOnPage' => [
         'label' => trans('max.products.on.page'),
         'type' => 'select',
-        'options' => BasicConstants::OPTIONS_20_50_100
+        'options' => BasicConstants::OPTIONS_10_20_50_100
     ]
     // '' => [
     //     'label' => trans(''),

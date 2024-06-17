@@ -4,9 +4,10 @@ namespace framework\packages\WebshopPackage\responseAssembler;
 use App;
 use framework\component\parent\Service;
 use framework\kernel\view\ViewRenderer;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\repository\ProductRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 use framework\packages\WebshopPackage\service\WebshopRequestService;
 use framework\packages\WebshopPackage\service\WebshopService;
 
@@ -17,7 +18,7 @@ class WebshopResponseAssembler_ProductList extends Service
         App::getContainer()->wireService('WebshopPackage/service/WebshopService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopCartService');
-        App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
+        App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
         App::getContainer()->wireService('WebshopPackage/repository/ProductRepository');
 
         // WebshopCartService::checkAndExecuteTriggers();
@@ -45,20 +46,19 @@ class WebshopResponseAssembler_ProductList extends Service
         // $productCategoryRepo = $this->getContainer()->getService('ProductCategoryRepository');
         $processedRequestData = $processedRequestData ? : WebshopRequestService::getProcessedRequestData();
 
-        // dump($processedRequestData);exit;
-
         // $productCategory = $processedRequestData['categoryObject'] ? : null;
         // $english = $processedRequestData['localeRequest'] == 'en' ? true : false;
         $rawProductsData = $productRepo->getProductsData(App::getContainer()->getSession()->getLocale(), [
             'categoryId' => $processedRequestData['categoryId'],
+            'specialCategorySlugKey' => $processedRequestData['specialCategorySlugKey'],
             'searchTerm' => $processedRequestData['searchTerm']
         ], [
             'page' => $processedRequestData['currentPage']
         ]);
 
-        // dump($rawProductsData);
+        // dump($rawProductsData);exit;
 
-        $productsData = WebshopProductService::arrangeProductsData($rawProductsData);
+        $productListDataSet = ProductListDataProvider::arrangeProductsData($rawProductsData['productData']);
 
         /**
          * @todo ra kene jonni, hogy ezt miert csinaltam 
@@ -71,12 +71,37 @@ class WebshopResponseAssembler_ProductList extends Service
         // }
 
         // $listedProducts = $products ? $this->getListedProducts($products, $productCategory, $listParams) : null;
-        $totalListedProductsCount = count($productsData);
+        // $totalListedProductsCount = count($productListDataSet);
+        $totalListedProductsCount = $rawProductsData['pagerData']['totalListedItemsCount'];
+        // dump($totalListedProductsCount);
         $maxProductsOnPage = WebshopService::getSetting('WebshopPackage_maxProductsOnPage');
         $totalPages = ceil($totalListedProductsCount / $maxProductsOnPage);
         $listAllLink = WebshopRequestService::getListAllLink();
         // $locale = App::getContainer()->getSession()->getLocale();
         $locale = App::getContainer()->getSession()->getLocale();
+
+        $prevPageLink = null;
+        if ($processedRequestData['currentPage'] > 1) {
+            $linkData = $processedRequestData;
+            $linkData['pagerRequest'] = true;
+            $linkData['currentPage'] = $processedRequestData['currentPage'] - 1;
+            $prevPageLink = '/'.WebshopRequestService::assembleLink($linkData);
+        }
+        $nextPageLink = null;
+        if ($processedRequestData['currentPage'] < $totalPages) {
+            $linkData = $processedRequestData;
+            $linkData['pagerRequest'] = true;
+            $linkData['currentPage'] = $processedRequestData['currentPage'] + 1;
+            $nextPageLink = '/'.WebshopRequestService::assembleLink($linkData);
+        }
+        $variablePageLink = null;
+        $linkData = $processedRequestData;
+        $linkData['pagerRequest'] = true;
+        $linkData['currentPage'] = '[page]';
+        $variablePageLink = '/'.WebshopRequestService::assembleLink($linkData);
+        // dump(WebshopRequestService::getSlugTransRef(WebshopService::TAG_ALL_PRODUCTS, 'hu'));
+        // dump($variablePageLink);
+        // dump($processedRequestData);exit;
 
         /**
          * Putting together the search links.
@@ -90,26 +115,30 @@ class WebshopResponseAssembler_ProductList extends Service
         //     $searchLinkBaseCategory = $searchLinkBase.'/'.WebshopRequestService::getSlugTransRef(WebshopService::TAG_CATEGORY, $locale).'/'.$processedRequestData['categorySlug'].'/'.$searchSlug;
         // }
 
-        $cartDataSet = WebshopCartService::assembleCartDataSet();
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
 
         // dump(App::getContainer()->getSession()->get('webshop_cartId'));
-        // dump($cartData);exit;
+        // dump($packDataSet);exit;
 
         $viewParams = [
             'listAllLink' => $listAllLink,
-            'productsData' => $productsData,
+            'productListDataSet' => $productListDataSet,
             'pagerData' => [
                 'currentPage' => $processedRequestData['currentPage'],
                 'maxItemsOnPage' => $maxProductsOnPage,
                 'totalPages' => $totalPages,
-                'totalListedItemsCount' => $totalListedProductsCount
+                'totalListedItemsCount' => $totalListedProductsCount,
+                'prevPageLink' => $prevPageLink,
+                'nextPageLink' => $nextPageLink,
+                'variablePageLink' => $variablePageLink
             ],
             // 'searchLinkData' => [
             //     'searchLinkBase' => $searchLinkBase,
             //     'searchLinkBaseAll' => $searchLinkBaseAll,
             //     // 'searchLinkBaseCategory' => $searchLinkBaseCategory
             // ],
-            'cartDataSet' => $cartDataSet,
+            'packDataSet' => $packDataSet,
             'localizedProductInfoLinkBase' => WebshopRequestService::getSlugTransRef(WebshopService::TAG_WEBSHOP, $locale).'/'.WebshopRequestService::getSlugTransRef(WebshopService::TAG_SHOW_PRODUCT, $locale).'/'
         ];
 

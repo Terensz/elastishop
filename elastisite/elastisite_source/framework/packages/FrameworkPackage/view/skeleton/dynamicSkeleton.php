@@ -78,24 +78,6 @@ endif;
 	This page needs JavaScript activated to work.
 	<style>#documentBody { display:none; }</style>
 </noscript>
-<div id="documentBody" class="preventTouchScroll">
-	<div id="documentBackground" class="preventTouchScroll"></div>
-	<div id="structureScripts"><?php echo $container->getWidgetScripts(); ?></div>
-	<div id="structure">
-		{{ structure }}
-	</div>
-</div>
-<div id="systemTranslations" style="display: none;">
-<?php
-// dump($container->getSystemTranslations());exit;
-foreach ($container->getSystemTranslations() as $systemTranslationKey => $systemTranslationValue) {
-	$systemTranslationKey = str_replace('.', '_', $systemTranslationKey);
-?>
-	<div id="systemTranslation-<?php echo $systemTranslationKey; ?>"><?php echo $systemTranslationValue; ?></div>
-<?php
-}
-?>
-</div>
 
 	<!-- ConfirmModal -->
 	<div class="modal fade" id="confirmModal" tabindex="-1">
@@ -210,6 +192,24 @@ foreach ($container->getSystemTranslations() as $systemTranslationKey => $system
 		<!-- <iframe id="defaultLightbox-iframe" width="560" height="315" src="https://www.youtube.com/embed/pWaHZ2oRE7s" frameborder="0" allowfullscreen></iframe> -->
 	</div>
 
+<div id="documentBody" class="preventTouchScroll">
+	<div id="documentBackground" class="preventTouchScroll"></div>
+	<div id="structureScripts"><?php echo $container->getWidgetScripts(); ?></div>
+	<div id="structure">
+		{{ structure }}
+	</div>
+</div>
+<div id="systemTranslations" style="display: none;">
+<?php
+// dump($container->getSystemTranslations());exit;
+foreach ($container->getSystemTranslations() as $systemTranslationKey => $systemTranslationValue) {
+	$systemTranslationKey = str_replace('.', '_', $systemTranslationKey);
+?>
+	<div id="systemTranslation-<?php echo $systemTranslationKey; ?>"><?php echo $systemTranslationValue; ?></div>
+<?php
+}
+?>
+</div>
 
 	<!-- EditorModal Bootstrap 5.3.0 -->
 	<!-- <div id="editorModal" class="modal" tabindex="-1" role="dialog">
@@ -239,13 +239,21 @@ foreach ($container->getSystemTranslations() as $systemTranslationKey => $system
 
 	<div id="toast" class="toast" role="alert" aria-live="off" aria-atomic="true" style="position: fixed; top: 0px; left: 0px; z-index: 30000;" data-bs-autohide="true">
 		<div class="toast-header">
-			<!-- <img src="..." class="rounded me-2" alt="..."> -->
 			<strong class="me-auto"><span id="toast-title"></span></strong>
 			<small class="toast-created"></small>
 			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
 		</div>
 		<div id="toast-body" class="toast-body"></div>
 	</div>
+
+	<!-- <div style="position: absolute; top: 20px; left: 20px;">
+		<div style="padding-bottom: 4px;" onclick="LocaleHandler.switchInit(event, 'en');">
+			<image src="/public_folder/icon/EnglishFlag.svg" style="width: 50px;">
+		</div>
+		<div style="padding-bottom: 4px;" onclick="LocaleHandler.switchInit(event, 'hu');">
+			<image src="/public_folder/icon/HungarianFlag.svg" style="width: 50px;">
+		</div>
+	</div> -->
 
 	<!-- /EditorModal -->
 
@@ -258,6 +266,48 @@ foreach ($container->getSystemTranslations() as $systemTranslationKey => $system
 </body>
 <script src="/dynamicSkeleton/scripts/afterBody?v=<?php echo rand(1000000, 999999999); ?>"></script>
 <script>
+var LocaleHandler = {
+	processResponse: function(response, calledBy, onSuccessCallback) {
+        // console.log('LocaleHandler.processResponses()');
+		// console.log(onSuccessCallback);
+        // console.log(response);
+        if (typeof this[onSuccessCallback] === 'function') {
+            this[onSuccessCallback](response);
+        }
+        LoadingHandler.stop();
+    },
+	callAjax: function(calledBy, ajaxUrl, additionalData, onSuccessCallback) {
+        let baseData = {};
+        let ajaxData = $.extend({}, baseData, additionalData);
+        LoadingHandler.start();
+        $.ajax({
+            'type' : 'POST',
+            'url' : ajaxUrl,
+            'data': ajaxData,
+            'async': true,
+            'success': function(response) {
+                ElastiTools.checkResponse(response);
+                LocaleHandler.processResponse(response, calledBy, onSuccessCallback);
+            },
+            'error': function(request, error) {
+                console.log(request);
+                console.log(" Can't do because: " + error);
+            },
+        });
+	},
+	switchInit: function(event, locale) {
+		if (event) {
+            event.preventDefault();
+        }
+        LocaleHandler.callAjax('switchInit', '/localeHandler/switch/' + locale, {
+        }, 'switchCallback');
+	},
+	switchCallback: function(response) {
+		dump('switchCallback');
+		location.reload();
+	}
+};
+
 
 function checkInternetConnection() {
 	var online = navigator.onLine;

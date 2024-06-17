@@ -22,9 +22,6 @@ class Crypter extends Service
         }
         // dump($textToEncrypt);
         try {
-            // $initVectorLength = openssl_cipher_iv_length($this->cipherMethod);
-            // $initVector = openssl_random_pseudo_bytes($initVectorLength);
-            // dump($initVector);exit;
             $encrypted = openssl_encrypt($textToEncrypt, $this->cipherMethod, $this->secretKey, 0, $this->initVector);
             return !$encrypted ? $textToEncrypt : $encrypted;
         } catch (\Exception $e) {
@@ -44,13 +41,6 @@ class Crypter extends Service
         } else {
             $decrypted = openssl_decrypt($encrypted, $this->cipherMethod, $this->secretKey, 0, $this->initVector);
         }
-        // if ($debug) {
-        //     dump('Encrypted: ');
-        //     dump($encrypted);
-        //     dump('Decrypted: ');
-        //     dump($decrypted);
-        // }
-        // $decrypted = openssl_decrypt($encrypted, $this->cipherMethod, $this->secretKey);
         
         return !$decrypted ? $encrypted : $decrypted;
     }

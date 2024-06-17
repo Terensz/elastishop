@@ -9,6 +9,7 @@ class Translation_hu
             'required.field' => 'Kötelező mező',
             'required.to.check' => 'Kötelező bejelölni',
             'required.to.check.at.least.one' => 'Kötelező legalább egyet bejelölni',
+            'required.to.fill' => 'Kötelező kitölteni',
             'create.new' => 'Új létrehozása',
             'integer.required' => 'Csak egész szám adható meg',
             'new.custom.page' => 'Testreszabott oldal létrehozása',

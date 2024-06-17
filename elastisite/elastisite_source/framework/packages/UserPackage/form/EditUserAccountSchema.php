@@ -7,6 +7,7 @@ class EditUserAccountSchema extends FormSchema
 {
     public function getEntitySpecs()
     {
+        // dump('EditUserAccountSchema');exit;
         return array(
             'primaryEntity:UserPackage/entity/UserAccount' => array(
                 'id' => array(
@@ -14,10 +15,16 @@ class EditUserAccountSchema extends FormSchema
                     'primaryKey' => true
                 ),
                 'isTester' => array(
+                    'validatorRules' => array(
+                        'required' => true,
+                    ),
                     'type' => 'select',
                     'multiple' => false
                 ),
                 'status' => array(
+                    'validatorRules' => array(
+                        'required' => true,
+                    ),
                     'type' => 'select',
                     'multiple' => false
                 ),

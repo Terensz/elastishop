@@ -4,6 +4,7 @@ namespace framework\kernel\operation;
 use framework\kernel\component\Kernel;
 use framework\kernel\utility\BasicUtils;
 use framework\component\exception\ElastiException;
+use framework\component\helper\PHPHelper;
 use framework\kernel\utility\FileHandler;
 use framework\kernel\operation\DirChecker;
 
@@ -129,7 +130,8 @@ class OperationSupervisor extends Kernel
                     $fromDomain = $parts[1];
                     // dump($this->getContainer()->getUrl()->getProtocol());
                     if (($fromDomain == $domain && $fromProtocol == $protocol) && ($fromProtocol.$fromDomain != $to)) {
-                        header('Location: '.$to);
+                        // header('Location: '.$to);
+                        PHPHelper::redirect($to, 'OperationSupervisor/automaticUrlRedirecting()');
                         // dump('fromDomain: '.$fromDomain);
                         // dump('domain: '.$domain);
                         // dump('fromProtocol: '.$fromProtocol);
@@ -139,7 +141,7 @@ class OperationSupervisor extends Kernel
                 } else {
                     // $fromProtocol = $protocol;
                     if (($fromDomain == $domain) && ($protocol.$domain != $to)) {
-                        header('Location: '.$to);
+                        PHPHelper::redirect($to, 'OperationSupervisor/automaticUrlRedirecting()');
                     }
                 }
             }

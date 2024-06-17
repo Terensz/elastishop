@@ -7,9 +7,10 @@ use framework\packages\WebshopPackage\entity\ShipmentItem;
 use framework\packages\UserPackage\entity\UserAccount;
 use framework\packages\UserPackage\entity\TemporaryAccount;
 use framework\packages\PaymentPackage\entity\Payment;
+use framework\packages\WebshopPackage\dataProvider\interfaces\PackInterface;
 use framework\packages\WebshopPackage\entity\Cart;
 
-class Shipment extends DbEntity
+class Shipment extends DbEntity implements PackInterface
 {
     // const SHIPMENT_STATUS_INACTIVE = 0;
     const SHIPMENT_STATUS_ORDER_CANCELLED = 15;
@@ -170,9 +171,10 @@ class Shipment extends DbEntity
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `shipment` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `website` varchar(250) DEFAULT NULL,
+        `is_test_record` smallint(1) DEFAULT 0,
         `priority` smallint(2) DEFAULT 1,
         `code` varchar(30) COLLATE utf8_hungarian_ci DEFAULT NULL,
-        `visitor_code` varchar(30) COLLATE utf8_hungarian_ci DEFAULT NULL,
+        `visitor_code` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `user_account_id` int(11) DEFAULT NULL,
         `temporary_account_id` int(11) DEFAULT NULL,
         `admin_note` varchar(250) COLLATE utf8_hungarian_ci DEFAULT NULL,
@@ -187,6 +189,7 @@ class Shipment extends DbEntity
 
     protected $id;
     protected $website;
+    protected $isTestRecord;
     protected $cart;
     protected $payment = array();
     protected $priority;
@@ -250,9 +253,32 @@ class Shipment extends DbEntity
         return $this->website;
     }
 
-    public function checkCorrectWebsite() 
+    public function checkCorrectWebsite()
     {
         return App::getWebsite() == $this->website ? true : false;
+    }
+
+    public function setIsTestRecord($isTestRecord)
+    {
+        if ($isTestRecord === true) {
+            $isTestRecord = 1;
+        }
+        if ($isTestRecord === false) {
+            $isTestRecord = 0;
+        }
+        $this->isTestRecord = $isTestRecord;
+    }
+
+    public function getIsTestRecord()
+    {
+        $isTestRecord = $this->isTestRecord;
+        if ((int)$isTestRecord === 1) {
+            $isTestRecord = true;
+        }
+        if ((int)$isTestRecord === 0) {
+            $isTestRecord = false;
+        }
+        return $isTestRecord;
     }
 
     public function setCart(Cart $cart)

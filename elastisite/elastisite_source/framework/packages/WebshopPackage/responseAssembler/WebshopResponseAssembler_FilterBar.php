@@ -29,7 +29,7 @@ class WebshopResponseAssembler_FilterBar extends Service
         $searchLinkBaseAll = $searchLinkBase.'/'.$searchSlug.'/';
         $searchLinkBaseCategory = null;
         if ($processedRequestData['categorySlug']) {
-            $searchLinkBaseCategory = $searchLinkBase.'/'.WebshopRequestService::getSlugTransRef(WebshopService::TAG_CATEGORY, $locale).'/'.$processedRequestData['categorySlug'].'/'.$searchSlug.'/';
+            $searchLinkBaseCategory = $searchLinkBase.'/'.WebshopRequestService::getSlugTransRef(WebshopService::TAG_CATEGORY, $locale).'/'.WebshopRequestService::getSlugTransRef($processedRequestData['categorySlug'], $locale).'/'.$searchSlug.'/';
         }
         
         $isMixedSearch = $processedRequestData['categorySlug'] && $processedRequestData['searchTerm'];
@@ -44,6 +44,8 @@ class WebshopResponseAssembler_FilterBar extends Service
                 'searchLinkBaseCategory' => $searchLinkBaseCategory
             ]
         ];
+
+        // dump($viewParams); exit;
 
         $viewPath = 'framework/packages/WebshopPackage/view/Sections/ProductList/FilterBar.php';
         $view = ViewRenderer::renderWidget('WebshopPackage_FilterBar', $viewPath, $viewParams);

@@ -22,7 +22,7 @@ class SecurityEvent extends DbEntity
 
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `security_event` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
-        `visitor_code` varchar(30) COLLATE utf8_hungarian_ci DEFAULT NULL,
+        `visitor_code` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `country_code` varchar(3) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `city` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `user_account_id` int(11) DEFAULT NULL,

@@ -5,6 +5,7 @@ use App;
 use framework\component\core\WidgetResponse;
 use framework\component\parent\Service;
 use framework\kernel\view\ViewRenderer;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\service\WebshopCartService;
 use framework\packages\WebshopPackage\service\WebshopRequestService;
 use framework\packages\WebshopPackage\service\WebshopService;
@@ -16,7 +17,8 @@ class WebshopResponseAssembler_CloseCart extends Service
         App::getContainer()->wireService('WebshopPackage/service/WebshopService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopCartService');
         App::getContainer()->wireService('WebshopPackage/service/WebshopRequestService');
-        $cartDataSet = WebshopCartService::assembleCartDataSet();
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
 
         // $processedRequestData = $processedRequestData ? : WebshopRequestService::getProcessedRequestData();
         // $locale = App::getContainer()->getSession()->getLocale();
@@ -24,7 +26,7 @@ class WebshopResponseAssembler_CloseCart extends Service
         // dump($cartData); exit;
 
         $viewParams = [
-            'cartDataSet' => $cartDataSet ? : [],
+            'packDataSet' => $packDataSet ? : [],
             'checkoutLink' => '/webshop/checkout'
         ];
 

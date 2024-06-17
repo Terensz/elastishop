@@ -59,6 +59,16 @@ var Webshop = {
             },
         });
     },
+    refreshHistoryProductList: function(event) {
+        if (event) {
+            event.preventDefault();
+        }
+        Webshop.callAjax('refreshHistoryProductList', '/webshop/refreshHistoryProductList', {
+        }, 'refreshHistoryProductListCallback');
+    },
+    refreshHistoryProductListCallback: function(response) {
+        $('#viewSection-HistoryProductList').html(response.view);
+    },
     addToCartInit: function(event, offerId) {
         if (event) {
             event.preventDefault();
@@ -86,10 +96,10 @@ var Webshop = {
         $('#smallModalLabel').html('<?php echo trans('setting.cart.item.quantity'); ?>');
         $('#smallModalBody').html(response.renderedSections.sectionsResponse['SetCartItemQuantityModal']['view']);
         let responseData = response.renderedSections.sectionsResponse['SetCartItemQuantityModal']['data'];
-        $('#smallModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ");");
+        $('#smallModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ", true);");
         $('#smallModal').modal('show');
     },
-    setCartItemQuantitySubmit: function(event, offerId) {
+    setCartItemQuantitySubmit: function(event, offerId, closeModal) {
         if (event) {
             event.preventDefault();
         }
@@ -98,11 +108,31 @@ var Webshop = {
             'newQuantity': $('#WebshopPackage_SetCartItemQuantity_newQuantity').val(),
             'submitted': true
         };
-        // console.log('setCartItemQuantitySubmit data:');
-        // console.log(data);
-        $('#editorModal').modal('hide');
-        Webshop.callAjax('setCartItemQuantitySubmit', '/webshop/setCartItemQuantity', data, 'setCartItemQuantitySubmitCallback');
+        if (closeModal) {
+            $('#editorModal').modal('hide');
+        }
+        Webshop.callAjax('setCartItemQuantitySubmit', '/webshop/setCartItemQuantity', data, (closeModal ? 'setCartItemQuantitySubmitCallback' : 'setProductDetailsCartItemQuantitySubmitCallback'));
+        // if (productId) {
+        //     Webshop.showProductDetailsModalInit(event, productId);
+        // }
     },
+    /*
+    It's called by the product info modal
+    */
+    setProductDetailsCartItemQuantitySubmitCallback: function(response) {
+        // console.log('setProductDetailsCartItemQuantitySubmitCallback');
+        let responseData = response.renderedSections.sectionsResponse['SetCartItemQuantityModal']['data'];
+        Structure.throwToast(responseData.toastTitle, responseData.toastBody);
+        Structure.call(window.location.href, false, true, false);
+        console.log('responseData:');
+        console.log(responseData);
+        if (responseData.productId) {
+            Webshop.showProductDetailsModalInit(null, responseData.productId);
+        }
+    },
+    /*
+    It's called by the standalone quantity modal
+    */
     setCartItemQuantitySubmitCallback: function(response) {
         console.log(response);
         $('#smallModal').modal('hide');
@@ -120,16 +150,14 @@ var Webshop = {
         }, 'showProductDetailsModalCallback');
     },
     showProductDetailsModalCallback: function(response) {
-        console.log(response);
+        // console.log(response);
+        Webshop.refreshHistoryProductList(null);
         $('#smallModalLabel').html('');
         $('#smallModalBody').html('');
         $('#editorModalBody').html(response.renderedSections.sectionsResponse['ProductDetailsModal']['view']);
         let responseData = response.renderedSections.sectionsResponse['ProductDetailsModal']['data'];
         $('#editorModalLabel').html(responseData.modalLabel);
-        // let responseData = response.renderedSections.sectionsResponse['ProductDetailsModal']['data'];
-        // $('#editorModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ");");
         $('#editorModal').modal('show');
-        // Structure.call(window.location.href);
     },
     search: function(event) {
         if (event) {
@@ -143,9 +171,14 @@ var Webshop = {
             let searchTerm = $('#webshop_search_term').val();
             let searchLink = linkBase + searchTerm;
             $('#webshopSearchLink').prop('href', searchLink);
+            console.log('webshopSearchLink: ', document.getElementById("webshopSearchLink").outerHTML);
             $('#webshopSearchLink').click();
         } else {
+            console.log('empty string <?php echo $searchLinkData['searchLinkBase']; ?>');
             $('#webshopSearchLink').prop('href', '<?php echo $searchLinkData['searchLinkBase']; ?>');
+            // console.log("Structure.call('<?php echo $searchLinkData['searchLinkBase']; ?>');");
+            // Structure.call('<?php echo $searchLinkData['searchLinkBase']; ?>');
+            console.log('webshopSearchLink: ', document.getElementById("webshopSearchLink").outerHTML);
             $('#webshopSearchLink').click();
         }
     },
@@ -181,8 +214,6 @@ var Webshop = {
         $('#editorModalBody').html(response.renderedSections.sectionsResponse['EditOrganizationModal']['view']);
         let responseData = response.renderedSections.sectionsResponse['EditOrganizationModal']['data'];
         $('#editorModalLabel').html(responseData.modalLabel);
-        // let responseData = response.renderedSections.sectionsResponse['ProductDetailsModal']['data'];
-        // $('#editorModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ");");
         $('#editorModal').modal('show');
     },
     editOrganizationSubmit: function(event, id) {
@@ -250,8 +281,6 @@ var Webshop = {
         let responseData = response.renderedSections.sectionsResponse['EditAddressModal']['data'];
         console.log(responseData);
         $('#editorModalLabel').html(responseData.modalLabel);
-        // let responseData = response.renderedSections.sectionsResponse['ProductDetailsModal']['data'];
-        // $('#editorModalConfirm').attr('onclick', "Webshop.setCartItemQuantitySubmit(event, " + responseData.offerId + ");");
         $('#editorModal').modal('show');
     },
     editAddressSubmit: function(event, id) {

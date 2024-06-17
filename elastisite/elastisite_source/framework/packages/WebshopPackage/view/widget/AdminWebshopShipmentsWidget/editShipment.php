@@ -8,7 +8,7 @@ $(document).ready(function() {
 </script> -->
 <?php 
 
-if (!empty($shipmentDataSet)) {
+if (!empty($packDataSet)) {
     include('framework/packages/WebshopPackage/view/Common/ShipmentList/ShipmentList.php');
 }
 

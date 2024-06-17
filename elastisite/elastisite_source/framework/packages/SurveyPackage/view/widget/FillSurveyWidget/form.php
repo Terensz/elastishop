@@ -19,7 +19,7 @@ $value = '';
 $andswerIsMissing = in_array($surveyQuestion->getId(), $missingAnswers);
 $errorMessage = $andswerIsMissing ? ($surveyQuestion->getInputType() == $surveyQuestion::INPUT_TYPE_CHECKER 
                                     ? trans('required.to.check.at.least.one') 
-                                    : trans('required.field')) 
+                                    : trans('required.to.fill')) 
                                 : '';
 $isInvalidClassString = $andswerIsMissing ? ' is-invalid' : '';
 ?>
@@ -56,53 +56,47 @@ $isInvalidClassString = $andswerIsMissing ? ' is-invalid' : '';
                             <option value="<?php echo $surveyOption->getId(); ?>"<?php echo in_array($surveyOption->getId(), $valueArray) ? ' selected' : ''; ?>><?php echo $surveyOption->getDescription(); ?></option>
     <?php endforeach; ?>
                         </select>
+                    </div>
+                </div>
 <?php elseif ($surveyQuestion->getInputType() == $surveyQuestion::INPUT_TYPE_RADIO): ?>
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="SurveyCreator_answers[<?php echo $surveyQuestion->getId(); ?>][]" 
-                                        value=""<?php echo empty($valueArray) ? ' checked' : ''; ?>>
-                                    <label class="form-check-label">
-                                    <?php echo trans('please.choose'); ?>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="SurveyCreator_answers[<?php echo $surveyQuestion->getId(); ?>][]" 
+                            value=""<?php echo empty($valueArray) ? ' checked' : ''; ?>>
+                        <label class="form-check-label">
+                        <?php echo trans('please.choose'); ?>
+                        </label>
+                    </div>
+                </div>
     <?php foreach ($surveyQuestion->getSurveyOption() as $surveyOption): ?>
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="SurveyCreator_answers[<?php echo $surveyQuestion->getId(); ?>][]"  
-                                        value="<?php echo $surveyOption->getId(); ?>"<?php echo in_array($surveyOption->getId(), $valueArray) ? ' checked' : ''; ?>>
-                                    <label class="form-check-label">
-                                    <?php echo $surveyOption->getDescription(); ?>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="SurveyCreator_answers[<?php echo $surveyQuestion->getId(); ?>][]"  
+                            value="<?php echo $surveyOption->getId(); ?>"<?php echo in_array($surveyOption->getId(), $valueArray) ? ' checked' : ''; ?>>
+                        <label class="form-check-label">
+                        <?php echo $surveyOption->getDescription(); ?>
+                        </label>
+                    </div>
+                </div>
     <?php endforeach; ?>
 <?php elseif ($surveyQuestion->getInputType() == $surveyQuestion::INPUT_TYPE_CHECKER): ?>
     <?php foreach ($surveyQuestion->getSurveyOption() as $surveyOption): ?>
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="SurveyCreator_answers[<?php echo $surveyQuestion->getId(); ?>][]" 
-                                        value="<?php echo $surveyOption->getId(); ?>"<?php echo in_array($surveyOption->getId(), $valueArray) ? ' checked' : ''; ?>>
-                                    <label class="form-check-label">
-                                    <?php echo $surveyOption->getDescription(); ?>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="SurveyCreator_answers[<?php echo $surveyQuestion->getId(); ?>][]" 
+                            value="<?php echo $surveyOption->getId(); ?>"<?php echo in_array($surveyOption->getId(), $valueArray) ? ' checked' : ''; ?>>
+                        <label class="form-check-label">
+                        <?php echo $surveyOption->getDescription(); ?>
+                        </label>
+                    </div>
+                </div>
     <?php endforeach; ?>
 <?php endif; ?>
 <?php 
 // dump($missingAnswers);
 ?>
-                        <div class="invalid-feedback validationMessage" id="SurveyCreator_answer_<?php echo $surveyQuestion->getId(); ?>-validationMessage"<?php 
-                            echo (!empty($errorMessage) ? ' style="display:block;"' : ''); ?>><?php echo $errorMessage; ?></div>
-                    </div>
-                </div>
+            <div class="invalid-feedback validationMessage" id="SurveyCreator_answer_<?php echo $surveyQuestion->getId(); ?>-validationMessage"<?php 
+                echo (!empty($errorMessage) ? ' style="display:block;"' : ''); ?>><?php echo $errorMessage; ?></div>
             </div>
 <?php endforeach; ?>
             <div class="card-footer">
@@ -120,5 +114,6 @@ $isInvalidClassString = $andswerIsMissing ? ' is-invalid' : '';
                 </div>
             </div> -->
 <?php  
+// dump($surveyFormViewName);
 // dump($postedAnswers);
 ?>

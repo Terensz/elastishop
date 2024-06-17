@@ -84,11 +84,13 @@ class Translator extends Service
         }
         
         if (!Cache::cacheRefreshRequired()) {
+            // dump('fillUpTranslations');
             $this->fillUpTranslations($locale);
         } else {
             $this->fillUpTranslationsFromFiles($locale);
         }
 
+        // dump($this->translations);exit;
         // if (self::USE_DATABASE_CACHE) {
         //     $this->fillUpTranslations($locale);
         // } else {
@@ -146,7 +148,7 @@ class Translator extends Service
             // $this->fillUpTranslationsFromDatabase($locale);
             $this->fillUpTranslationsFromCache($locale);
             // dump($this->translations); exit;
-            if (empty($this->translations)) {
+            if (!isset($this->translations[$locale]) || empty($this->translations[$locale])) {
                 $this->fillUpTranslationsFromFiles($locale);
             }
         } catch (ElastiException $e) {
@@ -163,6 +165,7 @@ class Translator extends Service
 
     public function fillUpTranslationsFromCache($locale, $lastRound = false)
     {
+        // dump('fillUpTranslationsFromCache $locale');
         $translationCache = App::$cache->read('translation');
         if (!empty($translationCache)) {
             $this->translations = $translationCache;
@@ -255,19 +258,21 @@ class Translator extends Service
                 // dump($fileToUse);
                 $this->includeFile($fileToUse['primaryPathToFile'], $fileToUse['pathBaseType']);
                 $translationClass = $fileToUse['primaryClass'];
-                $translation = new $translationClass();
-                if (!isset($this->translations[$locale])) {
-                    $this->translations[$locale] = [];
-                }
-                $this->translations[$locale] = array_merge($this->translations[$locale], $translation->getTranslation($locale));
-
-                if ($fileToUse['secondaryPathToFile']) {
-                    $this->includeFile($fileToUse['secondaryPathToFile'], $fileToUse['pathBaseType']);
-                    // FileHandler::includeFile($fileToUse['secondaryPathToFile'], $fileToUse['pathBaseType']);
-                    $translationClass2 = $fileToUse['secondaryClass'];
-                    $translation2 = new $translationClass2();
-
-                    $this->translations[$locale] = array_merge($this->translations[$locale], $translation2->getTranslation($locale));
+                if (class_exists($translationClass)) {
+                    $translation = new $translationClass();
+                    if (!isset($this->translations[$locale])) {
+                        $this->translations[$locale] = [];
+                    }
+                    $this->translations[$locale] = array_merge($this->translations[$locale], $translation->getTranslation($locale));
+    
+                    if ($fileToUse['secondaryPathToFile']) {
+                        $this->includeFile($fileToUse['secondaryPathToFile'], $fileToUse['pathBaseType']);
+                        // FileHandler::includeFile($fileToUse['secondaryPathToFile'], $fileToUse['pathBaseType']);
+                        $translationClass2 = $fileToUse['secondaryClass'];
+                        $translation2 = new $translationClass2();
+    
+                        $this->translations[$locale] = array_merge($this->translations[$locale], $translation2->getTranslation($locale));
+                    }
                 }
             }
         }

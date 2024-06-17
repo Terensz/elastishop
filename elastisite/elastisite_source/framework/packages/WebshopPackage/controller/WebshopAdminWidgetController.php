@@ -351,9 +351,9 @@ class WebshopAdminWidgetController extends WidgetController
         App::getContainer()->wireService('WebshopPackage/service/ShipmentService');
         // App::getContainer()->wireService('WebshopPackage/service/WebshopService');
         $collection = ShipmentRepository::getShipmentCollectionWithSpecificStatuses(Shipment::STATUS_COLLECTION_PAID_UNFINISHED_STATUSES);
-        $shipmentDataSet = ShipmentService::assembleShipmentDataSet($collection);
+        $packDataCollection = ShipmentService::assembleShipmentDataCollection($collection);
 
-        // dump($shipmentDataSet);exit;
+        // dump($packDataSet);exit;
 
 
         // App::getContainer()->wireService('PaymentPackage/service/GeneralPaymentService');
@@ -375,7 +375,7 @@ class WebshopAdminWidgetController extends WidgetController
         $viewPath = 'framework/packages/WebshopPackage/view/widget/AdminWebshopRunningOrdersWidget/listView.php';
         $response = [
             'view' => $this->renderWidget('AdminWebshopRunningOrdersWidget-listView', $viewPath, [
-                'shipmentDataSet' => $shipmentDataSet,
+                'packDataCollection' => $packDataCollection,
                 // 'shipments' => $shipments,
                 // 'stackedPriceData' => $stackedPriceData,
                 // 'currency' => GeneralPaymentService::getActiveCurrency(),
@@ -507,10 +507,10 @@ class WebshopAdminWidgetController extends WidgetController
 
 
         // App::getContainer()->wireService('WebshopPackage/service/WebshopService');
-        $shipmentDataSet = null;
+        $packDataCollection = null;
         if ($shipmentId) {
             $collection = ShipmentRepository::getShipmentCollectionFromId($shipmentId);
-            $shipmentDataSet = ShipmentService::assembleShipmentDataSet($collection);
+            $packDataCollection = ShipmentService::assembleShipmentDataCollection($collection);
         }
 
 
@@ -582,14 +582,14 @@ class WebshopAdminWidgetController extends WidgetController
         // $shipmentItemsViewPath = 'framework/packages/WebshopPackage/view/widget/AdminWebshopShipmentsWidget/shipmentItems.php';
         // $shipmentItemsView = $this->renderWidget('shipmentItemsView', $shipmentItemsViewPath, [
         //     'shipmentItems' => $form->getEntity()->getShipmentItem(),
-        //     'priceData' => $priceData,
+        //      => $priceData,
         //     'currency' => $currency
         // ]);
 
         $viewPath = 'framework/packages/WebshopPackage/view/widget/AdminWebshopShipmentsWidget/editShipment.php';
         $response = [
             'view' => $this->renderWidget('editShipment', $viewPath, [
-                'shipmentDataSet' => $shipmentDataSet,
+                'packDataCollection' => $packDataCollection,
                 'removeTemporaryPersonOnCloseShipment' => false, // WebshopService::getSetting('WebshopPackage_removeTemporaryPersonOnCloseShipment')
                 'closedShipmentIsEditable' => WebshopService::getSetting('WebshopPackage_closedShipmentIsEditable'),
                 'reopenShipmentIsAllowed' => WebshopService::getSetting('WebshopPackage_reopenShipmentIsAllowed'),

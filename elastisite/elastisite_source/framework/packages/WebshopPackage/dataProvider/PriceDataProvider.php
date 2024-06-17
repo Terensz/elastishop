@@ -1,5 +1,5 @@
 <?php
-namespace framework\packages\WebshopPackage\service;
+namespace framework\packages\WebshopPackage\dataProvider;
 
 use App;
 use framework\component\helper\StringHelper;
@@ -21,7 +21,7 @@ class PriceDataProvider extends Service
         
     ];
     */
-    public static function assembleProductPriceData($rawData)
+    public static function assembleDataSet($rawData)
     {
         if (!isset($rawData['quantity']) || !$rawData['quantity']) {
             $rawData['quantity'] = null;
@@ -49,6 +49,7 @@ class PriceDataProvider extends Service
         $grossUnitPriceFormatted = StringHelper::formatNumber($grossUnitPriceAccurate, 2, ',', '.');
 
         if ($rawData['quantity']) {
+            // dump($rawData['quantity']);
             $netItemPriceAccurate = $netUnitPriceAccurate * $rawData['quantity'];
             $netItemPriceRounded0 = round($netItemPriceAccurate, 0);
             $netItemPriceRounded2 = round($netItemPriceAccurate, 2);
@@ -70,7 +71,7 @@ class PriceDataProvider extends Service
             $grossItemPriceFormatted = null;
         }
 
-        $data = [
+        $dataSet = [
             // 'netUnitPriceFormatted' => StringHelper::formatNumber($rawData['netUnitPrice'], 2, ',', '.'),
             'vatPercent' => $rawData['vatPercent'],
             //'quantity' => $rawData['quantity'],
@@ -91,7 +92,8 @@ class PriceDataProvider extends Service
             'grossItemPriceRounded2' => $grossItemPriceRounded2,
             'grossItemPriceFormatted' => $grossItemPriceFormatted
         ];
+        // dump($dataSet);
 
-        return $data;
+        return $dataSet;
     }
 }

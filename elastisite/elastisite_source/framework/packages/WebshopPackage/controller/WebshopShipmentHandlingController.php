@@ -39,16 +39,15 @@ class WebshopShipmentHandlingController extends WidgetController
         // dump($viewParams);exit;
 
         $shipmentData = null;
-        if (isset($viewParams['shipmentDataSet']) && isset($viewParams['shipmentDataSet'][0]) && $viewParams['errors']['Page']['summary']['errorsCount'] == 0) {
-            $shipmentData = $viewParams['shipmentDataSet'][0]['shipment'];
+        if (isset($viewParams['packDataCollection']) && isset($viewParams['packDataCollection'][0]) && $viewParams['errors']['Page']['summary']['errorsCount'] == 0) {
+            $shipmentData = $viewParams['packDataCollection'][0]['pack'];
             $requestedPaymentMethodFound = false;
             foreach ($viewParams['paymentMethods'] as $availablePaymentMethod) {
                 if ($availablePaymentMethod['referenceName'] == $requestedPaymentMethod) {
                     $requestedPaymentMethodFound = true;
                 }
             }
-    
-            // dump($requestedPaymentMethod);
+            
             if ($requestedPaymentMethodFound || $requestedPaymentMethod === null) {
                 $shipmentRepository = new ShipmentRepository();
                 $shipment = $shipmentRepository->find($shipmentData['id']);

@@ -1,6 +1,6 @@
 <?php
 
-namespace framework\packages\FinancePackage\translation;
+namespace framework\packages\DataGridPackage\translation;
 
 class Translation_en
 {

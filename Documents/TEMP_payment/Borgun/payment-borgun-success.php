@@ -12,8 +12,8 @@ $orders_id = intval($r_orderid);
 
 if (! $orders_id)
 {
-  header('Location: /');
-  exit;
+  // header('Location: /');
+  // exit;
 }
 
 

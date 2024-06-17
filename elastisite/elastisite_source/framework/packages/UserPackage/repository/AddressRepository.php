@@ -20,6 +20,11 @@ class AddressRepository extends DbRepository
         }
     }
 
+    public function cleanUpOrphans()
+    {
+        return false;
+    }
+
     public function isEditable($id, $currentTemporaryPersonId = null)
     {
         return true;

@@ -2,6 +2,7 @@
 namespace framework\packages\WebshopPackage\controller;
 
 use App;
+use framework\component\helper\PHPHelper;
 use framework\component\parent\PageController;
 use framework\packages\FinancePackage\service\InvoiceService;
 use framework\packages\FinancePackage\service\VATProfileHandler;
@@ -180,7 +181,8 @@ class WebshopController extends PageController
         // dump(WebshopService::getSetting('WebshopPackage_webshopIsActive'));exit;
 
         if (!WebshopService::getSetting('WebshopPackage_webshopIsActive')) {
-            App::redirect('/webshop/inactive');
+            // dump('alma');exit;
+            PHPHelper::redirect('/webshop/inactive', 'WebshopController/generalAction()');
         }
 
         return $this->renderPage([

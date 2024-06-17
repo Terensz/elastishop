@@ -37,7 +37,7 @@ App::getContainer()->wireService('projects/ASC/service/AscRequestService');
             <div class="row align-items-center">
                 <div class="col-md-12">
                     <div class="d-flex align-items-center">
-
+                        
                         <button class="navbar-toggler btn btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#AscScaleBuilder_PrimarySubjectBar_container" 
                                 aria-controls="AscScaleBuilder_PrimarySubjectBar_container" aria-expanded="false" aria-label="Toggle navigation" style="margin-right: 20px;">
                             <span class="navbar-toggler-icon"></span>

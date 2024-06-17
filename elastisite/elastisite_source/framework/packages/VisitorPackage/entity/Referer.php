@@ -13,7 +13,7 @@ class Referer extends DbEntity
 		`host` varchar(255) COLLATE utf8_hungarian_ci DEFAULT NULL,
 		`path` varchar(255) COLLATE utf8_hungarian_ci DEFAULT NULL,
 		`search_string` text COLLATE utf8_hungarian_ci DEFAULT NULL,
-		`visitor_code` varchar(64) COLLATE utf8_hungarian_ci DEFAULT NULL,
+		`visitor_code` varchar(100) COLLATE utf8_hungarian_ci DEFAULT NULL,
         `user_account_id` int(11) DEFAULT NULL,
         `created_at` datetime DEFAULT NULL,
         PRIMARY KEY (`id`)

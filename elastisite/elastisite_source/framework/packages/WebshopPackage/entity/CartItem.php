@@ -2,11 +2,12 @@
 namespace framework\packages\WebshopPackage\entity;
 
 use framework\component\parent\DbEntity;
+use framework\packages\WebshopPackage\dataProvider\interfaces\PackItemInterface;
 use framework\packages\WebshopPackage\entity\Cart;
 use framework\packages\WebshopPackage\entity\Product;
 use framework\packages\WebshopPackage\entity\ProductPrice;
 
-class CartItem extends DbEntity
+class CartItem extends DbEntity implements PackItemInterface
 {
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `cart_item` (
         `id` int(11) NOT NULL AUTO_INCREMENT,

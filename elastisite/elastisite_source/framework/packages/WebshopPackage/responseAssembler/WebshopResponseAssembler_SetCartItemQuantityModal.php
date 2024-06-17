@@ -5,16 +5,18 @@ use App;
 use framework\component\parent\Service;
 use framework\kernel\base\ConfigReader;
 use framework\kernel\view\ViewRenderer;
+use framework\packages\WebshopPackage\dataProvider\PackDataProvider;
 use framework\packages\WebshopPackage\repository\ProductPriceActiveRepository;
 use framework\packages\WebshopPackage\service\WebshopCartService;
-use framework\packages\WebshopPackage\service\WebshopProductService;
+use framework\packages\WebshopPackage\dataProvider\ProductListDataProvider;
 
 class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
 {
     public static function assembleResponse($processedRequestData = null, $data = [])
     {
         App::getContainer()->wireService('WebshopPackage/service/WebshopCartService');
-        $cartDataSet = WebshopCartService::assembleCartDataSet();
+        App::getContainer()->wireService('WebshopPackage/dataProvider/PackDataProvider');
+        $packDataSet = PackDataProvider::assembleDataSet(WebshopCartService::getCart());
 
         // dump($cartData); exit;
         $offerId = (int)App::getContainer()->getRequest()->get('offerId');
@@ -26,12 +28,12 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
         $newQuantity = null;
         // $actualCartItemData = null;
         $productData = null;
-        if (!empty($cartDataSet['cart']['cartItems'])) {
-            foreach ($cartDataSet['cart']['cartItems'] as $cartDataSetRow) {
-                // dump($cartDataSetRow);
-                $cartItemData = $cartDataSetRow['cartItem'];
+        if (!empty($packDataSet['pack']['packItems'])) {
+            foreach ($packDataSet['pack']['packItems'] as $packDataSetRow) {
+                // dump($packDataSetRow);
+                $cartItemData = $packDataSetRow;
                 // dump($cartItemData);
-                if (isset($cartItemData['product']) && isset($cartItemData['product']['activeProductPrice']['offerId']) && $cartItemData['product']['activeProductPrice']['offerId'] == $offerId) {
+                if (isset($cartItemData['product']) && isset($cartItemData['product']['activePrice']['offerId']) && $cartItemData['product']['activePrice']['offerId'] == $offerId) {
                     // dump($cartItemData['product']);exit;
                     if ($cartItemData['product']['specialPurpose']) {
                         echo 'Did not win';exit;
@@ -50,20 +52,23 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
         $productPriceActive = $productPriceActiveRepository->find($offerId);
         // dump($productPriceActive);exit;
 
+        $addedToCart = null;
         if ($productPriceActive) {
             if (!$productData) {
-                App::getContainer()->wireService('WebshopPackage/service/WebshopProductService');
+                App::getContainer()->wireService('WebshopPackage/dataProvider/ProductListDataProvider');
                 // dump($productPriceActive);exit;
                 $rawProductsData = $productPriceActive->getProduct()->getRepository()->getProductsData(App::getContainer()->getSession()->getLocale(), [
                     'productId' => $productPriceActive->getProduct()->getId(),
                 ], []);
-                $productsData = WebshopProductService::arrangeProductsData($rawProductsData);
+                $productsData = ProductListDataProvider::arrangeProductsData($rawProductsData['productData']);
                 $productData = isset($productsData[0]) ? $productsData[0] : null;
             }
 
             if ($submitted) {
                 $newQuantity = (int)App::getContainer()->getRequest()->get('newQuantity');
-                WebshopCartService::addToCart($offerId, $newQuantity);
+                $addedToCart = WebshopCartService::addToCart($offerId, $newQuantity);
+
+                // dump($addedToCart);exit;
                 // if (!$actualCartItemData) {
                 //     if ($newQuantity) {
                 //         WebshopCartService::addToCart($offerId, $newQuantity);
@@ -71,10 +76,15 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
                 // } else {
                 //     WebshopCartService::addToCart($offerId, $newQuantity);
                 // }
-                // dump($newQuantity);
+                // dump($addedToCart);exit;
                 // dump($actualCartItemData); exit;
             }
         }
+
+        // if (!$addedToCart && $submitted) {
+        //     dump('!$addedToCart');exit;
+        //     // dump($submitted);exit;
+        // }
 
         $offeredQuantity = $newQuantity ? : ($oldQuantity ? : 1);
 
@@ -83,22 +93,24 @@ class WebshopResponseAssembler_SetCartItemQuantityModal extends Service
             'offerId' => $offerId,
             'offeredQuantity' => $offeredQuantity,
             'productData' => $productData,
-            'cartDataSet' => $cartDataSet ? : [],
+            'packDataSet' => $packDataSet ? : [],
         ];
 
         // $data = [
         //     'offerId' => $offerId
         // ];
-
+        $closeModalAfterSubmit = true;
         $viewPath = 'framework/packages/WebshopPackage/view/Sections/SideCart/SetCartItemQuantityModal.php';
         $view = ViewRenderer::renderWidget('WebshopPackage_SetCartItemQuantityModal', $viewPath, $viewParams);
 
         return [
             'view' => $view,
             'data' => [
+                'addedToCart' => $addedToCart ? $addedToCart->getId() : null,
                 'toastTitle' => trans('system.message'),
                 'toastBody' => trans('cart.updated'),
-                'offerId' => $offerId
+                'offerId' => $offerId,
+                'productId' => (isset($productData) && $productData && isset($productData['id']) && $productData['id']) ? $productData['id'] : null
             ]
         ];
 

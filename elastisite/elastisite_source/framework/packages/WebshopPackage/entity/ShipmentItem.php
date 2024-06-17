@@ -4,11 +4,12 @@ namespace framework\packages\WebshopPackage\entity;
 use App;
 use framework\component\parent\DbEntity;
 use framework\packages\FinancePackage\entity\InvoiceItem;
+use framework\packages\WebshopPackage\dataProvider\interfaces\PackItemInterface;
 use framework\packages\WebshopPackage\entity\Shipment;
 use framework\packages\WebshopPackage\entity\Product;
 use framework\packages\WebshopPackage\entity\ProductPrice;
 
-class ShipmentItem extends DbEntity
+class ShipmentItem extends DbEntity implements PackItemInterface
 {
     const CREATE_TABLE_STATEMENT = "CREATE TABLE `shipment_item` (
         `id` int(11) NOT NULL AUTO_INCREMENT,

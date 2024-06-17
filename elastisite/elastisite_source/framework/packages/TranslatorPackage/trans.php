@@ -7,6 +7,9 @@ function trans($code, $placeholders = null, $locale = null)
         $locale = framework\kernel\base\Container::getSelfObject()->getSession()->getLocale();
     }
 
+    // dump($code);
+    // dump($locale);//exit;
+
     $translation = $translator->getTranslation($code, $locale);
 
     if ($placeholders) {

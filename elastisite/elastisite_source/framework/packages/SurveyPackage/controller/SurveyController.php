@@ -2,6 +2,7 @@
 namespace framework\packages\SurveyPackage\controller;
 
 use App;
+use framework\component\helper\PHPHelper;
 use framework\component\parent\PageController;
 use framework\packages\FinancePackage\service\InvoiceService;
 use framework\packages\PaymentPackage\entity\Payment;
@@ -41,7 +42,7 @@ class SurveyController extends PageController
         $survey = SurveyService::getSurveyBySlug($slug);
         if (!$survey || $survey->getStatus() != Survey::STATUS_ACTIVE) {
             // dump($survey);exit;
-            App::redirect('/404');
+            PHPHelper::redirect('/404', 'SurveyController/fillSurveyAction()');
         }
         
         $renderedPage = $this->renderPage([
