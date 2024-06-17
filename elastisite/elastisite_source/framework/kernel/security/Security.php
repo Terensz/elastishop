@@ -71,6 +71,7 @@ class Security extends Kernel
 
     public function preparationSecurity()
     {
+        return; 
         try {
             $securityEventRepo = $this->getContainer()->getService('SecurityEventRepository');
             $securityEventHandler = $this->getContainer()->getKernelObject('SecurityEventHandler');

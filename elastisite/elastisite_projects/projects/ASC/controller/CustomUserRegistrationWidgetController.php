@@ -79,12 +79,15 @@ class CustomUserRegistrationWidgetController extends WidgetController
             */
             $userAccount = $userAccount->getRepository()->storeUserRegistration($userAccount);
 
+            $pageRoute = App::getContainer()->getRouting()->getPageRoute();
+
             /**
              * involving to project team
             */
             App::getContainer()->wireService('projects/ASC/service/ProjectTeamworkService');
-            $processedInviteConfirmation = ProjectTeamworkService::processInviteConfirmation();
-            if ($processedInviteConfirmation['pageRouteName'] == 'asc_inviteUser_registration') {
+            
+            if ($pageRoute == 'asc_inviteUser_registration') {
+                $processedInviteConfirmation = ProjectTeamworkService::processInviteConfirmation();
                 if ($processedInviteConfirmation['success']) {
                     $this->involveToProjectTeam($userAccount, $processedInviteConfirmation);
                 } else {

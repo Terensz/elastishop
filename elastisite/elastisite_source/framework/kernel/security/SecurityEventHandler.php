@@ -51,8 +51,11 @@ class SecurityEventHandler extends Kernel
         $securityEvent->setEventType($eventType);
         $penaltyPoints = $this->moderatePenalty($this->events[$eventType]['penaltyPoints']);
         $securityEvent->setPenaltyPoints($penaltyPoints);
-        $securityEvent->setCountryCode($this->getSession()->get('geoIpInfo')['country_code']);
-        $securityEvent->setCity($this->getSession()->get('geoIpInfo')['city']);
+        $geoIpInfo = $this->getSession()->get('geoIpInfo');
+        if ($geoIpInfo) {
+            $securityEvent->setCountryCode($geoIpInfo['country_code']);
+            $securityEvent->setCity($geoIpInfo['city']);
+        }
         $securityEvent->setIpAddress($_SERVER['REMOTE_ADDR']);
         $securityEvent->setXForwardedFor(isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null);
         $securityEvent->setHost(gethostbyaddr($_SERVER['REMOTE_ADDR']));

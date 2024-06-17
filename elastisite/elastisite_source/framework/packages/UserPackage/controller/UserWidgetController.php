@@ -25,6 +25,11 @@ use framework\packages\DataGridPackage\service\DataGridBuilder;
 
 class UserWidgetController extends WidgetController
 {
+    public function __construct()
+    {
+        $this->wireService('UserPackage/repository/UserAccountRepository');
+    }
+
     /**
     * Route: [name: user_registration_widget, paramChain: /user/registration/widget]
     */
@@ -291,7 +296,7 @@ class UserWidgetController extends WidgetController
     {
         $this->wireService('UserPackage/entity/Person');
         $this->wireService('UserPackage/entity/UserAccount');
-        $this->wireService('UserPackage/repository/UserAccountRepository');
+        // $this->wireService('UserPackage/repository/UserAccountRepository');
         $accRepo = new UserAccountRepository();
         $acc = $accRepo->find($this->getContainer()->getUser()->getId());
         $addresses = array();
@@ -391,7 +396,7 @@ class UserWidgetController extends WidgetController
     */
     public function regActivationWidgetAction()
     {
-        $this->wireService('UserPackage/repository/UserAccountRepository');
+        // $this->wireService('UserPackage/repository/UserAccountRepository');
         $this->wireService('UserPackage/repository/UserAccountRegistrationTokenRepository');
 
         $error = true;
@@ -712,7 +717,9 @@ class UserWidgetController extends WidgetController
     */
     public function adminUserAccountsWidgetAction()
     {
+        $this->setService('UserPackage/repository/UserAccountRepository');
         $this->wireService('DataGridPackage/service/DataGridBuilder');
+
         $dataGridBuilder = new DataGridBuilder('AdminUserAccountsDataGrid');
         $dataGridBuilder->setValueConversion(['status' => UserAccount::STATUS_CODE_CONVERSIONS]);
         $dataGridBuilder->addPropertyValueProcessStrategy('username', 'decrypt');
@@ -729,8 +736,14 @@ class UserWidgetController extends WidgetController
         //     '0' => trans('no'),
         //     '1' => trans('yes')
         // ]]);
+        $userAccountRepository = $this->getService('UserAccountRepository');
+
+        // $user = $userAccountRepository->findOneBy(['conditions' => [['key' => 'email', 'value' => 'terencecleric@gmail.com']]]);
+        // $user = $userAccountRepository->find(1314);
+        // dump($user);exit;
+
         $dataGridBuilder->addPropertyInputType('isTester', 'multiselect');
-        $dataGridBuilder->setPrimaryRepository($this->getService('UserAccountRepository'));
+        $dataGridBuilder->setPrimaryRepository($userAccountRepository);
         //$dataGridBuilder->setEditActionRoute('admin_webshop_shipment_edit');
         $dataGrid = $dataGridBuilder->getDataGrid();
 
