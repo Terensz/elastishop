@@ -93,35 +93,35 @@ class Config
 		// var_dump(App::getWebsite());exit;
 		// var_dump(App::getWebProject());exit;
 		
-		$fileName = '.env';
+		$fileName = '.asc_env_test';
 
-		if (in_array($fullDomain, ['meheszellato'])) {
-			$fileName = '.meheszellato_env';
-		}
+		// if (in_array($fullDomain, ['meheszellato'])) {
+		// 	$fileName = '.meheszellato_env';
+		// }
 
 		// if (in_array($fullDomain, ['elastishop'])) {
 		// 	$fileName = '.elastishop_env';
 		// }
 
-		if (in_array($fullDomain, ['elastishop'])) {
-			$fileName = '.asc_env_local';
-		}
+		// if (in_array($fullDomain, ['elastishop'])) {
+		// 	$fileName = '.asc_env_local';
+		// }
 
-		if (in_array($fullDomain, ['asc'])) {
-			$fileName = '.asc_env_local';
-		}
+		// if (in_array($fullDomain, ['asc'])) {
+		// 	$fileName = '.asc_env_local';
+		// }
 
-		if (in_array($fullDomain, ['axxxxsxxxxcxxxxxx.hu', 'axxxxsxxxxcxxxxxx.com', 'adminscalecreator.hu', 'adminscalecreator.com', 'ascsite.hu', 'ascsite.com'])) {
-			$fileName = '.asc_env_test';
-		}
+		// if (in_array($fullDomain, ['axxxxsxxxxcxxxxxx.hu', 'axxxxsxxxxcxxxxxx.com', 'adminscalecreator.hu', 'adminscalecreator.com', 'ascsite.hu', 'ascsite.com'])) {
+		// 	$fileName = '.asc_env_test';
+		// }
 
-		if (in_array($fullDomain, ['klicc', 'kli.cc'])) {
-			$fileName = '.klicc_env';
-		}
+		// if (in_array($fullDomain, ['klicc', 'kli.cc'])) {
+		// 	$fileName = '.klicc_env';
+		// }
 
-		if (in_array($fullDomain, ['supplementvalue', 'supplementvalue.com'])) {
-			$fileName = '.supplementvalue_env';
-		}
+		// if (in_array($fullDomain, ['supplementvalue', 'supplementvalue.com'])) {
+		// 	$fileName = '.supplementvalue_env';
+		// }
 
 		// var_dump($fullDomain);
 		// var_dump($fileName);exit;
